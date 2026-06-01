@@ -307,4 +307,4 @@ Footer (same as homepage)
 
 ---
 
-*Last updated: [Date]*
+*Last updated: 2026.06.01*
