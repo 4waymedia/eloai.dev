@@ -1,0 +1,155 @@
+[
+  {
+    "file_id": "7b7857966387b13d",
+    "path": ".claude\\launch.json",
+    "name": "launch.json",
+    "extension": ".json",
+    "size_bytes": 201,
+    "line_count": 11,
+    "hash": "cea4f799046b9b901319ce90e502d1a0a4d63a51a9bfbdb3169576932a483dae"
+  },
+  {
+    "file_id": "c53683f5bca6f683",
+    "path": "research-docs\\chatgpt-memory.md",
+    "name": "chatgpt-memory.md",
+    "extension": ".md",
+    "size_bytes": 11799,
+    "line_count": 432,
+    "hash": "eb3bcf42dc80076162bf6476a6608ca53af5ac798f246606fb2692b7e5b8880a"
+  },
+  {
+    "file_id": "07fb5df135fdce35",
+    "path": "research-docs\\claude-memory.md",
+    "name": "claude-memory.md",
+    "extension": ".md",
+    "size_bytes": 3356,
+    "line_count": 21,
+    "hash": "95ba9afcd18ef7ef83051f3739c2dda967f100e6bccb750e78f124e0b8b7f4f8"
+  },
+  {
+    "file_id": "7615c21c30ef837d",
+    "path": "research-docs\\deepseek-memory.md",
+    "name": "deepseek-memory.md",
+    "extension": ".md",
+    "size_bytes": 5354,
+    "line_count": 112,
+    "hash": "6a048c89328d38ee0f879b3edfe888390af8770686b55df8ae8c1777e96b7138"
+  },
+  {
+    "file_id": "063bcad472ff813a",
+    "path": "research-docs\\gemini-memory.md",
+    "name": "gemini-memory.md",
+    "extension": ".md",
+    "size_bytes": 6495,
+    "line_count": 2,
+    "hash": "7afb5470d87daf5e32a7c1af08e79cd0adda290010ae0785661359d714d4fa6f"
+  },
+  {
+    "file_id": "026952384807981c",
+    "path": "research-docs\\grok-memory.md",
+    "name": "grok-memory.md",
+    "extension": ".md",
+    "size_bytes": 6451,
+    "line_count": 107,
+    "hash": "12899f88e886d97680faa04cb1994602d9701d4cb00861073c9d4c76d2b0fce5"
+  },
+  {
+    "file_id": "898aad7e6bb027d4",
+    "path": "website\\about.html",
+    "name": "about.html",
+    "extension": ".html",
+    "size_bytes": 10766,
+    "line_count": 281,
+    "hash": "c24472d0954b267e7f9599bf817bda40bd782b1340cbee7e46e5ef4259cf8c9d"
+  },
+  {
+    "file_id": "14576adc26ca41bc",
+    "path": "website\\app.jsx",
+    "name": "app.jsx",
+    "extension": ".jsx",
+    "size_bytes": 2630,
+    "line_count": 83,
+    "hash": "53be2dd4e26d77c4a6bda98412c131e6a7ac07feed3209d2e59a7fef92f93906"
+  },
+  {
+    "file_id": "21e4490bedbde2f8",
+    "path": "website\\blog.html",
+    "name": "blog.html",
+    "extension": ".html",
+    "size_bytes": 8209,
+    "line_count": 243,
+    "hash": "18bf27e010a4a0399f4dd5112256a8dcf9e28c142e3423f64603c2a25f28a560"
+  },
+  {
+    "file_id": "a1359156e0778f63",
+    "path": "website\\cognitive-architecture.html",
+    "name": "cognitive-architecture.html",
+    "extension": ".html",
+    "size_bytes": 23447,
+    "line_count": 534,
+    "hash": "03a91fd7d68178eac82d1fb1e37042f7ed9207dd2b902db3e864e7f74c813f77"
+  },
+  {
+    "file_id": "047c89850eebdc29",
+    "path": "website\\index.html",
+    "name": "index.html",
+    "extension": ".html",
+    "size_bytes": 1601,
+    "line_count": 27,
+    "hash": "1759db15264a87fa019987bc4f51ccddedf52b463453e637345388e73a4b3a9f"
+  },
+  {
+    "file_id": "3acc9d9a40e76f31",
+    "path": "website\\neural-bg.jsx",
+    "name": "neural-bg.jsx",
+    "extension": ".jsx",
+    "size_bytes": 3128,
+    "line_count": 108,
+    "hash": "202aa57fb387592a2dd3ce07dae8bd61fa119c76ed68d73c26ab634b29225ded"
+  },
+  {
+    "file_id": "724b353bfd8f453f",
+    "path": "website\\sections.jsx",
+    "name": "sections.jsx",
+    "extension": ".jsx",
+    "size_bytes": 15337,
+    "line_count": 420,
+    "hash": "9fbfeaf8655acdb9a43ea7ed01c392ec2af368035fafed8a1f6edd910206ed4c"
+  },
+  {
+    "file_id": "baee06b056f88b29",
+    "path": "website\\styles.css",
+    "name": "styles.css",
+    "extension": ".css",
+    "size_bytes": 35511,
+    "line_count": 1454,
+    "hash": "ff806bb16ad733917f3bd77b0e8f145e4e95d6af341750793e9ee520788e9add"
+  },
+  {
+    "file_id": "7e28c0d4aab9ad9f",
+    "path": "website\\tweaks-panel.jsx",
+    "name": "tweaks-panel.jsx",
+    "extension": ".jsx",
+    "size_bytes": 23873,
+    "line_count": 530,
+    "hash": "82c38755258809f6acf49c0b6b2ecc8ddcdcd97fa453e3530f546b6626acb77b"
+  },
+  {
+    "file_id": "cd5ccb5b73d67e6a",
+    "path": "website\\assets\\discoveries.md",
+    "name": "discoveries.md",
+    "extension": ".md",
+    "size_bytes": 2377,
+    "line_count": 29,
+    "hash": "2ee0bbde01aeec040d350cc8085f624cf8f489d1df03353bc73eb90fcb25029a"
+  },
+  {
+    "file_id": "ef6a669b0b123b6e",
+    "path": "website\\assets\\projects.json",
+    "name": "projects.json",
+    "extension": ".json",
+    "size_bytes": 1986,
+    "line_count": 58,
+    "hash": "e4e2f71e49bf10aa54cd49f47cae93c4f4c8c508002bfbdfd3dae7751b4f3351"
+  }
+]

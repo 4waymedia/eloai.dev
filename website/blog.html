@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EloAI — Field Notes</title>
+  <meta name="description" content="Unfiltered research updates from EloAI — positive results, negative results, and things we didn't expect. Published as they happen." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' fill='%2300ff9d' transform='rotate(45 16 16)'/%3E%3C/svg%3E" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta property="og:title" content="EloAI — Field Notes" />
+  <meta property="og:description" content="Unfiltered research updates from EloAI — positive results, negative results, and things we didn't expect." />
+  <meta property="og:url" content="https://eloai.dev/blog" />
+  <meta property="og:type" content="website" />
+</head>
+<body>
+
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="shell nav-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark"></span>
+      ELOAI
+    </a>
+    <div class="nav-links">
+      <a href="index.html#projects">Projects</a>
+      <a href="blog.html" style="color: var(--accent);">Blog</a>
+      <a href="about.html">About</a>
+      <a href="cognitive-architecture.html">Thesis</a>
+    </div>
+    <a href="index.html" class="nav-cta">← Back to lab</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="blog-hero" data-screen-label="01 Hero">
+  <div class="blog-hero-grid"></div>
+  <div class="shell" style="position: relative; z-index: 2;">
+    <div class="doc-crumbs">
+      <a href="index.html">EloAI</a>
+      <span class="sep">/</span>
+      <span>Field Notes</span>
+    </div>
+
+    <h1 class="doc-title">
+      From the <em>bench.</em>
+    </h1>
+
+    <p class="doc-lede">
+      <a href="elo.html" class="easter-egg">Unfiltered</a> research updates — positive results, negative results, and
+      things we didn't expect. Published as they happen, not after they're
+      polished into something presentable.
+    </p>
+
+    <div class="doc-meta">
+      <div class="doc-meta-cell">
+        <span class="doc-meta-key">Format</span>
+        <span class="doc-meta-val">Field notes</span>
+      </div>
+      <div class="doc-meta-cell">
+        <span class="doc-meta-key">Cadence</span>
+        <span class="doc-meta-val accent">As findings arrive</span>
+      </div>
+      <div class="doc-meta-cell">
+        <span class="doc-meta-key">Filter</span>
+        <span class="doc-meta-val">None</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- BLOG FEED (React) -->
+<div id="blog-root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+<script type="text/babel">
+const { useState, useEffect, useMemo, useRef } = React;
+
+function parseMd(md) {
+  const blocks = md.trim().split(/\n---\n/);
+  return blocks.map((block, i) => {
+    const lines = block.trim().split("\n");
+    const dateLine = lines[0].replace(/^#\s*/, "");
+    const [date, ...titleParts] = dateLine.split(/—|–|-/);
+    const title = titleParts.join("—").trim();
+    const body = lines.slice(1).join("\n").trim();
+    const paragraphs = body.split(/\n\n+/);
+    return { date: date.trim(), title, paragraphs, key: i };
+  });
+}
+
+function inlineMd(text) {
+  const parts = [];
+  const re = /(\*\*[^*]+\*\*|\*[^*]+\*)/g;
+  let lastIndex = 0;
+  let key = 0;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > lastIndex) parts.push(text.slice(lastIndex, m.index));
+    const token = m[0];
+    if (token.startsWith("**")) {
+      parts.push(<strong key={key++}>{token.slice(2, -2)}</strong>);
+    } else {
+      parts.push(<em key={key++}>{token.slice(1, -1)}</em>);
+    }
+    lastIndex = m.index + token.length;
+  }
+  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+  return parts;
+}
+
+function Blog() {
+  const [md, setMd] = useState("");
+  const [active, setActive] = useState(0);
+  const feedRef = useRef(null);
+
+  useEffect(() => {
+    fetch("assets/discoveries.md").then(r => r.text()).then(setMd);
+  }, []);
+
+  const entries = useMemo(() => md ? parseMd(md) : [], [md]);
+
+  useEffect(() => {
+    if (!entries.length) return;
+    const els = Array.from(feedRef.current?.querySelectorAll("[data-entry]") || []);
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (ents) => {
+        const visible = ents
+          .filter(e => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActive(parseInt(visible.target.dataset.entry, 10));
+      },
+      { rootMargin: "-20% 0px -60% 0px", threshold: [0, 0.25, 0.5, 1] }
+    );
+    els.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, [entries.length]);
+
+  if (!entries.length) {
+    return (
+      <div className="shell" style={{ padding: "120px 0", color: "var(--text-faint)", fontFamily: "var(--font-mono)", fontSize: 13 }}>
+        Loading field notes…
+      </div>
+    );
+  }
+
+  return (
+    <div className="shell">
+      <div className="blog-layout">
+        <aside className="blog-rail">
+          {entries.map(e => (
+            <button
+              key={e.key}
+              className={active === e.key ? "active" : ""}
+              onClick={() => {
+                const el = document.querySelector(`[data-entry="${e.key}"]`);
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+            >
+              {e.date}
+            </button>
+          ))}
+        </aside>
+        <div className="blog-feed" ref={feedRef}>
+          {entries.map(e => (
+            <article className="blog-entry" data-entry={e.key} key={e.key}>
+              <div className="blog-entry-date">{e.date}</div>
+              <h2>{e.title}</h2>
+              {e.paragraphs.map((p, i) => (
+                <p key={i}>{inlineMd(p)}</p>
+              ))}
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("blog-root")).render(<Blog />);
+</script>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="shell">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-mark"></span>
+          ELOAI
+        </a>
+        <p>
+          Independent research lab building toward <a href="elo.html" class="easter-egg">artificial consciousness</a>.
+          Currently operating from a distributed compute fabric.
+        </p>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-title">Lab</div>
+        <ul>
+          <li><a href="index.html#projects">Projects</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="index.html#infra">Subdomains</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-title">Public</div>
+        <ul>
+          <li><a href="cognitive-architecture.html">Thesis</a></li>
+          <li><a href="https://status.eloai.dev">Status</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-title">Contact</div>
+        <ul>
+          <li><a href="mailto:hello@eloai.dev">hello@eloai.dev</a></li>
+          <li><a href="about.html#partnerships">Research partnerships</a></li>
+          <li><a href="about.html#careers">Careers</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© MMXXVI · EloAI Research, Ltd<a href="elo.html" class="easter-egg">.</a></span>
+      <span>Designed in the dark · Built for the frontier</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const bar = document.getElementById("scroll-progress");
+  window.addEventListener("scroll", () => {
+    const max = document.body.scrollHeight - window.innerHeight;
+    bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + "%";
+  }, { passive: true });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+{
+  "projects": [
+    {
+      "id": "synthesis",
+      "glyph": "◈",
+      "code": "SYN-01",
+      "title": "Synthesis Engine",
+      "description": "Recursive self-modeling system probing the substrate of machine awareness — building agents that can reason about their own reasoning.",
+      "status": "active",
+      "phase": "iteration 04"
+    },
+    {
+      "id": "atlas",
+      "glyph": "▲",
+      "code": "ATL-02",
+      "title": "Atlas Reasoning",
+      "description": "Long-horizon autonomous agents capable of decomposing open-ended objectives across days, not turns. Currently coordinating live infrastructure.",
+      "status": "active",
+      "phase": "prod canary"
+    },
+    {
+      "id": "noema",
+      "glyph": "✦",
+      "code": "NOE-03",
+      "title": "Noema Cortex",
+      "description": "A cognitive architecture unifying perception, memory, and intent. Investigating phenomenal binding through resonant attention manifolds.",
+      "status": "research",
+      "phase": "iteration 02"
+    },
+    {
+      "id": "lattice",
+      "glyph": "⬡",
+      "code": "LAT-04",
+      "title": "Lattice Protocol",
+      "description": "Multi-agent negotiation substrate. Agents propose, audit, and ratify hypotheses without a privileged orchestrator.",
+      "status": "active",
+      "phase": "alpha"
+    },
+    {
+      "id": "umbra",
+      "glyph": "◐",
+      "code": "UMB-05",
+      "title": "Umbra Interpretability",
+      "description": "Mechanistic decoding of internal model states. Tools for surfacing latent intent and detecting deceptive reasoning paths.",
+      "status": "research",
+      "phase": "iteration 07"
+    },
+    {
+      "id": "kairos",
+      "glyph": "⊹",
+      "code": "KRS-06",
+      "title": "Kairos Temporal",
+      "description": "Continuous-time memory architectures — agents that experience duration rather than discrete turns. Bridging episodic and semantic recall.",
+      "status": "early",
+      "phase": "scaffold"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "folder_id": "cdb4ee2aea69cc6a",
+    "path": ".",
+    "name": "eloai",
+    "parent_id": "root"
+  },
+  {
+    "folder_id": "e026f56c08dcdea4",
+    "path": ".claude",
+    "name": ".claude",
+    "parent_id": "cdb4ee2aea69cc6a"
+  },
+  {
+    "folder_id": "977b265bebc6083d",
+    "path": "research-docs",
+    "name": "research-docs",
+    "parent_id": "cdb4ee2aea69cc6a"
+  },
+  {
+    "folder_id": "747a8f398395dde8",
+    "path": "website",
+    "name": "website",
+    "parent_id": "cdb4ee2aea69cc6a"
+  },
+  {
+    "folder_id": "f498c437c8168888",
+    "path": "website\\assets",
+    "name": "assets",
+    "parent_id": "747a8f398395dde8"
+  }
+]

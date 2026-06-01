@@ -1,0 +1,172 @@
+[
+  {
+    "scope_candidate_id": "sc_30fe665146fa",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "7b7857966387b13d",
+    "candidate_path": ".claude\\launch.json",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_266c2068e540",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "c53683f5bca6f683",
+    "candidate_path": "research-docs\\chatgpt-memory.md",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_4d8921cac1bf",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "07fb5df135fdce35",
+    "candidate_path": "research-docs\\claude-memory.md",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_10a91c9b22ea",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "7615c21c30ef837d",
+    "candidate_path": "research-docs\\deepseek-memory.md",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_24e3eac7ca87",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "063bcad472ff813a",
+    "candidate_path": "research-docs\\gemini-memory.md",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_ca2f467200d6",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "026952384807981c",
+    "candidate_path": "research-docs\\grok-memory.md",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_6e1f25c7035a",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "898aad7e6bb027d4",
+    "candidate_path": "website\\about.html",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_cc684f110ff1",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "14576adc26ca41bc",
+    "candidate_path": "website\\app.jsx",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_e24b8179846c",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "21e4490bedbde2f8",
+    "candidate_path": "website\\blog.html",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_f3861c393fd8",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "a1359156e0778f63",
+    "candidate_path": "website\\cognitive-architecture.html",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_8ca9cf5322da",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "047c89850eebdc29",
+    "candidate_path": "website\\index.html",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_3effffddeb17",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "3acc9d9a40e76f31",
+    "candidate_path": "website\\neural-bg.jsx",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_4eb0d856acc3",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "724b353bfd8f453f",
+    "candidate_path": "website\\sections.jsx",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_c363be1c5952",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "baee06b056f88b29",
+    "candidate_path": "website\\styles.css",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_3b06e1261c06",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "7e28c0d4aab9ad9f",
+    "candidate_path": "website\\tweaks-panel.jsx",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_4ef3cefaff61",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "cd5ccb5b73d67e6a",
+    "candidate_path": "website\\assets\\discoveries.md",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  },
+  {
+    "scope_candidate_id": "sc_5655736c7a22",
+    "project_id": "proj_unknown",
+    "request_id": "req_initial_scan",
+    "candidate_kind": "file",
+    "candidate_id": "ef6a669b0b123b6e",
+    "candidate_path": "website\\assets\\projects.json",
+    "relevance_score": 0.1,
+    "match_reasons": []
+  }
+]

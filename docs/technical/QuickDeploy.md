@@ -1,0 +1,1 @@
+scp -r website/* wayto5@4waytours.com:/home/wayto5/eloai.dev/

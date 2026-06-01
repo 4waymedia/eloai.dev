@@ -1,0 +1,16 @@
+{
+  "project_name": "ais-rts",
+  "root_path": "F:\\Script-Projects\\eloai",
+  "primary_language": "python",
+  "included_paths": [
+    "."
+  ],
+  "excluded_paths": [
+    "venv",
+    ".git",
+    "__pycache__",
+    "data"
+  ],
+  "scan_timestamp": "2026-05-28T13:31:18.628501+00:00",
+  "scan_version": "1.0.0"
+}

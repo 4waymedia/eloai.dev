@@ -1,0 +1,13 @@
+{
+  "name": "eloai-dev",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "serve website -p 3000",
+    "start": "serve website -p 3000",
+    "deploy": "tar -czf - -C website . | ssh -p 2222 wayto5@4waytours.com \"tar -xzf - -C ~/eloai.dev/\""
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}
+

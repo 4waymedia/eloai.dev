@@ -1,0 +1,139 @@
+{
+  "validation_timestamp": "2026-05-28T13:31:19.039934Z",
+  "data_root": "F:\\Script-Projects\\eloai\\.ais-rts\\data",
+  "summary": {
+    "total_errors": 0,
+    "total_warnings": 20,
+    "passed": true
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\project_manifest.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\project_manifest.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\folders.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\folders.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\files.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\files.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\symbols.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\symbols.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\imports.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\imports.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\config_keys.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\config_keys.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\config_usages.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\config_usages.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\data_entities.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\data_entities.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\data_entity_usages.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\data_entity_usages.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\external_dependencies.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\external_dependencies.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\dependency_usages.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\dependency_usages.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\endpoints.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\endpoints.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "extracted",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\endpoint_bindings.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\extracted\\endpoint_bindings.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "semantic",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\semantic\\responsibilities.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\semantic\\responsibilities.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "semantic",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\semantic\\features.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\semantic\\features.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "semantic",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\semantic\\file_semantics.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\semantic\\file_semantics.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "semantic",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\semantic\\symbol_semantics.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\semantic\\symbol_semantics.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "derived",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\derived\\resolved_dependencies.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\derived\\resolved_dependencies.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "derived",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\derived\\impact_relationships.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\derived\\impact_relationships.json"
+    },
+    {
+      "type": "missing_file",
+      "layer": "derived",
+      "file": "F:\\Script-Projects\\eloai\\.ais-rts\\data\\derived\\scope_candidates.json",
+      "message": "Expected canonical file not found: F:\\Script-Projects\\eloai\\.ais-rts\\data\\derived\\scope_candidates.json"
+    }
+  ],
+  "checks_performed": {
+    "file_existence": true,
+    "required_fields": true,
+    "stable_ids": true,
+    "enum_values": true,
+    "cross_references": true
+  }
+}

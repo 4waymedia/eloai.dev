@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EloAI — The Cognitive Architecture Layer</title>
+  <meta name="description" content="Why EloAI is building the external cognitive infrastructure that lets AI agents operate with memory, context, evidence, scope control, and human-aligned feedback. The path past AGI toward genuinely cognitive systems." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' fill='%2300ff9d' transform='rotate(45 16 16)'/%3E%3C/svg%3E" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta property="og:title" content="EloAI — The Cognitive Architecture Layer" />
+  <meta property="og:description" content="Why EloAI is building the external cognitive infrastructure that lets AI agents operate with memory, context, evidence, scope control, and feedback." />
+  <meta property="og:url" content="https://eloai.dev/cognitive-architecture" />
+  <meta property="og:type" content="article" />
+</head>
+<body>
+
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="shell nav-inner">
+    <a href="index.html#top" class="logo">
+      <span class="logo-mark"></span>
+      ELOAI
+    </a>
+    <div class="nav-links">
+      <a href="index.html#projects">Projects</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+      <a href="cognitive-architecture.html" style="color: var(--accent);">Thesis</a>
+    </div>
+    <a href="index.html" class="nav-cta">← Back to lab</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="doc-hero" data-screen-label="01 Hero">
+  <div class="doc-hero-grid"></div>
+  <div class="shell" style="position: relative; z-index: 2;">
+    <div class="doc-crumbs">
+      <a href="index.html#top">EloAI</a>
+      <span class="sep">/</span>
+      <a href="index.html#discoveries">Research</a>
+      <span class="sep">/</span>
+      <span>Thesis 001</span>
+    </div>
+
+    <h1 class="doc-title">
+      Past AGI. Toward <em>cognitive systems.</em>
+    </h1>
+
+    <p class="doc-lede">
+      Most frontier labs are racing to build a bigger brain. We're building
+      everything around it — the memory, perception, scope, evidence, and
+      feedback loops that turn a powerful model into a genuinely cognitive
+      system. This is the external cognitive infrastructure of agentic intelligence.
+    </p>
+
+    <div class="doc-meta">
+      <div class="doc-meta-cell">
+        <span class="doc-meta-key">Filed</span>
+        <span class="doc-meta-val">2026.05.24</span>
+      </div>
+      <div class="doc-meta-cell">
+        <span class="doc-meta-key">Series</span>
+        <span class="doc-meta-val">Thesis · 001 / N</span>
+      </div>
+      <div class="doc-meta-cell">
+        <span class="doc-meta-key">Read time</span>
+        <span class="doc-meta-val">14 min</span>
+      </div>
+      <div class="doc-meta-cell">
+        <span class="doc-meta-key">Status</span>
+        <span class="doc-meta-val accent">● Active position</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- BODY -->
+<main class="shell">
+  <div class="doc-body">
+
+    <!-- side rail -->
+    <aside class="doc-rail" id="rail">
+      <a href="#thesis"><span>00</span><span>Thesis</span></a>
+      <a href="#loop"><span>01</span><span>The Loop</span></a>
+      <a href="#map"><span>02</span><span>Capability Map</span></a>
+      <a href="#experiments"><span>03</span><span>Experiments</span></a>
+      <a href="#gap"><span>04</span><span>The Gap</span></a>
+      <a href="#ledger"><span>05</span><span>Learning Ledger</span></a>
+      <a href="#framing"><span>06</span><span>Strategic Frame</span></a>
+    </aside>
+
+    <article class="doc-content">
+
+      <!-- THESIS -->
+      <section class="doc-section" id="thesis">
+        <div class="doc-section-num">00 · Position</div>
+        <h2 class="doc-h2">We are not building the brain. We are building everything around it.</h2>
+
+        <p class="doc-p">
+          The dominant story about AGI is a story about model capability. Bigger transformers,
+          longer contexts, deeper reasoning, multimodal understanding, autonomous planning.
+          That story matters — but it is incomplete.
+        </p>
+
+        <p class="doc-p">
+          EloAI's bet is structural. <strong>Intelligence is not just the model. Intelligence is the loop</strong>
+          — perception, memory, compression, reasoning, action, feedback, correction. A frontier
+          model dropped into a chaotic environment without that loop is a brilliant savant
+          with anterograde amnesia and no hands. Useful, sometimes; reliable, rarely.
+        </p>
+
+        <div class="doc-pullquote">
+          Our work is to build the external cognitive infrastructure that lets AI agents
+          operate with memory, context, evidence, scope control, semantic compression, and
+          human-aligned feedback. This makes current models more reliable and creates a
+          foundation that future AGI-level systems would also require.
+          <span class="attrib">— Position statement · EloAI Research</span>
+        </div>
+
+        <p class="doc-p">
+          Frontier labs frame AGI as <em>broadly capable, general, and increasingly autonomous</em>.
+          We accept that framing — and then ask the question those labs largely defer:
+          <strong>what is the operating environment a generally capable model would actually need
+          to be trusted with consequential work?</strong>
+        </p>
+      </section>
+
+      <!-- LOOP -->
+      <section class="doc-section" id="loop">
+        <div class="doc-section-num">01 · The cognitive loop</div>
+        <h2 class="doc-h2">Intelligence is a loop, not a layer.</h2>
+
+        <p class="doc-p">
+          The conventional stack treats the model as the apex and everything else as
+          plumbing. We invert that. The loop is the unit of cognition; the model is one
+          stage of it. Cut any link and the system degrades to a chatbot — fluent,
+          stateless, and unaccountable.
+        </p>
+
+        <div class="loop">
+          <div class="loop-title">Loop · cognitive cycle</div>
+          <div class="loop-chain">
+            <span class="loop-node">Perception</span>
+            <span class="loop-arrow">→</span>
+            <span class="loop-node">Memory</span>
+            <span class="loop-arrow">→</span>
+            <span class="loop-node">Compression</span>
+            <span class="loop-arrow">→</span>
+            <span class="loop-node">Reasoning</span>
+            <span class="loop-arrow">→</span>
+            <span class="loop-node">Action</span>
+            <span class="loop-arrow">→</span>
+            <span class="loop-node">Feedback</span>
+            <span class="loop-arrow">→</span>
+            <span class="loop-node">Correction</span>
+            <span class="loop-arrow">↺</span>
+          </div>
+          <div class="loop-foot">
+            A model without this loop is a stateless oracle. A model wired into it
+            becomes <em>continuing intelligence</em> — capable of learning from
+            consequence rather than restarting every conversation.
+          </div>
+        </div>
+
+        <p class="doc-p">
+          Every active program in the lab is a deliberate intervention in one or more
+          links of this loop. Treat the table below as a map of our bets — which AGI-relevant
+          capability each program is trying to unlock.
+        </p>
+      </section>
+
+      <!-- CAPABILITY MAP -->
+      <section class="doc-section" id="map">
+        <div class="doc-section-num">02 · Capability map</div>
+        <h2 class="doc-h2">How our experiments project onto AGI-relevant capabilities.</h2>
+
+        <p class="doc-p">
+          DeepMind's <em>Levels of AGI</em> framework treats AGI as a combination of
+          performance, generality, and autonomy. OpenAI frames it as systems generally
+          smarter than humans, deployed safely. Both definitions share the same omission:
+          a clear account of <strong>where the agent's competence actually lives</strong>.
+          Inside the weights? In the surrounding system? Across the loop?
+        </p>
+
+        <p class="doc-p">
+          We argue most of it lives in the loop. Here is how our programs map onto the
+          capability surface usually attributed to "AGI":
+        </p>
+
+        <div class="cap-map">
+          <div class="cap-row head">
+            <div class="cap-cell">Our program</div>
+            <div class="cap-cell">AGI-relevant capability</div>
+          </div>
+          <div class="cap-row">
+            <div class="cap-cell"><span class="cap-name"><span class="dot"></span>AIS-RTS</span></div>
+            <div class="cap-cell cap-mapsto">Project memory · codebase perception · scoped reasoning · safe tool use</div>
+          </div>
+          <div class="cap-row">
+            <div class="cap-cell"><span class="cap-name"><span class="dot"></span>Memory · Recall tools</span></div>
+            <div class="cap-cell cap-mapsto">Long-term memory · self-directed context storage · retrieval</div>
+          </div>
+          <div class="cap-row">
+            <div class="cap-cell"><span class="cap-name"><span class="dot"></span>Semantic compression</span></div>
+            <div class="cap-cell cap-mapsto">Efficient internal representation · reduced context cost</div>
+          </div>
+          <div class="cap-row">
+            <div class="cap-cell"><span class="cap-name"><span class="dot"></span>Meaning matrix · Resonance graph</span></div>
+            <div class="cap-cell cap-mapsto">Contextual understanding · intent tracking · semantic state</div>
+          </div>
+          <div class="cap-row">
+            <div class="cap-cell"><span class="cap-name"><span class="dot"></span>TruthEngine · DAISC</span></div>
+            <div class="cap-cell cap-mapsto">Evidence grounding · source intelligence · claim verification</div>
+          </div>
+          <div class="cap-row">
+            <div class="cap-cell"><span class="cap-name"><span class="dot"></span>Agent workflows · MCP tools</span></div>
+            <div class="cap-cell cap-mapsto">Tool-use autonomy · bounded execution</div>
+          </div>
+          <div class="cap-row">
+            <div class="cap-cell"><span class="cap-name"><span class="dot"></span>Human-in-the-loop validation</span></div>
+            <div class="cap-cell cap-mapsto">Oversight · alignment · correction · trust</div>
+          </div>
+          <div class="cap-row">
+            <div class="cap-cell"><span class="cap-name"><span class="dot"></span>Local LLM testing</span></div>
+            <div class="cap-cell cap-mapsto">Capability benchmarking · deployment independence</div>
+          </div>
+        </div>
+
+        <p class="doc-p" style="margin-top: 28px;">
+          This is the agent-systems face of AGI — how an AI remembers, scopes tasks,
+          chooses tools, checks itself, and interacts with the world. None of it requires
+          a new transformer architecture. All of it compounds with one.
+        </p>
+      </section>
+
+      <!-- EXPERIMENTS -->
+      <section class="doc-section" id="experiments">
+        <div class="doc-section-num">03 · Strongest AGI-aligned bets</div>
+        <h2 class="doc-h2">Five experiments doing real work on the loop.</h2>
+
+        <p class="doc-p">
+          The full program portfolio is broader, but these five are the most AGI-relevant
+          — each one targets a link in the loop that today's frontier models cannot supply
+          for themselves.
+        </p>
+
+        <div class="exp-list">
+
+          <div class="exp">
+            <div class="exp-num">01</div>
+            <div>
+              <h3 class="exp-h">Memory and recall<span class="code">MEM-α</span></h3>
+              <p class="exp-p">
+                Today's models are fragmented along memory: user-controlled, opaque,
+                or window-bound. A self-directed memory subsystem lets an agent decide
+                what future context is worth preserving — and what to discard. This is
+                the difference between a stateless assistant and a <em>continuing intelligence</em>
+                that accrues identity across sessions.
+              </p>
+            </div>
+          </div>
+
+          <div class="exp">
+            <div class="exp-num">02</div>
+            <div>
+              <h3 class="exp-h">AIS-RTS scope intelligence<span class="code">ATL-02</span></h3>
+              <p class="exp-p">
+                One of the most practical interventions in the lab. AIS-RTS gives an
+                agent a structured model of a software project — symbols, files, imports,
+                relationships, schemas, endpoints, configs — without stuffing the repository
+                into the context window. Before any edit, the agent already knows the
+                impact zone. Hallucinated structure goes from a routine failure mode to
+                a checkable, falsifiable claim.
+              </p>
+            </div>
+          </div>
+
+          <div class="exp">
+            <div class="exp-num">03</div>
+            <div>
+              <h3 class="exp-h">Semantic compression<span class="code">LAT-04</span></h3>
+              <p class="exp-p">
+                Context is expensive, noisy, and lossy. Our compressed index work — LSDF-inspired
+                graph representations of structure, meaning, symbols, and relationships —
+                produces compact references the agent can carry across turns and tasks.
+                A better working memory layer for the loop, measured in tokens saved and
+                recall fidelity preserved.
+              </p>
+            </div>
+          </div>
+
+          <div class="exp">
+            <div class="exp-num">04</div>
+            <div>
+              <h3 class="exp-h">Meaning matrix · resonance graph<span class="code">NOE-03</span></h3>
+              <p class="exp-p">
+                The most speculative bet — and the closest to a cognitive architecture in
+                the classical sense. The resonance graph tracks live state across a session:
+                intent, topic, action, relationship, semantic pressure. A lightweight perception
+                system for language. We expect most of its value to surface as
+                <em>negative</em> capabilities — the ability to notice when something is off.
+              </p>
+            </div>
+          </div>
+
+          <div class="exp">
+            <div class="exp-num">05</div>
+            <div>
+              <h3 class="exp-h">TruthEngine · DAISC<span class="code">UMB-05</span></h3>
+              <p class="exp-p">
+                Grounding as a first-class subsystem. Source maps, evidence trails, claim
+                verification, contradiction detection, bias surfacing, provenance.
+                Frontier labs treat interpretability and alignment as foundations for safe
+                AI. We treat them as <strong>product-grade data plumbing</strong> — usable on day
+                one, not after a paradigm shift.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- GAP -->
+      <section class="doc-section" id="gap">
+        <div class="doc-section-num">04 · The gap</div>
+        <h2 class="doc-h2">What we don't yet have: closed-loop autonomous learning.</h2>
+
+        <p class="doc-p">
+          We are honest about the missing piece. Today our systems help agents understand
+          context, retrieve memory, inspect structure, plan better, verify claims, and
+          operate more safely. They do not yet, as a unified architecture, <strong>learn from
+          their own experience</strong>.
+        </p>
+
+        <div class="gap-grid">
+          <div class="gap-col have">
+            <div class="gap-col-title">What our loop supplies today</div>
+            <ul class="gap-list">
+              <li>Context perception & project scope</li>
+              <li>Self-directed memory writes & recall</li>
+              <li>Compressed semantic indices</li>
+              <li>Bounded tool execution</li>
+              <li>Claim grounding & provenance</li>
+              <li>Human-in-the-loop correction channels</li>
+            </ul>
+          </div>
+          <div class="gap-col need">
+            <div class="gap-col-title">What full cognition still needs</div>
+            <ul class="gap-list">
+              <li>Goal formation under uncertainty</li>
+              <li>Outcome measurement against intent</li>
+              <li>Failure-cause attribution</li>
+              <li>Strategy updates from experience</li>
+              <li>Performance improvement over time</li>
+              <li>Cross-domain transfer of lessons</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="doc-p" style="margin-top: 28px;">
+          The bridge between the two columns is a single artifact: a persistent record
+          of what the agent tried, why it tried it, and what happened. We call it the
+          <strong class="lit">Agent Learning Ledger</strong>.
+        </p>
+      </section>
+
+      <!-- LEDGER -->
+      <section class="doc-section" id="ledger">
+        <div class="doc-section-num">05 · Agent learning ledger</div>
+        <h2 class="doc-h2">From context-aware to experience-aware.</h2>
+
+        <p class="doc-p">
+          The ledger is the next deliberate intervention in the loop. It is not a
+          training run, a reward model, or a fine-tune. It is a structured journal
+          — readable by the agent, auditable by the human — that turns each completed
+          task into a row of compressed experience the agent can consult next time.
+        </p>
+
+        <div class="ledger">
+          <div class="ledger-head">
+            <div>Field</div>
+            <div>What it records</div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-key">task.attempted</div>
+            <div class="ledger-val">What the user actually wanted, in the agent's own words after clarification.</div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-key">plan.chosen</div>
+            <div class="ledger-val">The strategy the agent committed to, and the alternatives it considered.</div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-key">tools.invoked</div>
+            <div class="ledger-val">Which tools were used, in what order, with what arguments.</div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-key">outcome</div>
+            <div class="ledger-val">Success, partial success, or failure — judged against the original intent.</div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-key">error.type</div>
+            <div class="ledger-val">Missing file · bad assumption · out-of-scope edit · weak prompt · bad retrieval.</div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-key">correction</div>
+            <div class="ledger-val">What ultimately fixed it — human nudge, tool retry, or self-revision.</div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-key">lesson.reusable</div>
+            <div class="ledger-val">A compressed maxim the agent should retrieve when it sees a similar shape next time.</div>
+          </div>
+        </div>
+
+        <p class="doc-p">
+          Once the ledger is queryable through the same recall subsystem the agent uses
+          for memory, the loop closes. Every task becomes potential training data for
+          every future task — without retraining a single weight.
+        </p>
+      </section>
+
+      <!-- FRAMING -->
+      <section class="doc-section" id="framing">
+        <div class="doc-section-num">06 · Strategic frame</div>
+        <h2 class="doc-h2">The lane.</h2>
+
+        <p class="doc-p">
+          A more powerful brain without a reliable operating environment is still
+          chaotic. Smarter models will still need memory, scope, truth, tools, permissions,
+          source maps, and feedback. The infrastructure we are building becomes <em>more</em>
+          valuable as foundation models improve, not less.
+        </p>
+
+        <div class="framing">
+          <div class="framing-label">◇ Position · EloAI</div>
+          <div class="framing-text">
+            We are building the <strong>agentic intelligence layer</strong> between raw models
+            and real-world work — the external cognitive infrastructure that turns
+            today's models into reliable <a href="elo.html" class="easter-egg">cognitive</a> systems, and tomorrow's AGI-level
+            systems into something we can actually trust.
+          </div>
+        </div>
+
+        <a class="doc-next" href="index.html#projects">
+          <div>
+            <span class="doc-next-label">Continue</span>
+            <span class="doc-next-title">Active frontiers — programs running now</span>
+          </div>
+          <span class="doc-next-arrow">→</span>
+        </a>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="foot">
+  <div class="shell">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html#top" class="logo">
+          <span class="logo-mark"></span>
+          ELOAI
+        </a>
+        <p>
+          Independent research lab building toward <a href="elo.html" class="easter-egg">artificial consciousness</a>.
+          Currently operating from a distributed compute fabric.
+        </p>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-title">Lab</div>
+        <ul>
+          <li><a href="index.html#projects">Projects</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="index.html#infra">Subdomains</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-title">Public</div>
+        <ul>
+          <li><a href="cognitive-architecture.html">Thesis</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <div class="foot-col-title">Contact</div>
+        <ul>
+          <li><a href="mailto:hello@eloai.dev">hello@eloai.dev</a></li>
+          <li><a href="about.html#partnerships">Research partnerships</a></li>
+          <li><a href="about.html#careers">Careers</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© MMXXVI · EloAI Research, Ltd<a href="elo.html" class="easter-egg">.</a></span>
+      <span>Designed in the dark · Built for the frontier</span>
+    </div>
+  </div>
+</footer>
+
+<!-- scroll progress + scroll-spy rail -->
+<script>
+(function () {
+  const bar = document.getElementById("scroll-progress");
+  const rail = document.getElementById("rail");
+  const railLinks = rail ? Array.from(rail.querySelectorAll("a")) : [];
+  const sections = railLinks
+    .map((a) => document.querySelector(a.getAttribute("href")))
+    .filter(Boolean);
+
+  function onScroll() {
+    const max = document.body.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+    if (bar) bar.style.width = pct + "%";
+
+    // active section
+    const y = window.scrollY + 140;
+    let activeIdx = 0;
+    for (let i = 0; i < sections.length; i++) {
+      if (sections[i].offsetTop <= y) activeIdx = i;
+    }
+    railLinks.forEach((a, i) => a.classList.toggle("active", i === activeIdx));
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
