@@ -69,7 +69,7 @@ function Hero({ intensity, showBg }) {
       React.createElement("div", { className: "hero-meta" },
         React.createElement("span", null, React.createElement("span", { className: "dot" }), "Operational · MMXXVI"),
         React.createElement("span", null, "Research lab · Independent"),
-        React.createElement("span", null, "Latency 17ms · 6 active programs")
+        React.createElement("span", null, "Latency 17ms · 10 active programs")
       ),
       React.createElement("h1", { className: "hero-title" },
         "Building the future of ",
