@@ -59,6 +59,7 @@ jobs:
           rsync -avz --itemize-changes $DRYFLAG --delete \
             --exclude '.git' \
             --exclude '.well-known' \
+            --exclude 'cgi-bin' \
             -e "ssh -i ~/.ssh/deploy_key -p ${{ vars.SSH_PORT }} -o UserKnownHostsFile=~/.ssh/known_hosts" \
             website/ \
             "${{ vars.SSH_USER }}@${{ vars.SSH_HOST }}:${{ vars.DEPLOY_PATH }}"
