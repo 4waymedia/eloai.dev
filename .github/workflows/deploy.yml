@@ -1,0 +1,67 @@
+name: Deploy eloai.dev
+
+# Push to master -> run tests -> rsync website/ to the InMotion server over SSH.
+# Manual runs are also allowed from the Actions tab (workflow_dispatch).
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "website/**"
+      - "tests/**"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (connect + report changes, but write nothing to the server)"
+        type: boolean
+        default: true
+
+# Never let two deploys run at once; cancel an in-progress one if a newer push lands.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Run test suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Persona identity tests
+        run: node tests/persona-identity.test.js
+
+  deploy:
+    name: Deploy to server
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Deploy website/ via rsync
+        run: |
+          DRYFLAG=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            DRYFLAG="--dry-run"
+            echo "::notice::DRY RUN — connecting and reporting changes only. Nothing is written to the server."
+          fi
+          rsync -avz --itemize-changes $DRYFLAG --delete \
+            --exclude '.git' \
+            --exclude '.well-known' \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ vars.SSH_PORT }} -o UserKnownHostsFile=~/.ssh/known_hosts" \
+            website/ \
+            "${{ vars.SSH_USER }}@${{ vars.SSH_HOST }}:${{ vars.DEPLOY_PATH }}"
+
+      - name: Done
+        run: echo "Deployed website/ to ${{ vars.SSH_HOST }}:${{ vars.DEPLOY_PATH }}"

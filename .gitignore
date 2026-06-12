@@ -44,3 +44,10 @@ temp/
 
 # Database
 *.kuzudb
+
+# SSH / deploy keys — never commit private keys
+eloai_deploy_key*
+id_ed25519*
+id_rsa*
+*.pem
+*.key
