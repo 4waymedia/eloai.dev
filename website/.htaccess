@@ -10,9 +10,10 @@ RewriteCond %{HTTPS} off
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
 
-# Redirect www to non-www
-RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+# NOTE: www canonicalization is handled by Cloudflare (apex -> www).
+# Do NOT add a www->non-www redirect here, or it will fight Cloudflare and
+# cause an infinite redirect loop (ERR_TOO_MANY_REDIRECTS).
+# Canonical host: www.eloai.dev
 
 # Clean URLs (remove .html)
 RewriteCond %{REQUEST_FILENAME} !-d
