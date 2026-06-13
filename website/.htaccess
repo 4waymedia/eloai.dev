@@ -3,12 +3,10 @@
 
 RewriteEngine On
 
-# Force HTTPS — Cloudflare-aware (prevents redirect loop with Flexible SSL).
-# Only redirect when the ORIGINAL visitor request was HTTP. Behind Cloudflare,
-# the visitor's protocol is in X-Forwarded-Proto, not %{HTTPS}.
-RewriteCond %{HTTPS} off
-RewriteCond %{HTTP:X-Forwarded-Proto} !https
-RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+# HTTPS is handled entirely by Cloudflare (use its "Always Use HTTPS" toggle).
+# Do NOT force HTTPS here: Cloudflare's Flexible SSL talks to this origin over
+# plain HTTP, so any origin-side HTTPS redirect loops forever
+# (ERR_TOO_MANY_REDIRECTS). Leaving HTTPS to the edge is the correct setup.
 
 # NOTE: www canonicalization is handled by Cloudflare (apex -> www).
 # Do NOT add a www->non-www redirect here, or it will fight Cloudflare and
