@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>EloAI — About the Lab</title>
-  <meta name="description" content="EloAI is an independent research lab engineering systems that understand, reason, and evolve. Learn about our mission, philosophy, and approach to frontier AI research." />
+  <meta name="description" content="EloAI is an independent research lab building a cognitive architecture from first principles — eight systems, the ELO vocabulary substrate, and the Mneme memory store." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +15,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' fill='%2300ff9d' transform='rotate(45 16 16)'/%3E%3C/svg%3E" />
   <meta name="theme-color" content="#0a0a0a" />
   <meta property="og:title" content="EloAI — About the Lab" />
-  <meta property="og:description" content="EloAI is an independent research lab engineering systems that understand, reason, and evolve. Learn about our mission, philosophy, and approach." />
+  <meta property="og:description" content="An independent research lab building a cognitive architecture from first principles — eight systems, the ELO substrate, and the Mneme memory store." />
   <meta property="og:url" content="https://eloai.dev/about" />
   <meta property="og:type" content="website" />
 </head>
@@ -55,9 +55,10 @@
     </h1>
 
     <p class="doc-lede">
-      EloAI is an independent research lab. We build systems that understand,
-      reason, and evolve — working at the frontier without the pressure of
-      quarterly targets or publication quotas.
+      EloAI is an independent research lab building a cognitive architecture from
+      first principles — eight systems that together form something capable of
+      intention, perception, memory, and more. No quarterly targets. No publication
+      quotas. We publish when the work is real.
     </p>
 
     <div class="doc-meta">
@@ -66,16 +67,16 @@
         <span class="doc-meta-val">MMXXV</span>
       </div>
       <div class="doc-meta-cell">
-        <span class="doc-meta-key">Active programs</span>
-        <span class="doc-meta-val accent">06 running</span>
+        <span class="doc-meta-key">Systems</span>
+        <span class="doc-meta-val accent">08 defined</span>
       </div>
       <div class="doc-meta-cell">
-        <span class="doc-meta-key">Mode</span>
-        <span class="doc-meta-val">Distributed compute</span>
+        <span class="doc-meta-key">Substrate</span>
+        <span class="doc-meta-val">ELO v0.3.1</span>
       </div>
       <div class="doc-meta-cell">
-        <span class="doc-meta-key">Focus</span>
-        <span class="doc-meta-val">Agentic intelligence</span>
+        <span class="doc-meta-key">Memory</span>
+        <span class="doc-meta-val">Mneme · Phase 3</span>
       </div>
     </div>
   </div>
@@ -91,15 +92,17 @@
         <span class="about-col-label">01 · Mission</span>
       </div>
       <div>
-        <h2 class="about-col-h">We build the cognitive layer that surrounds the model.</h2>
+        <h2 class="about-col-h">We build cognition from first principles.</h2>
         <p class="about-col-p">
-          Most frontier labs are racing to build a bigger brain. We're building everything around it —
-          the <strong>memory</strong>, the <strong>perception</strong>, the scope control, the evidence
-          management, and the feedback loops that turn a powerful model into a genuinely <a href="elo.html" class="easter-egg">cognitive</a> system.
+          Most AI systems are a single model. EloAI is eight systems — each a distinct
+          <a href="elo.html" class="easter-egg">cognitive</a> faculty: intention, perception, memory, wonder, emotion,
+          reasoning, connection, and reflection. They share a substrate and pass
+          structured data between them.
         </p>
         <p class="about-col-p">
-          We call this the external cognitive infrastructure of agentic intelligence. It's not about the
-          weights. It's about what happens before and after the forward pass.
+          They are not prompt engineering. They are math. Two are shipped and validated
+          today — <strong>Perception</strong> (the ELO substrate) and <strong>Memory</strong>
+          (Mneme) — and the rest are built in sequence on top.
         </p>
         <p class="about-col-p">
           Our work is documented in our <a href="cognitive-architecture.html" style="color: var(--accent); text-decoration: underline; text-underline-offset: 3px;">research thesis</a>
@@ -122,9 +125,9 @@
           negative results, surprises, and things we got wrong — because that's what real research looks like.
         </p>
         <p class="about-col-p">
-          Each program is a long-horizon bet on a specific mechanism we think is necessary for
-          machine consciousness. We run them in parallel, and they cross-pollinate. A result in
-          one frequently changes the framing in another.
+          Each system is a long-horizon bet on a specific cognitive faculty. We build them
+          in sequence on a shared substrate, and a result in one frequently reshapes the
+          design of the next.
         </p>
       </div>
     </div>
@@ -147,10 +150,10 @@
       </div>
       <div class="about-value">
         <div class="about-value-num">02</div>
-        <h3 class="about-value-h">Ship everything</h3>
+        <h3 class="about-value-h">Measured, not claimed</h3>
         <p class="about-value-p">
-          Every system we build runs on <span style="color: var(--accent);">eloai.dev</span> subdomains.
-          Research that doesn't run in production is theory. We build, we deploy, we observe.
+          We publish numbers we've actually measured — 20.1% fewer tokens, sub-2ms recall,
+          byte-exact round-trips. If a result is on the site, it has been validated.
         </p>
       </div>
       <div class="about-value">
@@ -171,18 +174,19 @@
         <span class="about-col-label">04 · Infrastructure</span>
       </div>
       <div>
-        <h2 class="about-col-h">One domain. Every project.</h2>
+        <h2 class="about-col-h">One substrate. Every system.</h2>
         <p class="about-col-p">
-          All production systems run on the <strong>eloai.dev</strong> domain. Each subdomain is a
-          self-contained service — independently versioned, observable, and reachable through a
-          single TLS endpoint.
+          Everything runs on <strong>ELO</strong> — a canonical vocabulary of 374,189 entries
+          where every word and phrase maps to an integer ID. The substrate is the contract;
+          every system above it speaks ELO.
         </p>
         <p class="about-col-p">
-          This makes it easy to route new side projects and AI tools into the same trusted
-          namespace as our core research stack.
+          Memory is <strong>Mneme</strong>: temporal-wave storage with 4D cosine retrieval, no
+          ML dependency, activation under 2ms across 10,000 seeds. One vocabulary, one memory,
+          shared by all eight systems.
         </p>
-        <a href="index.html#infra" class="btn btn-ghost" style="margin-top: 28px; display: inline-flex;">
-          View all subdomains →
+        <a href="cognitive-architecture.html" class="btn btn-ghost" style="margin-top: 28px; display: inline-flex;">
+          Read the architecture →
         </a>
       </div>
     </div>
@@ -220,7 +224,7 @@
       <div class="framing-label">Careers · MMXXVI</div>
       <div class="framing-text">
         We're a small team and we hire rarely, but we hire for keeps.
-        If you're interested in working on <strong>agentic intelligence infrastructure</strong>,
+        If you're interested in building a <strong>cognitive architecture from first principles</strong>,
         reach out at <a href="mailto:hello@eloai.dev" style="color: var(--accent); text-decoration: underline; text-underline-offset: 3px;">hello@eloai.dev</a>
         with a description of what you'd want to build.
       </div>
@@ -248,7 +252,7 @@
         <ul>
           <li><a href="index.html#projects">Projects</a></li>
           <li><a href="blog.html">Blog</a></li>
-          <li><a href="index.html#infra">Subdomains</a></li>
+          <li><a href="index.html#infra">Substrate</a></li>
         </ul>
       </div>
       <div class="foot-col">

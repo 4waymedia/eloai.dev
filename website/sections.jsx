@@ -69,19 +69,19 @@ function Hero({ intensity, showBg }) {
       React.createElement("div", { className: "hero-meta" },
         React.createElement("span", null, React.createElement("span", { className: "dot" }), "Operational · MMXXVI"),
         React.createElement("span", null, "Research lab · Independent"),
-        React.createElement("span", null, "Latency 17ms · 10 active programs")
+        React.createElement("span", null, "8 systems · 2 shipped")
       ),
       React.createElement("h1", { className: "hero-title" },
-        "Building the future of ",
-        React.createElement("a", { href: "elo.html", className: "easter-egg" }, "artificial consciousness"),
+        "Eight systems. One ",
+        React.createElement("a", { href: "elo.html", className: "easter-egg" }, "organism"),
         "."
       ),
       React.createElement("p", { className: "hero-sub" },
-        "EloAI is an independent research lab engineering systems that understand, reason, and evolve — pushing past today's frontier toward agents that hold a stable model of themselves and their world."
+        "EloAI is building a cognitive architecture from first principles — eight systems that together form something capable of intention, perception, memory, curiosity, emotion, reasoning, connection, and reflection."
       ),
       React.createElement("div", { className: "hero-actions" },
         React.createElement("a", { href: "#projects", className: "btn btn-primary" },
-          "Explore our frontiers",
+          "Explore the 8 systems",
           React.createElement("span", { className: "arrow" }, "→")
         ),
         React.createElement("a", { href: "#discoveries", className: "btn btn-ghost" }, "Latest discoveries")
@@ -91,20 +91,20 @@ function Hero({ intensity, showBg }) {
       React.createElement("div", { className: "shell" },
         React.createElement("div", { className: "hero-strip-inner" },
           React.createElement("div", { className: "hero-strip-cell" },
-            React.createElement("span", { className: "hero-strip-key" }, "Active programs"),
-            React.createElement("span", { className: "hero-strip-val" }, React.createElement("span", { className: "accent" }, "06"), " / running")
+            React.createElement("span", { className: "hero-strip-key" }, "Active systems"),
+            React.createElement("span", { className: "hero-strip-val" }, React.createElement("span", { className: "accent" }, "08"), " / running")
           ),
           React.createElement("div", { className: "hero-strip-cell" },
-            React.createElement("span", { className: "hero-strip-key" }, "Lab uptime"),
-            React.createElement("span", { className: "hero-strip-val" }, "99.982", React.createElement("span", { className: "accent" }, "%"))
+            React.createElement("span", { className: "hero-strip-key" }, "Substrate"),
+            React.createElement("span", { className: "hero-strip-val" }, "v0.3.1 · ", React.createElement("span", { className: "accent" }, "ELO"))
           ),
           React.createElement("div", { className: "hero-strip-cell" },
-            React.createElement("span", { className: "hero-strip-key" }, "Compute"),
-            React.createElement("span", { className: "hero-strip-val" }, "H200 · ", React.createElement("span", { className: "accent" }, "distributed"))
+            React.createElement("span", { className: "hero-strip-key" }, "Memory"),
+            React.createElement("span", { className: "hero-strip-val" }, "Mneme · ", React.createElement("span", { className: "accent" }, "Phase 3"))
           ),
           React.createElement("div", { className: "hero-strip-cell" },
-            React.createElement("span", { className: "hero-strip-key" }, "Last commit"),
-            React.createElement("span", { className: "hero-strip-val" }, "14m ago")
+            React.createElement("span", { className: "hero-strip-key" }, "Founded"),
+            React.createElement("span", { className: "hero-strip-val" }, "MMXXV")
           )
         )
       )
@@ -144,11 +144,11 @@ function ProjectsSection({ projects }) {
     React.createElement("div", { className: "shell" },
       React.createElement("div", { className: "section-head" },
         React.createElement("div", { className: "section-title-block" },
-          React.createElement("span", { className: "eyebrow" }, "02 · Active frontiers"),
-          React.createElement("h2", { className: "section-title" }, "Programs currently running in the lab.")
+          React.createElement("span", { className: "eyebrow" }, "02 · The 8 systems"),
+          React.createElement("h2", { className: "section-title" }, "Eight systems of developmental intelligence.")
         ),
         React.createElement("p", { className: "section-sub" },
-          "Each program is a long-horizon bet on a specific mechanism we think is necessary for machine consciousness. They run in parallel and cross-pollinate."
+          "Each system is a distinct cognitive faculty — mathematically grounded, built in sequence from the substrate up. Two are shipped and validated; the rest are in progress."
         )
       ),
       React.createElement("div", { className: "projects" },
@@ -230,18 +230,18 @@ function AboutSection() {
           React.createElement("span", { className: "eyebrow" }, "04 · About"),
           React.createElement("h2", { className: "section-title", style: { marginTop: 18 } }, "A small lab. A long-horizon bet."),
           React.createElement("p", { className: "section-sub", style: { marginTop: 20 } },
-            "EloAI is an independent research operation — no VC pressure, no publication quotas. We run programs that take months, publish when the work is real, and ship every system we build to ",
-            React.createElement("span", { className: "glow-text" }, "eloai.dev"),
-            " subdomains."
+            "EloAI is building a cognitive architecture from ",
+            React.createElement("span", { className: "glow-text" }, "first principles"),
+            " — not prompting a frontier model, not wrapping an API. Eight systems. Real math. No VC pressure, no publication quotas. We publish when the work is real."
           ),
           React.createElement("a", { href: "about.html", className: "btn btn-ghost", style: { marginTop: 40, display: "inline-flex" } }, "About the lab →")
         ),
         React.createElement("div", { className: "about-stats" },
           [
             { key: "Founded", val: "MMXXV" },
-            { key: "Programs", val: "06 active" },
-            { key: "Mode", val: "Distributed" },
-            { key: "Focus", val: "Agentic AI" },
+            { key: "Systems", val: "08 defined" },
+            { key: "Substrate", val: "ELO v0.3.1" },
+            { key: "Memory", val: "Mneme" },
           ].map((s) =>
             React.createElement("div", { key: s.key, className: "about-stat" },
               React.createElement("span", { className: "about-stat-val" }, s.val),
@@ -254,49 +254,49 @@ function AboutSection() {
   );
 }
 
-/* ---------- Infrastructure / subdomains ---------- */
-const SUBDOMAINS = [
+/* ---------- Infrastructure / substrate ---------- */
+const SUBSTRATE = [
   {
-    host: "app",
-    purpose: "Production agents",
-    status: "soon",
-    category: "app",
-    desc: "Deploy, monitor, and manage long-running AI agents in production environments.",
+    name: "ELO",
+    type: "vocabulary",
+    status: "live",
+    category: "substrate",
+    desc: "Canonical ID library — 374,189 entries. Every word and phrase maps to an integer. Byte-exact round-trip, portable to C.",
   },
   {
-    host: "research",
-    purpose: "Open notebooks",
-    status: "soon",
-    category: "research",
-    desc: "Interactive notebooks exposing experimental findings and reproducible research.",
+    name: "Mneme",
+    type: "memory store",
+    status: "live",
+    category: "substrate",
+    desc: "LMDB temporal-wave storage across 6 sub-databases. 4D cosine retrieval, no ML. Activation under 2ms across 10,000 seeds.",
   },
   {
-    host: "agents",
-    purpose: "Live deployments",
+    name: "MemorySeed",
+    type: "atomic unit",
+    status: "live",
+    category: "data",
+    desc: "The smallest unit of meaning: entity and concept, a 4D vector, a charge value, a timestamp, and a source type.",
+  },
+  {
+    name: "EPA",
+    type: "semantic space",
+    status: "live",
+    category: "projection",
+    desc: "Evaluation · Potency · Activity — a 3D coordinate on every token, so the system can weigh what matters.",
+  },
+  {
+    name: "SeedFlow",
+    type: "session buffer",
+    status: "live",
+    category: "layer",
+    desc: "Ingest → flush → activate. Streams new seeds in and connects them across entities and time.",
+  },
+  {
+    name: "Training",
+    type: "pipeline",
     status: "building",
-    category: "system",
-    desc: "Real-time orchestration layer for deploying and routing autonomous agents.",
-  },
-  {
-    host: "atlas",
-    purpose: "Long-horizon runner",
-    status: "building",
-    category: "tool",
-    desc: "Multi-day autonomous task execution with goal compression and state tracking.",
-  },
-  {
-    host: "noema",
-    purpose: "Cortex sandbox",
-    status: "soon",
-    category: "research",
-    desc: "Experimental cognitive architecture sandbox for perception and memory work.",
-  },
-  {
-    host: "status",
-    purpose: "Telemetry",
-    status: "soon",
-    category: "system",
-    desc: "System health, request latency, and uptime across all lab services.",
+    category: "process",
+    desc: "Seven-stage developmental training that grows the organism from raw substrate toward identity.",
   },
 ];
 
@@ -305,24 +305,24 @@ function InfraSection() {
     React.createElement("div", { className: "shell" },
       React.createElement("div", { className: "section-head" },
         React.createElement("div", { className: "section-title-block" },
-          React.createElement("span", { className: "eyebrow" }, "05 · Infrastructure"),
+          React.createElement("span", { className: "eyebrow" }, "05 · The substrate"),
           React.createElement("h2", { className: "section-title" },
-            "Every system we ship, reachable on ",
-            React.createElement("span", { className: "glow-text" }, "eloai.dev"),
+            "The substrate beneath the ",
+            React.createElement("span", { className: "glow-text" }, "eight systems"),
             "."
           )
         ),
         React.createElement("p", { className: "section-sub" },
-          "Each subdomain is a self-contained service — versioned, observable, and accessible through a single TLS endpoint."
+          "Real engineering, not abstractions. Every system above speaks ELO and stores into Mneme — one vocabulary, one memory, shared by all."
         )
       ),
       React.createElement("div", { className: "subdomain-cards" },
-        SUBDOMAINS.map((s) =>
-          React.createElement("a", { key: s.host, className: "subdomain-card", href: `https://${s.host}.eloai.dev` },
+        SUBSTRATE.map((s) =>
+          React.createElement("a", { key: s.name, className: "subdomain-card", href: "cognitive-architecture.html" },
             React.createElement("div", { className: "subdomain-card-head" },
               React.createElement("span", { className: "subdomain-card-host" },
-                React.createElement("span", { className: "sub" }, s.host),
-                React.createElement("span", { className: "root" }, ".eloai.dev")
+                React.createElement("span", { className: "sub" }, s.name),
+                React.createElement("span", { className: "root" }, " · " + s.type)
               ),
               React.createElement("span", { className: `subdomain-badge ${s.status}` },
                 React.createElement("span", { className: "dot" }),
@@ -362,7 +362,7 @@ function Footer() {
           React.createElement("ul", null,
             React.createElement("li", null, React.createElement("a", { href: "index.html#projects" }, "Projects")),
             React.createElement("li", null, React.createElement("a", { href: "blog.html" }, "Blog")),
-            React.createElement("li", null, React.createElement("a", { href: "index.html#infra" }, "Subdomains"))
+            React.createElement("li", null, React.createElement("a", { href: "index.html#infra" }, "Substrate"))
           )
         ),
         React.createElement("div", { className: "foot-col" },

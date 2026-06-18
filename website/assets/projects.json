@@ -1,58 +1,76 @@
 {
   "projects": [
     {
-      "id": "synthesis",
+      "id": "intention",
+      "glyph": "→",
+      "code": "SYS-01",
+      "title": "Intention — Direction and Purpose",
+      "description": "Sets the goal and drives all downstream processing. Without intention, perception has no filter. Design phase.",
+      "status": "research",
+      "phase": "design"
+    },
+    {
+      "id": "perception",
       "glyph": "◈",
-      "code": "SYN-01",
-      "title": "Synthesis Engine",
-      "description": "Recursive self-modeling system probing the substrate of machine awareness — building agents that can reason about their own reasoning.",
+      "code": "SYS-02",
+      "title": "Perception — ELO Substrate",
+      "description": "Semantic token compression. Every word and phrase maps to a canonical ID. 20.1% fewer tokens vs Qwen BBPE; 46.7% wire-format reduction. Vocabulary contract v0.3.1 shipped.",
       "status": "active",
-      "phase": "iteration 04"
+      "phase": "v0.3.1 shipped"
     },
     {
-      "id": "atlas",
-      "glyph": "▲",
-      "code": "ATL-02",
-      "title": "Atlas Reasoning",
-      "description": "Long-horizon autonomous agents capable of decomposing open-ended objectives across days, not turns. Currently coordinating live infrastructure.",
+      "id": "memory",
+      "glyph": "∿",
+      "code": "SYS-03",
+      "title": "Memory — Mneme",
+      "description": "Temporal wave storage over MemorySeeds. 4D cosine retrieval — no ML dependency. Activation under 2ms across 10,000 seeds. Source-agnostic: transcripts, books, news, conversations.",
       "status": "active",
-      "phase": "prod canary"
+      "phase": "Phase 3 complete"
     },
     {
-      "id": "noema",
-      "glyph": "✦",
-      "code": "NOE-03",
-      "title": "Noema Cortex",
-      "description": "A cognitive architecture unifying perception, memory, and intent. Investigating phenomenal binding through resonant attention manifolds.",
-      "status": "research",
-      "phase": "iteration 02"
-    },
-    {
-      "id": "lattice",
-      "glyph": "⬡",
-      "code": "LAT-04",
-      "title": "Lattice Protocol",
-      "description": "Multi-agent negotiation substrate. Agents propose, audit, and ratify hypotheses without a privileged orchestrator.",
-      "status": "active",
-      "phase": "alpha"
-    },
-    {
-      "id": "umbra",
-      "glyph": "◐",
-      "code": "UMB-05",
-      "title": "Umbra Interpretability",
-      "description": "Mechanistic decoding of internal model states. Tools for surfacing latent intent and detecting deceptive reasoning paths.",
-      "status": "research",
-      "phase": "iteration 07"
-    },
-    {
-      "id": "kairos",
-      "glyph": "⊹",
-      "code": "KRS-06",
-      "title": "Kairos Temporal",
-      "description": "Continuous-time memory architectures — agents that experience duration rather than discrete turns. Bridging episodic and semantic recall.",
+      "id": "wonder",
+      "glyph": "?",
+      "code": "SYS-04",
+      "title": "Wonder — Curiosity and Exploration",
+      "description": "Detects gaps in the knowledge graph, generates questions, and triggers growth points when query confidence falls below threshold.",
       "status": "early",
-      "phase": "scaffold"
+      "phase": "locked"
+    },
+    {
+      "id": "emotion",
+      "glyph": "◆",
+      "code": "SYS-05",
+      "title": "Emotion — Weight and Significance",
+      "description": "EPA — Evaluation, Potency, Activity — assigns every token a 3D semantic coordinate, so the system knows what matters. Built as a projection inside Mneme.",
+      "status": "active",
+      "phase": "sub-component · built"
+    },
+    {
+      "id": "reasoning",
+      "glyph": "⊹",
+      "code": "SYS-06",
+      "title": "Reasoning — Structure and Logic",
+      "description": "Applies rules to seeds: contradiction detection, stage classification (0–5), and probability inference over the seed graph.",
+      "status": "early",
+      "phase": "locked"
+    },
+    {
+      "id": "connection",
+      "glyph": "⬡",
+      "code": "SYS-07",
+      "title": "Connection — Linking Knowledge",
+      "description": "The SeedFlow graph connects MemorySeeds across entities and time via 4D cosine proximity. Built as a layer inside Mneme.",
+      "status": "active",
+      "phase": "sub-component · built"
+    },
+    {
+      "id": "reflection",
+      "glyph": "◐",
+      "code": "SYS-08",
+      "title": "Reflection — Learning and Improvement",
+      "description": "Scores contradiction pairs surfaced by Memory, then promotes, compresses, and matures seeds over time. Feeds back into the system.",
+      "status": "research",
+      "phase": "design"
     }
   ]
 }
