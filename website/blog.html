@@ -131,6 +131,8 @@ function Blog() {
 
   const entries = useMemo(() => md ? parseMd(md) : [], [md]);
 
+  const railRef = useRef(null);
+
   useEffect(() => {
     if (!entries.length) return;
     const els = Array.from(feedRef.current?.querySelectorAll("[data-entry]") || []);
@@ -148,6 +150,15 @@ function Blog() {
     return () => io.disconnect();
   }, [entries.length]);
 
+  // Keep the active rail button visible by scrolling the rail
+  useEffect(() => {
+    if (!railRef.current) return;
+    const btn = railRef.current.querySelector("button.active");
+    if (btn) {
+      btn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
+  }, [active]);
+
   if (!entries.length) {
     return (
       <div className="shell" style={{ padding: "120px 0", color: "var(--text-faint)", fontFamily: "var(--font-mono)", fontSize: 13 }}>
@@ -159,7 +170,7 @@ function Blog() {
   return (
     <div className="shell">
       <div className="blog-layout">
-        <aside className="blog-rail">
+        <aside className="blog-rail" ref={railRef}>
           {entries.map(e => (
             <button
               key={e.key}
