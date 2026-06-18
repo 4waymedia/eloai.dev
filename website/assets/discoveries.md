@@ -1,3 +1,87 @@
+# 2026.06.18 — Elo Packaging Standard: From Scratch Concepts to Distributable Wheels
+
+The informal folder structure that has served the project since inception — drop a concept in `R-D-concepts/`, hack until it works, then copy-paste into the main codebase — has been replaced with a formal three-stage lifecycle: **Incubate → Develop → Distribute**.
+
+`R-D-concepts/` remains the zero-friction scratch space. Anything that survives long enough to be imported by another module graduates to `packages/` as a proper Python package with a `pyproject.toml`, a semver tag, and a changelog. Anything that needs to leave the monorepo builds to a wheel in `dist/` and publishes by explicit choice — proprietary packages stay private by default.
+
+The current package index reflects where each piece of the stack actually sits:
+
+**`elo-file-format`** — v1.0 spec complete. The binary layout, tier system, and byte-fallback tables are frozen. This is the contract everything else compiles against.
+
+**`semantic-compression`** — v0.3.0 shipped and validated. Still running as a loose module; packaging pass is the next commit.
+
+**`eight-engines`** — skeleton lives at `elo_dev/*.py`. 12 modules, 1,656 lines, all tests passing. Needs the `pyproject.toml` wrapper before it can be a dependency.
+
+**`semantic-meanings`** — Stage 2 work, locked until the EPA projection contract is finalized. Do not start.
+
+**`elo-core`** — the integration layer that wires the stack together. Not started. Depends on everything above it.
+
+The main value of this isn't ceremony — it's that `pip install elo-semantic-compression` is now a real end state instead of a hypothetical. Packaging discipline forces the API surface to be explicit, which has already caught two implicit dependencies that were invisible when everything lived in the same namespace.
+
+---
+
+# 2026.06.17 — Logic Matrix: The Filtering Layer That Makes Attention Computable
+
+A persistent failure mode in early eight-system iterations was that every Seed triggered every system — expensive, noisy, and not how cognition works. The **Logic Matrix** is the fix: a 329-line admission gate that evaluates each incoming Seed against the current context and decides whether it enters the pipeline at all.
+
+The scoring model is a weighted sum across twelve activation dimensions: relevance to current goals, semantic distance from recent Seeds, recency, emotional significance, structural novelty, and several others. Each dimension produces a float in `[0.0, 1.0]`; the weighted combination yields an **attention score**. Seeds below a configurable threshold are rejected before any of the eight systems ever sees them.
+
+This mirrors a well-documented principle: biological attention systems don't amplify everything — they suppress most of it. The interesting research question isn't "what did the system notice?" but "what did it choose not to notice, and why?"
+
+Two practical outcomes from running the Logic Matrix in tests:
+
+**Rejection is the common case.** Across 50 test Seeds, the matrix admits roughly 30% by default threshold settings. The other 70% are discarded. This is a feature, not a failure — the pipeline only processes what clears the attention bar.
+
+**Threshold tuning is nontrivial.** Setting the bar too low floods the eight systems with noise. Setting it too high means genuinely important Seeds are dropped before Intention can evaluate them. The right threshold appears to be context-dependent; static configuration is a known limitation of the current implementation.
+
+Vector DB upgrade (Chroma or Pinecone) will let the Logic Matrix do semantic nearest-neighbor scoring instead of heuristic weighting. That's the path to dynamic thresholds.
+
+---
+
+# 2026.06.16 — Seven Developmental Stages: Why Training Sequence Matters More Than Data Volume
+
+The training pipeline shipped in `training_pipeline.py` doesn't fine-tune a model in the conventional sense. It runs a seven-stage developmental sequence — each stage targeting a specific cognitive capability — and uses the eight-system pipeline to integrate each training example into memory.
+
+The stages in sequence: **Sensory and Language Basics** → **Imitation** → **Guided Correction** → **Skill Isolation** → **Mixed Practice** → **Self-Reflection** → **Responsibility Training**.
+
+The design is deliberately analogous to human developmental progression. A child doesn't learn ethical reasoning before they can parse sentences. The sequencing isn't arbitrary — later stages assume capabilities established by earlier ones.
+
+Two things validated in testing that weren't assumed in design:
+
+**Memory integration works as the learning mechanism.** Rather than updating weights during the simulated pipeline, each successfully processed training example is stored in the Memory system as a `Seed` with type `SeedType.FACT`. The model's "learning" is its accumulating semantic memory. After a full pipeline run, `ocean_model.memory.size` reflects how many examples were integrated. This is a weak proxy for learning — real fine-tuning hooks are deferred — but it gives the pipeline an observable state change to verify against.
+
+**Stage seven is structurally different from the others.** The first six stages are capability-building. Stage seven — Responsibility Training — is constraint-building: uncertainty acknowledgment, limits, judgment under ambiguity, ethics. It's the only stage where the success criterion is *not* maximizing task performance. This asymmetry is intentional and reflects a design principle: capability and judgment are separate training targets that shouldn't be collapsed into a single loss function.
+
+All five test cases pass. Full pipeline execution verified end-to-end.
+
+---
+
+# 2026.06.15 — v0.1.0: Eight Systems Implemented, Five Tests Pass, Pipeline Runs End-to-End
+
+First complete version of the eight-system cognitive framework. All modules written, wired, and tested. The `Irin` orchestrator coordinates the full pipeline: a Seed enters through the Logic Matrix, passes through all eight systems in sequence, and produces a structured result from Reflection on the other side.
+
+**What shipped:**
+
+12 modules, 1,656 lines. Each of the eight cognitive systems — Intention, Perception, Memory, Wonder, Emotion, Reasoning, Connection, Reflection — is a standalone class with a `process(seed, context)` method and a typed result dataclass. They share no state. `Irin` is the only thing that knows the sequence.
+
+The LLM interface wraps Ollama with a schema-driven structured generation call — `structured_generate(system_prompt, user_prompt, schema)` returns a validated dict or raises. The MockLLM in tests returns canned responses keyed on system prompt content, which is enough to validate pipeline wiring without a live model.
+
+**What the tests actually exercise:**
+
+- Seed creation and field defaults
+- Logic Matrix admission and rejection on threshold
+- `Irin.ingest_seed()` — full Logic Matrix + eight-system pass
+- Full processing cycle with result propagation
+- Seven-stage training pipeline with memory verification
+
+**Known gaps going into v0.2:**
+
+Memory is in-process only — no persistence across runs. Real LLM integration is untested; MockLLM responses are structurally correct but semantically flat. The training pipeline simulates learning via memory storage rather than actual weight updates. Serialization for `Irin` state is unimplemented.
+
+These are deferred deliberately, not overlooked. v0.1.0's job was to prove the architecture wires together correctly. It does.
+
+---
+
 # 2026.06.12 — Decoder Hot Path 1.72× via In-Memory Caches; Pure-Python Ceiling Found
 
 Two stacked optimization passes on the `.eloB` binary decoder, both landed on `main` of the compression repo as separate PRs. The byte format, version constants, and public API are unchanged — the work is entirely in the lookup pipeline that turns stream bytes back into surface text.
