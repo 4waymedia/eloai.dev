@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>EloAI — Eight Systems. One Organism.</title>
-  <meta name="description" content="EloAI is a cognitive architecture built from first principles — eight systems, a canonical vocabulary substrate (ELO), and a temporal-wave memory store (Mneme). The architecture, and what is validated." />
+  <meta name="description" content="EloAI is a cognitive architecture built from first principles — eight systems, a canonical vocabulary substrate (ELO), a temporal-wave memory store (Mneme), and the Irin orchestrator. The architecture, and what is validated." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +15,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' fill='%2300ff9d' transform='rotate(45 16 16)'/%3E%3C/svg%3E" />
   <meta name="theme-color" content="#0a0a0a" />
   <meta property="og:title" content="EloAI — Eight Systems. One Organism." />
-  <meta property="og:description" content="A cognitive architecture built from first principles — eight systems, a canonical vocabulary substrate (ELO), and a temporal-wave memory store (Mneme)." />
+  <meta property="og:description" content="A cognitive architecture built from first principles — eight systems, a canonical vocabulary substrate (ELO), a temporal-wave memory store (Mneme), and the Irin orchestrator." />
   <meta property="og:url" content="https://eloai.dev/cognitive-architecture" />
   <meta property="og:type" content="article" />
 </head>
@@ -91,10 +91,11 @@
     <aside class="doc-rail" id="rail">
       <a href="#thesis"><span>00</span><span>The Thesis</span></a>
       <a href="#systems"><span>01</span><span>The 8 Systems</span></a>
-      <a href="#substrate"><span>02</span><span>The Substrate</span></a>
-      <a href="#mneme"><span>03</span><span>Mneme</span></a>
-      <a href="#results"><span>04</span><span>Validated Results</span></a>
-      <a href="#next"><span>05</span><span>What's Next</span></a>
+      <a href="#irin"><span>02</span><span>Irin (orchestrator)</span></a>
+      <a href="#substrate"><span>03</span><span>The Substrate</span></a>
+      <a href="#mneme"><span>04</span><span>Mneme</span></a>
+      <a href="#results"><span>05</span><span>Validated Results</span></a>
+      <a href="#next"><span>06</span><span>What's Next</span></a>
     </aside>
 
     <article class="doc-content">
@@ -176,9 +177,63 @@
         </div>
       </section>
 
+      <!-- IRIN -->
+      <section class="doc-section" id="irin">
+        <div class="doc-section-num">02 · Irin (the orchestrator)</div>
+        <h2 class="doc-h2">The runtime that walks a Seed through the pipeline.</h2>
+
+        <p class="doc-p">
+          The eight systems share no state. Each is a standalone class with a single
+          <code>process(seed, context)</code> method. <strong>Irin</strong> is the
+          only component that knows the sequence — the conductor that takes a Seed
+          and runs it through every faculty in order, propagating the result.
+        </p>
+
+        <p class="doc-p">
+          Before Irin runs, the <strong>Logic Matrix</strong> decides whether a Seed
+          enters the pipeline at all. It scores each incoming Seed across twelve
+          weighted activation dimensions — relevance to current goals, semantic
+          distance from recent Seeds, recency, emotional significance, structural
+          novelty, and others. Seeds below threshold are rejected before any system
+          ever sees them.
+        </p>
+
+        <div class="doc-pullquote">
+          Biological attention systems don't amplify everything — they suppress most of
+          it. The interesting question isn't "what did the system notice?" but "what
+          did it choose not to notice, and why?"
+          <span class="attrib">— Field note · Logic Matrix, 2026.06.17</span>
+        </div>
+
+        <div class="ledger">
+          <div class="ledger-head">
+            <div>Pipeline stage</div>
+            <div>What happens</div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-key">Logic Matrix</div>
+            <div class="ledger-val">12-dimension attention score; ~70% of Seeds rejected at default threshold.</div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-key">Irin.ingest_seed</div>
+            <div class="ledger-val">Admitted Seed passes through Intention → Perception → Memory → Wonder → Emotion → Reasoning → Connection → Reflection.</div>
+          </div>
+          <div class="ledger-row">
+            <div class="ledger-key">Reflection result</div>
+            <div class="ledger-val">Structured output returned. Memory and contradiction queue updated.</div>
+          </div>
+        </div>
+
+        <p class="doc-p">
+          Irin v0.1.0 wires all eight systems end-to-end with five passing tests.
+          Memory is in-process only for now; persistence and live-LLM integration are
+          deferred to v0.2.
+        </p>
+      </section>
+
       <!-- THE SUBSTRATE -->
       <section class="doc-section" id="substrate">
-        <div class="doc-section-num">02 · The substrate (ELO)</div>
+        <div class="doc-section-num">03 · The substrate (ELO)</div>
         <h2 class="doc-h2">Everything runs on ELO.</h2>
 
         <p class="doc-p">
@@ -217,7 +272,7 @@
 
       <!-- MNEME -->
       <section class="doc-section" id="mneme">
-        <div class="doc-section-num">03 · Mneme (memory)</div>
+        <div class="doc-section-num">04 · Mneme (memory)</div>
         <h2 class="doc-h2">System 3 is Memory. We call it Mneme.</h2>
 
         <p class="doc-p">
@@ -267,7 +322,7 @@
 
       <!-- VALIDATED RESULTS -->
       <section class="doc-section" id="results">
-        <div class="doc-section-num">04 · Validated results</div>
+        <div class="doc-section-num">05 · Validated results</div>
         <h2 class="doc-h2">What's measured, not claimed.</h2>
 
         <h3 class="exp-h" style="margin-bottom: 16px;">System 2 — Perception<span class="code">semantic_compression v0.3.1</span></h3>
@@ -312,7 +367,7 @@
 
       <!-- WHAT'S NEXT -->
       <section class="doc-section" id="next">
-        <div class="doc-section-num">05 · What's next</div>
+        <div class="doc-section-num">06 · What's next</div>
         <h2 class="doc-h2">The next interventions.</h2>
 
         <div class="exp-list">
