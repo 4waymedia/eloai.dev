@@ -69,7 +69,8 @@ function Hero({ intensity, showBg }) {
       React.createElement("div", { className: "hero-meta" },
         React.createElement("span", null, React.createElement("span", { className: "dot" }), "Operational · MMXXVI"),
         React.createElement("span", null, "Research lab · Independent"),
-        React.createElement("span", null, "8 systems · 2 shipped")
+        React.createElement("span", null, "8 systems · 2 shipped"),
+        React.createElement("span", null, "Orchestrator · Irin v0.1.0")
       ),
       React.createElement("h1", { className: "hero-title" },
         "Eight systems. One ",
@@ -271,6 +272,20 @@ const SUBSTRATE = [
     desc: "LMDB temporal-wave storage across 6 sub-databases. 4D cosine retrieval, no ML. Activation under 2ms across 10,000 seeds.",
   },
   {
+    name: "Irin",
+    type: "orchestrator",
+    status: "live",
+    category: "runtime",
+    desc: "The conductor. A Seed clears the Logic Matrix, then Irin runs it through all eight systems in sequence and returns a structured Reflection result. The only component that knows the order.",
+  },
+  {
+    name: "Logic Matrix",
+    type: "attention gate",
+    status: "live",
+    category: "runtime",
+    desc: "329-line admission filter — twelve weighted activation dimensions score each Seed; ~70% are rejected before the pipeline runs. Attention as suppression, not amplification.",
+  },
+  {
     name: "MemorySeed",
     type: "atomic unit",
     status: "live",
@@ -313,7 +328,7 @@ function InfraSection() {
           )
         ),
         React.createElement("p", { className: "section-sub" },
-          "Real engineering, not abstractions. Every system above speaks ELO and stores into Mneme — one vocabulary, one memory, shared by all."
+          "Real engineering, not abstractions. Every system above speaks ELO and stores into Mneme; Irin is the runtime that walks a Seed through the pipeline, the Logic Matrix is what decides which Seeds get that far."
         )
       ),
       React.createElement("div", { className: "subdomain-cards" },
