@@ -1,3 +1,45 @@
+# 2026.06.19 — The Dictionary Is Not a Dictionary
+
+The thing we've been calling a dictionary isn't one.
+
+A lexicographic dictionary maps words to definitions. A compression lookup table maps strings to shorter strings. The EloAI semantic machine does neither. Every entry in the system simultaneously exists across five dimensions: a compression address, a vector position in EPA space, a semantic facet, a Surov process stage affinity, and a relational co-occurrence cluster. The ID is not a shorthand for the word. The ID is the address of a semantic object with all five dimensions active at once.
+
+This changes what the system is. When you encode a document, you are not compressing text. You are converting a string into a sequence of addresses into a multidimensional semantic space. The compression ratio is a byproduct. The semantic structure is the point.
+
+Two practical consequences fall out immediately. First, meaning is stored, not computed. An LLM reconstructs meaning at inference time from fragments. The semantic machine stores meaning as structure at build time and retrieves it at ~100ns per lookup. Second, the system is fully inspectable. Every output can be traced back to the exact IDs that produced it. The reasoning is auditable. The weights of an LLM are not.
+
+The naming catches up with the reality eventually. We're calling it the semantic machine now.
+
+---
+
+# 2026.06.19 — 39 Sextillion Parameter-Equivalents From a 7MB File
+
+LLMs are described by their parameter counts. GPT-3 at 175B. GPT-4 estimated at 1.8T. These numbers index how much meaning the model compressed into static weights during training.
+
+The EloAI semantic machine has a different parameter story. Each of the 83,226 entries carries five layers totaling ~39 dimensions per ID. Stored, that's about 3.2 million values — modest by any measure. But the machine doesn't operate on stored values alone. It operates on combinations. Every time you add IDs together to form a semantic object, you are sampling from a combinatorial space whose size grows faster than any fixed parameter count can track.
+
+The math: the number of unique 10-ID combinations across 83,226 entries is approximately 1 sextillion. Each combination produces a unique 39-dimension semantic object. Effective parameter-equivalents: 39 sextillion. From a file that fits in 7MB of RAM.
+
+The more important distinction is not the number. It is what the parameters do. LLM parameters are frozen — a snapshot of meaning baked in at training time. The semantic machine's parameter-equivalents are generative — they emerge at query time from structure that was loaded once at startup. Adding a new word to the dictionary does not add 39 parameters. It adds 83,226 new two-ID combinations, 83,226² new three-ID combinations, and so on. The effective parameter space expands combinatorially with every new entry. No retraining required.
+
+The comparison to LLMs is not a claim of equivalence. It is a claim of architectural difference. The LLM learns meaning. The semantic machine stores it. For a large class of tasks — topic extraction, semantic search, document comparison, routing, classification — storage beats computation by orders of magnitude.
+
+---
+
+# 2026.06.19 — Vector Addition as the Inference Engine
+
+The core operation of the semantic machine is not a forward pass. It is addition.
+
+Each ID carries a vector position in EPA space — Evaluation, Potency, Activity — derived from Warriner et al. affective norms and projected outward via corpus frequency. Adding any number of IDs together produces a new semantic object whose EPA centroid is the mean of the constituent vectors, whose stage affinity is the weighted average of the constituent stage profiles, and whose relational cluster is the union of constituent co-occurrence sets. Five LMDB lookups per ID. Pure arithmetic after that. No model call.
+
+This is why 78-98% meaning accuracy without an LLM is achievable. The reconstruction problem is solved at build time, not at inference time. By the time a query arrives, every semantic relationship that matters has already been crystallized into the ID space. The algorithm adds vectors. The structure does the rest.
+
+The bottleneck is the lookup count, not the lookup cost. A single LMDB read is ~100ns. The fix is straightforward: collapse all five layers into one 84-byte packed binary record per ID, load the full 7MB array into RAM at startup, and reduce every lookup to an L3 cache hit at ~5ns. A 100-word document goes from 500 LMDB reads to 100 array reads. At a million documents per day, that difference is measured in hours of wall-clock time recovered.
+
+The C migration path — `sc_encode`, `sc_decode`, `sc_open_library`, `sc_close_library` — makes this essentially free at the hardware level. At that point the bottleneck shifts entirely away from lookup and onto computation, which is where it belongs. The semantic machine becomes fast enough to run on every keystroke in an IDE, on every token in a streaming inference pipeline, on every document in a corpus of arbitrary size. Without touching a GPU.
+
+---
+
 # 2026.06.18 — Elo Packaging Standard: From Scratch Concepts to Distributable Wheels
 
 The informal folder structure that has served the project since inception — drop a concept in `R-D-concepts/`, hack until it works, then copy-paste into the main codebase — has been replaced with a formal three-stage lifecycle: **Incubate → Develop → Distribute**.
