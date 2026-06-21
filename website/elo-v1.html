@@ -25,7 +25,7 @@
 <div class="scroll-progress" id="scroll-progress"></div>
 
 <!-- NAV -->
-<nav class="nav">
+<nav class="nav" id="site-nav">
   <div class="shell nav-inner">
     <a href="index.html" class="logo">
       <span class="logo-mark"></span>
@@ -37,7 +37,23 @@
       <a href="about.html">About</a>
       <a href="cognitive-architecture.html">Thesis</a>
     </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
     <a href="index.html" class="nav-cta">← Back to lab</a>
+  </div>
+  <div class="nav-mobile" id="nav-mobile">
+    <div class="shell">
+      <div class="nav-mobile-links">
+        <a href="index.html#projects">Projects</a>
+        <a href="blog.html">Blog</a>
+        <a href="about.html">About</a>
+        <a href="cognitive-architecture.html">Thesis</a>
+      </div>
+      <a href="index.html" class="nav-mobile-cta">← Back to lab</a>
+    </div>
   </div>
 </nav>
 
@@ -484,13 +500,46 @@
 </footer>
 
 <script>
-  // scroll progress
+  // scroll progress + mobile nav toggle
   (function () {
     const bar = document.getElementById("scroll-progress");
     window.addEventListener("scroll", () => {
       const max = document.body.scrollHeight - window.innerHeight;
       bar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + "%";
     }, { passive: true });
+
+    // mobile nav toggle
+    (function() {
+      const nav = document.getElementById("site-nav");
+      if (!nav) return;
+      const toggle = nav.querySelector("#nav-toggle");
+      const mobile = nav.querySelector("#nav-mobile");
+      if (!toggle || !mobile) return;
+      const links = mobile.querySelectorAll("a");
+      function open() {
+        toggle.classList.add("active");
+        toggle.setAttribute("aria-expanded", "true");
+        mobile.classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function close() {
+        toggle.classList.remove("active");
+        toggle.setAttribute("aria-expanded", "false");
+        mobile.classList.remove("open");
+        document.body.style.overflow = "";
+      }
+      toggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (mobile.classList.contains("open")) close(); else open();
+      });
+      links.forEach(function(a) { a.addEventListener("click", close); });
+      document.addEventListener("mousedown", function(e) {
+        if (mobile.classList.contains("open") && !nav.contains(e.target)) close();
+      });
+      document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape" && mobile.classList.contains("open")) close();
+      });
+    })();
   })();
 </script>
 

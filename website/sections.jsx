@@ -41,9 +41,41 @@ function inlineMd(text) {
 
 /* ---------- Nav ---------- */
 function Nav({ active }) {
-  return React.createElement("nav", { className: "nav" },
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const navRef = React.useRef(null);
+
+  // close on click outside
+  React.useEffect(() => {
+    if (!mobileOpen) return;
+    const onDocClick = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target)) {
+        setMobileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [mobileOpen]);
+
+  // close on escape
+  React.useEffect(() => {
+    if (!mobileOpen) return;
+    const onEsc = (e) => { if (e.key === "Escape") setMobileOpen(false); };
+    document.addEventListener("keydown", onEsc);
+    return () => document.removeEventListener("keydown", onEsc);
+  }, [mobileOpen]);
+
+  // prevent body scroll when mobile menu open
+  React.useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  const toggle = () => setMobileOpen((v) => !v);
+  const close = () => setMobileOpen(false);
+
+  return React.createElement("nav", { ref: navRef, className: "nav" },
     React.createElement("div", { className: "shell nav-inner" },
-      React.createElement("a", { href: "index.html", className: "logo" },
+      React.createElement("a", { href: "index.html", className: "logo", onClick: close },
         React.createElement("span", { className: "logo-mark" }),
         "ELOAI"
       ),
@@ -53,7 +85,48 @@ function Nav({ active }) {
         React.createElement("a", { href: "about.html", className: active === "about" ? "nav-active" : "" }, "About"),
         React.createElement("a", { href: "cognitive-architecture.html", className: active === "thesis" ? "nav-active" : "" }, "Thesis")
       ),
+      React.createElement("button", {
+        className: "nav-toggle" + (mobileOpen ? " active" : ""),
+        onClick: toggle,
+        "aria-label": "Toggle navigation menu",
+        "aria-expanded": mobileOpen
+      },
+        React.createElement("span", null),
+        React.createElement("span", null),
+        React.createElement("span", null)
+      ),
       React.createElement("a", { href: "cognitive-architecture.html", className: "nav-cta" }, "Read thesis →")
+    ),
+    React.createElement("div", { className: "nav-mobile" + (mobileOpen ? " open" : "") },
+      React.createElement("div", { className: "shell" },
+        React.createElement("div", { className: "nav-mobile-links" },
+          React.createElement("a", {
+            href: "index.html#projects",
+            className: active === "projects" ? "nav-mobile-active" : "",
+            onClick: close
+          }, "Projects"),
+          React.createElement("a", {
+            href: "blog.html",
+            className: active === "blog" ? "nav-mobile-active" : "",
+            onClick: close
+          }, "Blog"),
+          React.createElement("a", {
+            href: "about.html",
+            className: active === "about" ? "nav-mobile-active" : "",
+            onClick: close
+          }, "About"),
+          React.createElement("a", {
+            href: "cognitive-architecture.html",
+            className: active === "thesis" ? "nav-mobile-active" : "",
+            onClick: close
+          }, "Thesis")
+        ),
+        React.createElement("a", {
+          href: "cognitive-architecture.html",
+          className: "nav-mobile-cta",
+          onClick: close
+        }, "Read thesis →")
+      )
     )
   );
 }
