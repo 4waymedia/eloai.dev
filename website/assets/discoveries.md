@@ -1,14 +1,68 @@
+# 2026.06.22 — Phrase Affect Coverage: 0% to 97.8% Without a Model Call
+
+The problem was scope. Forty percent of the dictionary is multi-word phrases — "at the end of the day," "long-term," "in order to." The Warriner affect lexicon we started from covers single words only. So every phrase had zero affect coverage, and overall only 4.4% of dictionary content carried an emotional reading at all. A semantic machine that can't reason about the affective weight of 40% of its vocabulary is missing something fundamental.
+
+The obvious fix — send 167,000 phrases to an LLM — is expensive, non-deterministic, and impossible to reproduce. We didn't do that. We let deterministic structure carry as much as it could and used AI only on what structure couldn't reach.
+
+Three passes, all deterministic:
+
+**Compositional inheritance.** Most phrases are compositional — their affect follows from their words'. "Long-term interest" is a weighted average of "long," "term," and "interest." We already had word affect scores. Applying the rule to phrases cost nothing. Phrase coverage: 0% → 62.9%. Overall: 4.4% → 29.9%.
+
+**Lemmatization before lookup.** "Running" inherits from "run." One rule, no model. Word coverage: 7.4% → 17.2%. Phrases: 62.9% → 74.3%. Overall: 29.9% → 40.3%.
+
+**Broader lexicon.** NRC-VAD v2.1 adds 54,801 entries, including ~10,000 multi-word expressions. Its new words cascaded into more compositions; its phrase ratings covered many directly. Phrases: 74.3% → 97.8%. Overall: 40.3% → 56.7%.
+
+Before the NRC merge went in, we ran a correlation gate. Valence agreed well (0.81). Dominance didn't — 0.33 between the two sources. They were measuring the same named axis with different underlying assumptions. A blind merge would have corrupted the Dominance dimension across the entire dictionary. We merged by priority instead: trusted source wins the overlap, the rest flagged as lower-confidence pending further validation.
+
+The genuinely hard residual that actually needs a model call: 3,645 entries. That's what's left after structure did everything it could.
+
+---
+
+# 2026.06.22 — Three Layers Inside Every Compressed ID
+
+When you compress a file with standard tools, the output is opaque. You can't search it, filter it, or reason about it without decompressing first.
+
+EloAI compression doesn't work that way. Every ID in the output stream carries three embedded layers that make the compressed representation directly machine-operable.
+
+**Dictionary.** Each word or phrase maps to a compact Base64 ID, tiered by use case — char-2 (~1,300 entries, for edge and keyboard devices), char-3 (~83,000, for on-device applications), char-4 (417,841 and growing, for full LLM vocabularies). Compression is byte-exact — decode reproduces the original string exactly, no approximation.
+
+**Facets.** A 4-byte record on every ID encoding what kind of thing it is: semantic category, logical/discourse role, whether it's content vs. filler vs. structural. This is the operational layer. Find every causal claim in a document. Strip filler tokens. Locate questions. Route content by type. All of it directly on the compressed stream — no decompression, no NLP pipeline.
+
+**Affect.** EPA coordinates (Evaluation, Potency, Activity) on every ID, derived from Warriner norms and extended across phrases and lemmatized forms. The compressed stream becomes a navigable semantic space. You can measure the emotional trajectory of a document without ever reconstructing it as text.
+
+The encoding step and the meaning-annotation step are the same operation. This is what makes 78–98% meaning reconstruction without an LLM achievable: the structure crystallized at build time does the work that would otherwise require inference at query time.
+
+---
+
+# 2026.06.22 — What the Validation Gate Caught: Three Errors in One Session
+
+The rule: every external claim gets tagged VALIDATED, REFUTED, or UNVERIFIED with evidence before it affects the build. AI suggestions, lexicon assumptions, third-party data — all of it goes through the gate.
+
+In the affect coverage work, the gate caught three errors in a single session. Any one of them would have shipped silently without it.
+
+**Error one: wrong scale.** A lexicon we'd been treating as scaled 0 to 1 was actually −1 to +1. The values looked plausible in isolation. The error only surfaced when we checked the distribution against known anchors.
+
+**Error two: magnitude mismatch.** A rescaling suggestion — intended to normalize the two sources before merging — would have put them on different absolute magnitudes, not the same one. The proposed fix would have introduced the error it was meant to prevent.
+
+**Error three: axis disagreement.** Before merging NRC-VAD, we ran a correlation gate. Valence: 0.81. Dominance: 0.33. Both lexicons have a Dominance axis. They aren't measuring the same thing. A naive merge would have corrupted an entire semantic dimension across the full dictionary.
+
+These are ordinary errors. They're not edge cases — they're the normal result of combining data sources built by different teams with different assumptions. They don't announce themselves.
+
+The infrastructure makes the gate enforceable: every dictionary build carries a corpus fingerprint and provenance record for each artifact. When a source is merged, the merge conditions are recorded. When a discrepancy surfaces later, you can trace exactly where it entered and why it was accepted. Nothing is a mystery blob.
+
+---
+
 # 2026.06.19 — The Dictionary Is Not a Dictionary
 
 The thing we've been calling a dictionary isn't one.
 
-A lexicographic dictionary maps words to definitions. A compression lookup table maps strings to shorter strings. The EloAI semantic machine does neither. Every entry in the system simultaneously exists across five dimensions: a compression address, a vector position in EPA space, a semantic facet, a Surov process stage affinity, and a relational co-occurrence cluster. The ID is not a shorthand for the word. The ID is the address of a semantic object with all five dimensions active at once.
+A lexicographic dictionary maps words to definitions. A compression lookup table maps strings to shorter strings. The EloAI semantic machine does neither. Every entry in the system simultaneously exists across five dimensions: a **compression address**, a **vector position in EPA space**, a **semantic facet**, a **Surov process stage affinity**, and a **relational co-occurrence cluster**. The ID is not a shorthand for the word. The ID is the address of a semantic object with all five dimensions active at once.
 
 This changes what the system is. When you encode a document, you are not compressing text. You are converting a string into a sequence of addresses into a multidimensional semantic space. The compression ratio is a byproduct. The semantic structure is the point.
 
-Two practical consequences fall out immediately. First, meaning is stored, not computed. An LLM reconstructs meaning at inference time from fragments. The semantic machine stores meaning as structure at build time and retrieves it at ~100ns per lookup. Second, the system is fully inspectable. Every output can be traced back to the exact IDs that produced it. The reasoning is auditable. The weights of an LLM are not.
+Two practical consequences fall out immediately. First, **meaning is stored, not computed**. An LLM reconstructs meaning at inference time from fragments. The semantic machine stores meaning as structure at build time and retrieves it at ~100ns per lookup. Second, **the system is fully inspectable**. Every output can be traced back to the exact IDs that produced it. The reasoning is auditable. The weights of an LLM are not.
 
-The naming catches up with the reality eventually. We're calling it the semantic machine now.
+The naming catches up with the reality eventually. We're calling it the **semantic machine** now.
 
 ---
 
@@ -18,25 +72,25 @@ LLMs are described by their parameter counts. GPT-3 at 175B. GPT-4 estimated at 
 
 The EloAI semantic machine has a different parameter story. Each of the 83,226 entries carries five layers totaling ~39 dimensions per ID. Stored, that's about 3.2 million values — modest by any measure. But the machine doesn't operate on stored values alone. It operates on combinations. Every time you add IDs together to form a semantic object, you are sampling from a combinatorial space whose size grows faster than any fixed parameter count can track.
 
-The math: the number of unique 10-ID combinations across 83,226 entries is approximately 1 sextillion. Each combination produces a unique 39-dimension semantic object. Effective parameter-equivalents: 39 sextillion. From a file that fits in 7MB of RAM.
+The math: the number of unique 10-ID combinations across 83,226 entries is approximately 1 sextillion. Each combination produces a unique 39-dimension semantic object. **Effective parameter-equivalents: 39 sextillion.** From a file that fits in 7MB of RAM.
 
-The more important distinction is not the number. It is what the parameters do. LLM parameters are frozen — a snapshot of meaning baked in at training time. The semantic machine's parameter-equivalents are generative — they emerge at query time from structure that was loaded once at startup. Adding a new word to the dictionary does not add 39 parameters. It adds 83,226 new two-ID combinations, 83,226² new three-ID combinations, and so on. The effective parameter space expands combinatorially with every new entry. No retraining required.
+The more important distinction is not the number. It is what the parameters do. LLM parameters are **frozen** — a snapshot of meaning baked in at training time. The semantic machine's parameter-equivalents are **generative** — they emerge at query time from structure that was loaded once at startup. Adding a new word to the dictionary does not add 39 parameters. It adds 83,226 new two-ID combinations, 83,226² new three-ID combinations, and so on. The effective parameter space expands combinatorially with every new entry. No retraining required.
 
-The comparison to LLMs is not a claim of equivalence. It is a claim of architectural difference. The LLM learns meaning. The semantic machine stores it. For a large class of tasks — topic extraction, semantic search, document comparison, routing, classification — storage beats computation by orders of magnitude.
+The comparison to LLMs is not a claim of equivalence. It is a claim of architectural difference. The LLM learns meaning. The semantic machine stores it. For a large class of tasks — topic extraction, semantic search, document comparison, routing, classification — **storage beats computation by orders of magnitude**.
 
 ---
 
 # 2026.06.19 — Vector Addition as the Inference Engine
 
-The core operation of the semantic machine is not a forward pass. It is addition.
+The core operation of the semantic machine is **not a forward pass. It is addition.**
 
 Each ID carries a vector position in EPA space — Evaluation, Potency, Activity — derived from Warriner et al. affective norms and projected outward via corpus frequency. Adding any number of IDs together produces a new semantic object whose EPA centroid is the mean of the constituent vectors, whose stage affinity is the weighted average of the constituent stage profiles, and whose relational cluster is the union of constituent co-occurrence sets. Five LMDB lookups per ID. Pure arithmetic after that. No model call.
 
-This is why 78-98% meaning accuracy without an LLM is achievable. The reconstruction problem is solved at build time, not at inference time. By the time a query arrives, every semantic relationship that matters has already been crystallized into the ID space. The algorithm adds vectors. The structure does the rest.
+This is why 78–98% meaning accuracy without an LLM is achievable. **The reconstruction problem is solved at build time, not at inference time.** By the time a query arrives, every semantic relationship that matters has already been crystallized into the ID space. The algorithm adds vectors. The structure does the rest.
 
-The bottleneck is the lookup count, not the lookup cost. A single LMDB read is ~100ns. The fix is straightforward: collapse all five layers into one 84-byte packed binary record per ID, load the full 7MB array into RAM at startup, and reduce every lookup to an L3 cache hit at ~5ns. A 100-word document goes from 500 LMDB reads to 100 array reads. At a million documents per day, that difference is measured in hours of wall-clock time recovered.
+The bottleneck is **the lookup count, not the lookup cost**. A single LMDB read is ~100ns. The fix is straightforward: collapse all five layers into one 84-byte packed binary record per ID, load the full 7MB array into RAM at startup, and reduce every lookup to an L3 cache hit at ~5ns. A 100-word document goes from 500 LMDB reads to 100 array reads. At a million documents per day, that difference is measured in hours of wall-clock time recovered.
 
-The C migration path — `sc_encode`, `sc_decode`, `sc_open_library`, `sc_close_library` — makes this essentially free at the hardware level. At that point the bottleneck shifts entirely away from lookup and onto computation, which is where it belongs. The semantic machine becomes fast enough to run on every keystroke in an IDE, on every token in a streaming inference pipeline, on every document in a corpus of arbitrary size. Without touching a GPU.
+The C migration path — `sc_encode`, `sc_decode`, `sc_open_library`, `sc_close_library` — makes this essentially free at the hardware level. At that point the bottleneck shifts entirely away from lookup and onto computation, which is where it belongs. The semantic machine becomes fast enough to run on every keystroke in an IDE, on every token in a streaming inference pipeline, on every document in a corpus of arbitrary size. **Without touching a GPU.**
 
 ---
 

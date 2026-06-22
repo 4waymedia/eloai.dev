@@ -20,6 +20,7 @@ function App() {
   const [projects, setProjects] = useState([]);
   const [discoveriesMd, setDiscoveriesMd] = useState("");
   const [scroll, setScroll] = useState(0);
+  const [activeNav, setActiveNav] = useState("");
 
   // load content
   useEffect(() => {
@@ -36,11 +37,26 @@ function App() {
     document.body.dataset.density = t.density;
   }, [t.accent, t.density]);
 
-  // scroll progress
+  // scroll progress + nav active detection
   useEffect(() => {
+    const sections = [
+      { id: "top", nav: "" },
+      { id: "projects", nav: "projects" },
+      { id: "discoveries", nav: "" },
+      { id: "about", nav: "about" },
+      { id: "infra", nav: "" },
+    ];
+    const els = sections.map(s => document.getElementById(s.id)).filter(Boolean);
     const onScroll = () => {
       const max = document.body.scrollHeight - window.innerHeight;
       setScroll(max > 0 ? (window.scrollY / max) * 100 : 0);
+
+      const y = window.scrollY + 120;
+      let activeIdx = 0;
+      for (let i = els.length - 1; i >= 0; i--) {
+        if (els[i] && els[i].offsetTop <= y) { activeIdx = i; break; }
+      }
+      setActiveNav(sections[activeIdx]?.nav || "");
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -50,7 +66,7 @@ function App() {
   return (
     <React.Fragment>
       <div className="scroll-progress" style={{ width: scroll + "%" }} />
-      <Nav />
+      <Nav active={activeNav} />
       <Hero intensity={t.bgIntensity} showBg={t.showBg} />
       <ProjectsSection projects={projects} />
       <DiscoveriesSection md={discoveriesMd} />

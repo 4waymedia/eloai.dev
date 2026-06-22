@@ -8,7 +8,7 @@ function renderMarkdown(md) {
   return blocks.map((block, i) => {
     const lines = block.trim().split("\n");
     const dateLine = lines[0].replace(/^#\s*/, "");
-    // first line is `# YYYY.MM.DD — Title`
+    // first line is `# YYYY.MM.DD — Title`. Re
     const [date, ...titleParts] = dateLine.split(/—|–|-/);
     const title = titleParts.join("—").trim();
     const body = lines.slice(1).join("\n").trim();
@@ -141,8 +141,8 @@ function Hero({ intensity, showBg }) {
     React.createElement("div", { className: "shell hero-content" },
       React.createElement("div", { className: "hero-meta" },
         React.createElement("span", null, React.createElement("span", { className: "dot" }), "Operational · MMXXVI"),
-        React.createElement("span", null, "Research lab · Independent"),
-        React.createElement("span", null, "8 systems · 2 shipped"),
+        React.createElement("span", null, "Self-teaching AI · Eight systems"),
+        React.createElement("span", null, "8 defined · 2 validated"),
         React.createElement("span", null, "Orchestrator · Irin v0.1.0")
       ),
       React.createElement("h1", { className: "hero-title" },
@@ -151,7 +151,7 @@ function Hero({ intensity, showBg }) {
         "."
       ),
       React.createElement("p", { className: "hero-sub" },
-        "EloAI is building a cognitive architecture from first principles — eight systems that together form something capable of intention, perception, memory, curiosity, emotion, reasoning, connection, and reflection."
+        "The first AI to teach itself — eight cognitive systems that together form something capable of intention, perception, memory, curiosity, emotion, reasoning, connection, and reflection."
       ),
       React.createElement("div", { className: "hero-actions" },
         React.createElement("a", { href: "#projects", className: "btn btn-primary" },
@@ -177,8 +177,8 @@ function Hero({ intensity, showBg }) {
             React.createElement("span", { className: "hero-strip-val" }, "Mneme · ", React.createElement("span", { className: "accent" }, "Phase 3"))
           ),
           React.createElement("div", { className: "hero-strip-cell" },
-            React.createElement("span", { className: "hero-strip-key" }, "Founded"),
-            React.createElement("span", { className: "hero-strip-val" }, "MMXXV")
+            React.createElement("span", { className: "hero-strip-key" }, "Identity"),
+            React.createElement("span", { className: "hero-strip-val" }, React.createElement("span", { className: "accent" }, "Self-teaching"))
           )
         )
       )
@@ -302,17 +302,17 @@ function AboutSection() {
       React.createElement("div", { className: "about-band-grid" },
         React.createElement("div", { className: "about-band-text" },
           React.createElement("span", { className: "eyebrow" }, "04 · About"),
-          React.createElement("h2", { className: "section-title", style: { marginTop: 18 } }, "A small lab. A long-horizon bet."),
+          React.createElement("h2", { className: "section-title", style: { marginTop: 18 } }, "An AI that teaches itself to think."),
           React.createElement("p", { className: "section-sub", style: { marginTop: 20 } },
-            "EloAI is building a cognitive architecture from ",
-            React.createElement("span", { className: "glow-text" }, "first principles"),
-            " — not prompting a frontier model, not wrapping an API. Eight systems. Real math. No VC pressure, no publication quotas. We publish when the work is real."
+            "The first AI built on a ",
+            React.createElement("span", { className: "glow-text" }, "cognitive architecture"),
+            " — eight systems that learn from each other, not from human fine-tuning. Real math. Validated results. No VC pressure, no publication quotas. When the work is real, it goes up."
           ),
-          React.createElement("a", { href: "about.html", className: "btn btn-ghost", style: { marginTop: 40, display: "inline-flex" } }, "About the lab →")
+          React.createElement("a", { href: "about.html", className: "btn btn-ghost", style: { marginTop: 40, display: "inline-flex" } }, "About Elo →")
         ),
         React.createElement("div", { className: "about-stats" },
           [
-            { key: "Founded", val: "MMXXV" },
+            { key: "Identity", val: "Self-teaching" },
             { key: "Systems", val: "08 defined" },
             { key: "Substrate", val: "ELO v0.3.1" },
             { key: "Memory", val: "Mneme" },
@@ -335,7 +335,7 @@ const SUBSTRATE = [
     type: "vocabulary",
     status: "live",
     category: "substrate",
-    desc: "Canonical ID library — 374,189 entries. Every word and phrase maps to an integer. Byte-exact round-trip, portable to C.",
+    desc: "Dynamic vocabulary — 16M+ entries and growing. Every word and phrase maps to an integer ID. Byte-exact round-trip, portable to C.",
   },
   {
     name: "Mneme",
@@ -440,13 +440,13 @@ function Footer() {
             "ELOAI"
           ),
           React.createElement("p", null,
-            "Independent research lab building toward ",
-            React.createElement("a", { href: "elo.html", className: "easter-egg" }, "artificial consciousness"),
-            ". Currently operating from a distributed compute fabric."
+            "The first AI to teach itself — eight systems, one shared substrate, and a ",
+            React.createElement("a", { href: "elo.html", className: "easter-egg" }, "cognitive architecture"),
+            " that learns as it grows."
           )
         ),
         React.createElement("div", { className: "foot-col" },
-          React.createElement("div", { className: "foot-col-title" }, "Lab"),
+          React.createElement("div", { className: "foot-col-title" }, "Build"),
           React.createElement("ul", null,
             React.createElement("li", null, React.createElement("a", { href: "index.html#projects" }, "Projects")),
             React.createElement("li", null, React.createElement("a", { href: "blog.html" }, "Blog")),
