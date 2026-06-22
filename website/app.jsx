@@ -39,24 +39,23 @@ function App() {
 
   // scroll progress + nav active detection
   useEffect(() => {
-    const sections = [
+    const pairs = [
       { id: "top", nav: "" },
       { id: "projects", nav: "projects" },
       { id: "discoveries", nav: "" },
       { id: "about", nav: "about" },
       { id: "infra", nav: "" },
-    ];
-    const els = sections.map(s => document.getElementById(s.id)).filter(Boolean);
+    ].map(p => ({ nav: p.nav, el: document.getElementById(p.id) })).filter(p => p.el);
     const onScroll = () => {
       const max = document.body.scrollHeight - window.innerHeight;
       setScroll(max > 0 ? (window.scrollY / max) * 100 : 0);
 
       const y = window.scrollY + 120;
       let activeIdx = 0;
-      for (let i = els.length - 1; i >= 0; i--) {
-        if (els[i] && els[i].offsetTop <= y) { activeIdx = i; break; }
+      for (let i = pairs.length - 1; i >= 0; i--) {
+        if (pairs[i].el && pairs[i].el.offsetTop <= y) { activeIdx = i; break; }
       }
-      setActiveNav(sections[activeIdx]?.nav || "");
+      setActiveNav(pairs[activeIdx]?.nav || "");
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
