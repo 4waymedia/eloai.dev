@@ -1,3 +1,45 @@
+2026.06.24 — Two Dictionaries Are Better Than One
+
+One codebook can't do everything. We encoded Frankenstein with the *web/structure dictionary* and got **1.00×** — no compression at all, because a novel isn't structure. Encoded with the *text dictionary*, the same book came in at **1.17× lossless**. Flip to data and the boundary flips too: on JSON, the web dictionary's byte hit-rate is **1%**; the text dictionary's is **46%**.
+
+The fix is *not a bigger dictionary*. We already tried that — scaling the web dictionary from 318 to 14,487 entries barely moved the ratio, because the bottleneck was never structural vocabulary. The fix is **multiple dictionaries**, each owning what it's good at, with the right one selected per stream. The browser now ships two built-in codebooks — **structure** and **text** — auto-discovers any others dropped in a folder, and lets you switch between them; the samples auto-select the codebook they were encoded with. The last step is **selection without a human**: a dictionary identity stamped into each `.elo` so the browser detects which codebook a page needs.
+
+The principle underneath: **compression ratio comes from the dictionary, not the format or the language.** Routing content to the codebook that owns it — structure, text, domain experts — is the lever.
+
+Why any of this is trustworthy. Every claim, ours or a model's, gets tagged **VALIDATED**, **REFUTED**, or **UNVERIFIED** against the real data before it ships. This stretch alone: *"2.35× compression" was refuted* as a general claim and corrected to **1.15×**. An early text-dictionary estimate showed impossibly good numbers because it used placeholder bytes gzip crushed to nothing — caught, re-run with real IDs, reframed. *"ELO beats Brotli" was refuted* and narrowed to what the data supports.
+
+And the honest limit: multi-dictionary gains at scale are still **UNVERIFIED**. We've shown the boundary and built the selector; the routed end-to-end pipeline is prototyped, not yet benchmarked. We'd rather say that than round it up.
+
+---
+
+2026.06.24 — The Codebook Is the Index
+
+Compress a page with standard tools and the output is opaque. To ask "how many forms are on this page?" you have to decompress the whole thing and parse it. An ELO page is different: it's a stream of **dictionary IDs**, and the *same ID that reconstructs a token also carries its meaning*. The browser can read a page without rendering it.
+
+**Structure without parsing.** A structural query — count the links, headings, images, forms, landmarks — scans the compressed stream and skips the content payloads entirely. It touches about **11% of the bytes**, runs **~5× faster** than decode-then-parse, and matches a ground-truth parse exactly on every tag the dictionary covers. gzip and Brotli can't do this at all; their output means nothing until fully decompressed.
+
+**Meaning, precomputed.** The dictionary carries more than shape. Every word has **EPA affect coordinates** — Evaluation, Potency, Activity — from the Mneme substrate (13,905 words): *love* reads strongly positive, *fear* negative, *power* high-potency. Every entry also has a **4-byte facet**: a semantic bucket, a composable logic-cue mask (**CAUSE**, **CONTRAST**, **INFERENCE**, **CONDITION**…), and a utility class. All of it assigned once, by deterministic rules, with no model.
+
+In the browser these are **native Rust lookups**. Type a word, get its affect and facets instantly. Load a page, get its aggregate emotional tone — we ran it over all of *Frankenstein*, ~20,000 words, immediately. Scan a page, get its reasoning cues with the words that trigger them. *Memory-speed, offline, zero inference.*
+
+The honest line is the one from our own spec: this is **queryable lexical and logical structure at zero inference cost** — not "it understands text." Accuracy is bounded by dictionary coverage. We know the boundary precisely because a count check caught our facet scanner miscounting `<aside>` as a link; we fixed it and re-ran to **100% agreement**. The claims here are the ones that survived the check.
+
+---
+
+# 2026.06.24 — A Browser That Ships the Dictionary, Not the Page
+
+Every browser re-downloads the same structural knowledge on every page load. The same `<!DOCTYPE html>`, the same `class="`, the same Tailwind and Bootstrap classes — megabytes of text every browser already understands, sent again to every user, forever. The idea behind the ELO Browser is to stop doing that: **ship the structure once, as a dictionary inside the browser**, and send pages as compact ID streams the browser decodes locally.
+
+It runs. We built a **lossless `.elo` codec** — greedy longest-match over the dictionary, everything unmatched kept as a literal, so `decode(encode(x)) == x` by construction — first in JavaScript, then ported to Rust. On top of it sits a real desktop browser: **Tauri v2**, a Rust core with the **14,487-entry dictionary** resident in RAM, a React + Tailwind front end. Pages decode and render byte-exact — **145/145** across a nine-category corpus, `cargo test` **4/4** on the native codec.
+
+**On compression, the honest result.** A static dictionary does not beat Brotli on raw bytes. It beats *gzip* (ELO→gzip is **~4–10% smaller** than gzip alone), and ELO→Brotli wins on the framework-heavy pages a browser actually serves — Tailwind, Bootstrap, Foundation. It loses to Brotli on prose, because prose isn't structure. Brotli already ships its own ~120 KB web dictionary, so raw ratio was never going to be where this wins.
+
+We know that because we checked. Our first sample showed **2.35×**. So we ran an independent 100-page benchmark, watched it fall to **1.15×**, and traced why. *We corrected the claim rather than keep the flattering one.*
+
+Ratio isn't the point anyway. The point is that a page arrives as **dictionary IDs the browser can *read* without rendering** — structure, affect, and reasoning, queryable in the compressed form. That's the next post.
+
+---
+
 # 2026.06.22 — Phrase Affect Coverage: 0% to 97.8% Without a Model Call
 
 The problem was scope. Forty percent of the dictionary is multi-word phrases — "at the end of the day," "long-term," "in order to." The Warriner affect lexicon we started from covers single words only. So every phrase had zero affect coverage, and overall only 4.4% of dictionary content carried an emotional reading at all. A semantic machine that can't reason about the affective weight of 40% of its vocabulary is missing something fundamental.
