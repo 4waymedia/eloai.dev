@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developer Relations / Technical Writer — EloAI Careers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black:#0C0D0F;--ink:#1A1C20;--muted:#3C3F47;--rule:#2A2D34;--dim:#6B7080;--ghost:#9AA0B0;--surface:#141619;--lift:#1E2128;--accent:#5DFFE0;--accent2:#2A8FFF;--warn:#FF9F40;--white:#EDF0F5;--text:#C8CDD8;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;
+  }
+  html{scroll-behavior:smooth;}
+  body{background:var(--black);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{position:sticky;top:0;z-index:100;background:rgba(12,13,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;}
+  .nav-logo{font-family:var(--mono);font-size:1rem;font-weight:600;color:var(--white);text-decoration:none;letter-spacing:0.04em;}
+  .nav-logo span{color:var(--accent);}
+  .nav-back{font-family:var(--mono);font-size:0.75rem;color:var(--dim);text-decoration:none;letter-spacing:0.05em;transition:color 0.15s;}
+  .nav-back:hover{color:var(--accent);}
+  .hero{border-bottom:1px solid var(--rule);padding:5rem 2rem 4rem;max-width:860px;margin:0 auto;}
+  .eyebrow{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;margin-bottom:1.5rem;}
+  .hero h1{font-family:var(--mono);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:600;color:var(--white);line-height:1.2;margin-bottom:1.5rem;letter-spacing:-0.01em;}
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero-sub{font-size:1.05rem;font-weight:300;color:var(--ghost);max-width:580px;line-height:1.75;margin-bottom:2.5rem;}
+  .meta-pills{display:flex;flex-wrap:wrap;gap:0.6rem;}
+  .pill{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.06em;padding:0.3rem 0.8rem;border:1px solid var(--rule);color:var(--dim);border-radius:2px;}
+  .pill.highlight{border-color:var(--accent);color:var(--accent);}
+  .layout{max-width:860px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 260px;gap:0 4rem;align-items:start;}
+  .main-col{padding:3.5rem 0;}
+  .sidebar{padding:3.5rem 0;position:sticky;top:72px;}
+  .section{margin-bottom:3.5rem;}
+  .section-label{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.14em;color:var(--dim);text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--rule);}
+  .section p{font-size:0.95rem;color:var(--text);margin-bottom:1rem;line-height:1.8;}
+  .section p strong{color:var(--white);font-weight:500;}
+  .item-list{list-style:none;margin:0.5rem 0 0;}
+  .item-list li{font-size:0.925rem;color:var(--text);padding:0.65rem 0;border-bottom:1px solid var(--rule);display:flex;gap:0.9rem;line-height:1.6;}
+  .item-list li:last-child{border-bottom:none;}
+  .item-list li::before{content:'—';font-family:var(--mono);color:var(--accent);flex-shrink:0;margin-top:0.05rem;}
+  .tag-grid{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem;}
+  .tag{font-family:var(--mono);font-size:0.72rem;padding:0.25rem 0.6rem;background:var(--lift);border:1px solid var(--rule);color:var(--ghost);border-radius:2px;letter-spacing:0.04em;}
+  .tag.core{border-color:var(--accent2);color:var(--accent2);background:rgba(42,143,255,0.06);}
+  .tag.nice{border-color:var(--warn);color:var(--warn);background:rgba(255,159,64,0.05);}
+  .callout{background:var(--lift);border:1px solid var(--rule);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 2px 2px 0;}
+  .callout p{font-size:0.9rem;color:var(--ghost);margin:0;line-height:1.75;}
+  .callout p strong{color:var(--white);}
+  .code-snippet{background:var(--surface);border:1px solid var(--rule);padding:1.25rem 1.5rem;border-radius:2px;margin:1rem 0;overflow-x:auto;}
+  .code-snippet pre{font-family:var(--mono);font-size:0.78rem;color:var(--ghost);line-height:1.7;white-space:pre;}
+  .code-snippet pre .kw{color:var(--accent);}
+  .code-snippet pre .val{color:var(--accent2);}
+  .code-snippet pre .cm{color:var(--muted);}
+  .sidebar-card{background:var(--lift);border:1px solid var(--rule);padding:1.5rem;border-radius:2px;margin-bottom:1.25rem;}
+  .sidebar-card-title{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.12em;color:var(--dim);text-transform:uppercase;margin-bottom:1rem;}
+  .sidebar-stat{margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--rule);}
+  .sidebar-stat:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+  .stat-label{font-family:var(--mono);font-size:0.68rem;color:var(--dim);letter-spacing:0.06em;margin-bottom:0.25rem;}
+  .stat-value{font-family:var(--mono);font-size:0.88rem;color:var(--white);}
+  .stat-value.accent{color:var(--accent);}
+  .cta-btn{display:block;width:100%;background:var(--accent);color:var(--black);font-family:var(--mono);font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-align:center;text-decoration:none;padding:0.9rem 1.5rem;border:none;border-radius:2px;cursor:pointer;transition:background 0.15s,transform 0.1s;margin-bottom:0.75rem;}
+  .cta-btn:hover{background:#7BFFE8;transform:translateY(-1px);}
+  .cta-sub{font-family:var(--mono);font-size:0.68rem;color:var(--dim);text-align:center;letter-spacing:0.05em;}
+  a.inline{color:var(--accent2);text-decoration:none;}
+  a.inline:hover{text-decoration:underline;}
+  hr.section-rule{border:none;border-top:1px solid var(--rule);margin:2.5rem 0;}
+  footer{border-top:1px solid var(--rule);padding:2.5rem 2rem;text-align:center;}
+  footer p{font-family:var(--mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.04em;}
+  footer a{color:var(--dim);text-decoration:none;}
+  footer a:hover{color:var(--accent);}
+  @media(max-width:720px){.layout{grid-template-columns:1fr;}.sidebar{position:static;padding-top:0;}.hero{padding:3.5rem 1.5rem 3rem;}nav{padding:0 1.5rem;}.layout{padding:0 1.5rem;}footer{padding:2rem 1.5rem;}}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://eloai.dev" class="nav-logo">Elo<span>AI</span></a>
+  <a href="about.html#careers" class="nav-back">← Careers</a>
+</nav>
+
+<header class="hero">
+  <p class="eyebrow">Open Position · Developer Relations</p>
+  <h1>Developer Relations<br><em>&amp; Technical Writer</em></h1>
+  <p class="hero-sub">
+    EloAI is building something that requires explanation before it earns adoption. We need someone who can read a binary format spec, understand what it does, and write about it in a way that makes a developer want to build with it.
+  </p>
+  <div class="meta-pills">
+    <span class="pill highlight">Full-time</span>
+    <span class="pill">Remote</span>
+    <span class="pill">Equity-included</span>
+    <span class="pill">Early hire</span>
+  </div>
+</header>
+
+<div class="layout">
+  <main class="main-col">
+
+    <section class="section">
+      <p class="section-label">The Communication Problem</p>
+      <p>
+        EloAI has a thesis that is simultaneously obvious in hindsight and genuinely hard to explain before someone gets it: <strong>compression and meaning are the same operation.</strong> When you assign an ID to a word, you're not just making it shorter — you're placing it in a frequency-ranked semantic space. The compression address and the semantic coordinate are the same number.
+      </p>
+      <p>
+        The audiences who need to understand this are not the same. An ML researcher evaluating the Mixture of Libraries hypothesis needs the formal argument. A developer integrating the MCP server needs to know what <code>sc_encode</code> returns and why. A standards body considering browser-native dictionary pre-installation needs to understand the analogy to TLS certificate distribution. A general technical audience needs a version that doesn't require a tokenization background.
+      </p>
+      <div class="callout">
+        <p>This role is not content marketing. <strong>It's the act of explaining a genuinely novel system to people who have every reason to be skeptical of it — and doing so without oversimplifying what makes it interesting.</strong></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">What You'll Do</p>
+      <ul class="item-list">
+        <li>Own the developer documentation for the full EloAI system — the <code>libelo</code> C API, the MCP server interface, the .elo binary format spec, and the Python pipeline tools — written to the standard of documentation you'd actually want to read</li>
+        <li>Translate the MoL research thesis into accessible technical writing at multiple depth levels: a one-paragraph summary, a technical blog post, a deep-dive for NLP researchers, and a layperson explainer</li>
+        <li>Produce the IANA media type registration documentation for <code>application/vnd.eloai.elo</code> — a formal standards submission that requires both technical precision and process familiarity</li>
+        <li>Build the developer relations presence: GitHub README quality, issue response templates, community touchpoints, and the tone of every external communication from the project</li>
+        <li>Write the web standards proposal for browser-native dictionary pre-installation — a novel proposal that needs to be grounded in precedent (TLS certs, Unicode tables, font hinting) and argued on its merits</li>
+        <li>Maintain the internal spec library — SYSTEM1.md, ELO_FILE_FORMAT.md, and the growing set of component specs — so they stay accurate as the system evolves</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Audiences You'll Write For</p>
+      <ul class="item-list">
+        <li><strong>ML researchers:</strong> The MoL hypothesis, BPE critique, FAISS embedding initialization, fine-tuning experiment design — they will read carefully and push back hard on any imprecision</li>
+        <li><strong>Systems developers:</strong> <code>libelo</code> API docs, binary format spec, LMDB storage layout, C/Python interface contracts — they need accurate, complete reference documentation</li>
+        <li><strong>Web developers:</strong> MCP server integration, browser extension APIs, service worker approach — they want working examples and clear explanations of when to use what</li>
+        <li><strong>Standards bodies:</strong> IANA registration, W3C proposal — formal, grounded in process, precise about scope and precedent</li>
+        <li><strong>General technical audience:</strong> Blog posts, eloai.dev content, social presence — accessible without being reductive</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">What You Need to Understand</p>
+      <p>You don't need to have built a compression system. But you need to be able to read the spec and understand it well enough to write about it accurately. As a starting point:</p>
+      <div class="code-snippet"><pre><span class="cm"># The things you'll be explaining</span>
+<span class="kw">MoL</span>        <span class="val">Mixture of Libraries — domain tokenization replacing BPE</span>
+<span class="kw">.elo</span>       <span class="val">binary format · magic "ELO1" · lossless · IANA-registered</span>
+<span class="kw">libelo</span>     <span class="val">C API · sc_encode / sc_decode · runs on Arduino</span>
+<span class="kw">MCP</span>        <span class="val">Model Context Protocol · IDE and agent integration</span>
+<span class="kw">EPA</span>        <span class="val">Evaluation–Potency–Activity · semantic space · Surov 2022</span>
+<span class="kw">LMDB</span>       <span class="val">14MB dictionary · 100ns lookups · fits in RAM</span>
+<span class="kw">lossless</span>   <span class="val">decode(encode(x)) == x · always · no exceptions</span></pre></div>
+      <p>If reading that list makes you want to understand each line rather than glaze over it, this is the right role.</p>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Who You Are</p>
+      <ul class="item-list">
+        <li><strong>You write clearly about systems you've taken the time to understand.</strong> You don't paraphrase specs — you read them until you can explain them in your own words without losing precision.</li>
+        <li><strong>You know the difference between being accurate and being complete.</strong> Good technical writing selects what a reader needs to know at this moment, not everything that's true.</li>
+        <li><strong>You've worked with or alongside engineering teams</strong> closely enough to know when a spec has changed and a document hasn't caught up — and you treat that gap as your problem to fix.</li>
+        <li><strong>You can write for different audiences without writing down to any of them.</strong> An ML researcher and a web developer need different explanations of the same system — not different levels of respect.</li>
+        <li>You're drawn to novel, technically complex ideas and find it satisfying to be the person who makes them legible to others.</li>
+      </ul>
+    </section>
+
+    <hr class="section-rule">
+    <section class="section">
+      <p class="section-label">What This Isn't</p>
+      <p>This isn't a role producing SEO content, social media posts, or marketing copy dressed up as technical writing. The work is documentation, explanation, and advocacy for a system that earns adoption by being genuinely well-described — not by being well-promoted.</p>
+      <div class="callout">
+        <p>Compensation is competitive for an early DevRel hire: base salary, meaningful equity, and co-ownership of how EloAI presents itself to the developer community from day one. The first impression of every external audience runs through this role.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Position Details</p>
+      <div class="sidebar-stat"><p class="stat-label">Role</p><p class="stat-value">Developer Relations / Technical Writer</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Type</p><p class="stat-value">Full-time</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Location</p><p class="stat-value">Remote · US-based preferred</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Stage</p><p class="stat-value accent">Early hire</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Reports to</p><p class="stat-value">Founder directly</p></div>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Apply</p>
+      <a href="mailto:careers@eloai.dev?subject=Developer%20Relations%20Application" class="cta-btn">Send Application</a>
+      <p class="cta-sub">careers@eloai.dev</p>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">In Your Application</p>
+      <ul class="item-list" style="margin-top:0;">
+        <li>A piece of technical writing you produced — link preferred. Tell us what the system was, who the audience was, and what you got right</li>
+        <li>A system you had to understand deeply before you could explain it — and what the explanation looked like</li>
+        <li>Any standards process experience: IANA, W3C, IETF, or similar</li>
+      </ul>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Start Here</p>
+      <div class="sidebar-stat"><p class="stat-label">Research paper</p><p class="stat-value"><a href="https://eloai.dev/research" class="inline" style="font-size:0.8rem">Mixture of Libraries (MoL)</a></p></div>
+      <div class="sidebar-stat"><p class="stat-label">Format spec</p><p class="stat-value"><a href="https://eloai.dev/format" class="inline" style="font-size:0.8rem">.elo binary format v1.0</a></p></div>
+      <div class="sidebar-stat"><p class="stat-label">Repository</p><p class="stat-value"><a href="https://github.com/4waymedia/semantic-compression" class="inline" style="font-size:0.8rem">github.com/4waymedia/semantic-compression</a></p></div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <p>EloAI Research Laboratory · <a href="https://eloai.dev">eloai.dev</a> · <a href="mailto:careers@eloai.dev">careers@eloai.dev</a></p>
+  <p style="margin-top:0.5rem;">© 2026 EloAI. All rights reserved.</p>
+</footer>
+</body>
+</html>

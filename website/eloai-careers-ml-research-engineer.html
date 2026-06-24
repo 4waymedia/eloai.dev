@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ML / AI Research Engineer — EloAI Careers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black:#0C0D0F;--ink:#1A1C20;--muted:#3C3F47;--rule:#2A2D34;--dim:#6B7080;--ghost:#9AA0B0;--surface:#141619;--lift:#1E2128;--accent:#5DFFE0;--accent2:#2A8FFF;--warn:#FF9F40;--white:#EDF0F5;--text:#C8CDD8;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;
+  }
+  html{scroll-behavior:smooth;}
+  body{background:var(--black);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{position:sticky;top:0;z-index:100;background:rgba(12,13,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;}
+  .nav-logo{font-family:var(--mono);font-size:1rem;font-weight:600;color:var(--white);text-decoration:none;letter-spacing:0.04em;}
+  .nav-logo span{color:var(--accent);}
+  .nav-back{font-family:var(--mono);font-size:0.75rem;color:var(--dim);text-decoration:none;letter-spacing:0.05em;transition:color 0.15s;}
+  .nav-back:hover{color:var(--accent);}
+  .hero{border-bottom:1px solid var(--rule);padding:5rem 2rem 4rem;max-width:860px;margin:0 auto;}
+  .eyebrow{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;margin-bottom:1.5rem;}
+  .hero h1{font-family:var(--mono);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:600;color:var(--white);line-height:1.2;margin-bottom:1.5rem;letter-spacing:-0.01em;}
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero-sub{font-size:1.05rem;font-weight:300;color:var(--ghost);max-width:580px;line-height:1.75;margin-bottom:2.5rem;}
+  .meta-pills{display:flex;flex-wrap:wrap;gap:0.6rem;}
+  .pill{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.06em;padding:0.3rem 0.8rem;border:1px solid var(--rule);color:var(--dim);border-radius:2px;}
+  .pill.highlight{border-color:var(--accent);color:var(--accent);}
+  .layout{max-width:860px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 260px;gap:0 4rem;align-items:start;}
+  .main-col{padding:3.5rem 0;}
+  .sidebar{padding:3.5rem 0;position:sticky;top:72px;}
+  .section{margin-bottom:3.5rem;}
+  .section-label{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.14em;color:var(--dim);text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--rule);}
+  .section p{font-size:0.95rem;color:var(--text);margin-bottom:1rem;line-height:1.8;}
+  .section p strong{color:var(--white);font-weight:500;}
+  .item-list{list-style:none;margin:0.5rem 0 0;}
+  .item-list li{font-size:0.925rem;color:var(--text);padding:0.65rem 0;border-bottom:1px solid var(--rule);display:flex;gap:0.9rem;line-height:1.6;}
+  .item-list li:last-child{border-bottom:none;}
+  .item-list li::before{content:'—';font-family:var(--mono);color:var(--accent);flex-shrink:0;margin-top:0.05rem;}
+  .tag-grid{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem;}
+  .tag{font-family:var(--mono);font-size:0.72rem;padding:0.25rem 0.6rem;background:var(--lift);border:1px solid var(--rule);color:var(--ghost);border-radius:2px;letter-spacing:0.04em;}
+  .tag.core{border-color:var(--accent2);color:var(--accent2);background:rgba(42,143,255,0.06);}
+  .tag.nice{border-color:var(--warn);color:var(--warn);background:rgba(255,159,64,0.05);}
+  .callout{background:var(--lift);border:1px solid var(--rule);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 2px 2px 0;}
+  .callout p{font-size:0.9rem;color:var(--ghost);margin:0;line-height:1.75;}
+  .callout p strong{color:var(--white);}
+  .code-snippet{background:var(--surface);border:1px solid var(--rule);padding:1.25rem 1.5rem;border-radius:2px;margin:1rem 0;overflow-x:auto;}
+  .code-snippet pre{font-family:var(--mono);font-size:0.78rem;color:var(--ghost);line-height:1.7;white-space:pre;}
+  .code-snippet pre .kw{color:var(--accent);}
+  .code-snippet pre .val{color:var(--accent2);}
+  .code-snippet pre .cm{color:var(--muted);}
+  .sidebar-card{background:var(--lift);border:1px solid var(--rule);padding:1.5rem;border-radius:2px;margin-bottom:1.25rem;}
+  .sidebar-card-title{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.12em;color:var(--dim);text-transform:uppercase;margin-bottom:1rem;}
+  .sidebar-stat{margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--rule);}
+  .sidebar-stat:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+  .stat-label{font-family:var(--mono);font-size:0.68rem;color:var(--dim);letter-spacing:0.06em;margin-bottom:0.25rem;}
+  .stat-value{font-family:var(--mono);font-size:0.88rem;color:var(--white);}
+  .stat-value.accent{color:var(--accent);}
+  .cta-btn{display:block;width:100%;background:var(--accent);color:var(--black);font-family:var(--mono);font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-align:center;text-decoration:none;padding:0.9rem 1.5rem;border:none;border-radius:2px;cursor:pointer;transition:background 0.15s,transform 0.1s;margin-bottom:0.75rem;}
+  .cta-btn:hover{background:#7BFFE8;transform:translateY(-1px);}
+  .cta-sub{font-family:var(--mono);font-size:0.68rem;color:var(--dim);text-align:center;letter-spacing:0.05em;}
+  a.inline{color:var(--accent2);text-decoration:none;}
+  a.inline:hover{text-decoration:underline;}
+  hr.section-rule{border:none;border-top:1px solid var(--rule);margin:2.5rem 0;}
+  footer{border-top:1px solid var(--rule);padding:2.5rem 2rem;text-align:center;}
+  footer p{font-family:var(--mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.04em;}
+  footer a{color:var(--dim);text-decoration:none;}
+  footer a:hover{color:var(--accent);}
+  @media(max-width:720px){.layout{grid-template-columns:1fr;}.sidebar{position:static;padding-top:0;}.hero{padding:3.5rem 1.5rem 3rem;}nav{padding:0 1.5rem;}.layout{padding:0 1.5rem;}footer{padding:2rem 1.5rem;}}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://eloai.dev" class="nav-logo">Elo<span>AI</span></a>
+  <a href="about.html#careers" class="nav-back">← Careers</a>
+</nav>
+
+<header class="hero">
+  <p class="eyebrow">Open Position · Research</p>
+  <h1>ML / AI Research Engineer<br><em>Tokenization &amp; Fine-Tuning</em></h1>
+  <p class="hero-sub">
+    EloAI is testing a hypothesis that changes how domain-specialized LLMs are built. We need a research engineer who can run the experiment — not just read about it.
+  </p>
+  <div class="meta-pills">
+    <span class="pill highlight">Full-time</span>
+    <span class="pill">Remote</span>
+    <span class="pill">Equity-included</span>
+    <span class="pill">Early hire</span>
+  </div>
+</header>
+
+<div class="layout">
+  <main class="main-col">
+
+    <section class="section">
+      <p class="section-label">The Hypothesis</p>
+      <p>
+        Current domain-specialized LLMs inherit BPE tokenization from general-purpose models — which means "myocardial infarction" arrives at the model as three or four sub-word fragments. The model then has to reconstruct a concept from character statistics that were never designed to encode it.
+      </p>
+      <p>
+        EloAI's <strong>Mixture of Libraries (MoL)</strong> architecture solves this at the source: replace BPE with a domain-specific dictionary where high-frequency domain terms and phrases are assigned atomic IDs before training begins. The routing decision is deterministic, made once at encode time, and fully auditable — the opposite of a learned MoE gating function.
+      </p>
+      <div class="callout">
+        <p>The core claim: <strong>a MoL-fine-tuned model reaches domain-expert performance at 1/5 to 1/10 the training data of a BPE baseline.</strong> Your job is to prove or disprove it, rigorously.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">What You'll Do</p>
+      <ul class="item-list">
+        <li>Replace Qwen3 3B's BPE tokenizer with the EloAI Base64 dictionary and rebuild the embedding matrix for the new vocabulary</li>
+        <li>Initialize embeddings from FAISS vectors derived from domain-specific sentence transformer models — so the model starts with a semantically pre-organized embedding space, not random noise</li>
+        <li>Design and execute the four-configuration fine-tuning experiment: BPE baseline, MoL only, FAISS init only, MoL + FAISS — at multiple training data scales (100M, 500M, 1B, 5B, 10B tokens)</li>
+        <li>Run benchmarks, report perplexity and loss curves honestly, and write up what the data actually says — including if the hypothesis is wrong</li>
+        <li>Work with the EPA projector (Evaluation–Potency–Activity semantic space) to validate that compressed token IDs encode meaningful affective and semantic dimensions</li>
+        <li>Contribute to the verbalizer architecture — the component that generates natural language output from compressed internal state</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">The Stack</p>
+      <div class="tag-grid">
+        <span class="tag core">Python</span>
+        <span class="tag core">Unsloth</span>
+        <span class="tag core">Qwen3 3B</span>
+        <span class="tag core">FAISS</span>
+        <span class="tag core">PyTorch</span>
+        <span class="tag core">Sentence Transformers</span>
+        <span class="tag core">RTX 5090</span>
+        <span class="tag core">LMDB</span>
+        <span class="tag core">Hugging Face Transformers</span>
+      </div>
+      <p style="margin-top:1.25rem;">Nice to have:</p>
+      <div class="tag-grid">
+        <span class="tag nice">Tokenizer internals (BPE, WordPiece, SentencePiece)</span>
+        <span class="tag nice">Affective computing / EPA space</span>
+        <span class="tag nice">MoE architectures</span>
+        <span class="tag nice">Domain NLP (medical, legal, scientific)</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Experiment at a Glance</p>
+      <div class="code-snippet"><pre><span class="cm"># Four-configuration benchmark</span>
+<span class="kw">config_A</span>  <span class="val">Qwen3 3B · BPE · random init          ← baseline</span>
+<span class="kw">config_B</span>  <span class="val">Qwen3 3B · EloAI dict · random init   ← MoL only</span>
+<span class="kw">config_C</span>  <span class="val">Qwen3 3B · BPE · FAISS init           ← embed only</span>
+<span class="kw">config_D</span>  <span class="val">Qwen3 3B · EloAI dict · FAISS init    ← full MoL</span>
+
+<span class="cm"># Scales</span>
+<span class="kw">tokens</span>    <span class="val">100M · 500M · 1B · 5B · 10B</span>
+
+<span class="cm"># Primary metric</span>
+<span class="kw">measure</span>   <span class="val">benchmark performance vs. training token count</span>
+<span class="kw">target</span>    <span class="val">config_D matches config_A at 1/10 the tokens</span>
+
+<span class="cm"># Corpus</span>
+<span class="kw">source</span>    <span class="val">YouTube ASR transcripts · 10–100GB · JSON chunks</span>
+<span class="kw">domain</span>    <span class="val">medicine · military · psychology · science</span></pre></div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Who You Are</p>
+      <ul class="item-list">
+        <li><strong>You've worked below the model API.</strong> You know what happens when you swap a tokenizer, what breaks, and why. You're not intimidated by rebuilding an embedding matrix from scratch.</li>
+        <li><strong>You design experiments, not demos.</strong> You define controls, write down your hypothesis before you run the code, and report results that falsify as much as confirm.</li>
+        <li><strong>You understand information theory well enough</strong> to reason about why shorter IDs for higher-frequency tokens is a meaningful training signal — not just a compression trick.</li>
+        <li><strong>You're comfortable with negative results.</strong> If MoL doesn't beat BPE at 1/10 the data, that's important to know. The goal is truth, not a paper that confirms the thesis.</li>
+        <li>You find the intersection of compression, semantics, and LLM training genuinely interesting — not just as a job description but as a research question.</li>
+      </ul>
+    </section>
+
+    <hr class="section-rule">
+    <section class="section">
+      <p class="section-label">What This Isn't</p>
+      <p>This is not a role where you run existing fine-tuning scripts and report numbers. The pipeline doesn't fully exist yet. You'll be building the experiment infrastructure while running the experiment — which means the research and the engineering are the same job.</p>
+      <div class="callout">
+        <p>Compensation is competitive for an early-stage research role: base salary, meaningful equity, and co-authorship on any research output. The MoL thesis paper (eloai.dev/research) is the foundation; the experiment is the proof.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Position Details</p>
+      <div class="sidebar-stat"><p class="stat-label">Role</p><p class="stat-value">ML / AI Research Engineer</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Type</p><p class="stat-value">Full-time</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Location</p><p class="stat-value">Remote · US-based preferred</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Stage</p><p class="stat-value accent">Early hire</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Reports to</p><p class="stat-value">Founder directly</p></div>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Apply</p>
+      <a href="mailto:careers@eloai.dev?subject=ML%20Research%20Engineer%20Application" class="cta-btn">Send Application</a>
+      <p class="cta-sub">careers@eloai.dev</p>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">In Your Application</p>
+      <ul class="item-list" style="margin-top:0;">
+        <li>A model or training experiment you ran — what you measured, what surprised you, what you'd do differently</li>
+        <li>Your view on BPE tokenization's limitations for domain tasks (or why you think they're overstated)</li>
+        <li>Any work touching tokenizer internals, embedding initialization, or domain adaptation</li>
+      </ul>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Resources</p>
+      <div class="sidebar-stat"><p class="stat-label">Thesis paper</p><p class="stat-value"><a href="https://eloai.dev/research" class="inline" style="font-size:0.8rem">Mixture of Libraries (MoL)</a></p></div>
+      <div class="sidebar-stat"><p class="stat-label">Repository</p><p class="stat-value"><a href="https://github.com/4waymedia/semantic-compression" class="inline" style="font-size:0.8rem">github.com/4waymedia/semantic-compression</a></p></div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <p>EloAI Research Laboratory · <a href="https://eloai.dev">eloai.dev</a> · <a href="mailto:careers@eloai.dev">careers@eloai.dev</a></p>
+  <p style="margin-top:0.5rem;">© 2026 EloAI. All rights reserved.</p>
+</footer>
+</body>
+</html>

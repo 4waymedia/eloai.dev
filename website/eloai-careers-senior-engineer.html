@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senior Full-Stack Engineer — EloAI Careers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:    #0C0D0F;
+    --ink:      #1A1C20;
+    --muted:    #3C3F47;
+    --rule:     #2A2D34;
+    --dim:      #6B7080;
+    --ghost:    #9AA0B0;
+    --surface:  #141619;
+    --lift:     #1E2128;
+    --accent:   #5DFFE0;    /* EloAI teal — the one bold note */
+    --accent2:  #2A8FFF;
+    --warn:     #FF9F40;
+    --white:    #EDF0F5;
+    --text:     #C8CDD8;
+
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(12, 13, 15, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-back {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--dim);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.15s;
+  }
+  .nav-back:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    border-bottom: 1px solid var(--rule);
+    padding: 5rem 2rem 4rem;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--ghost);
+    max-width: 580px;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+  }
+  .meta-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .pill {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--rule);
+    color: var(--dim);
+    border-radius: 2px;
+  }
+  .pill.highlight {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── CONTENT LAYOUT ── */
+  .layout {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 0 4rem;
+    align-items: start;
+  }
+  .main-col { padding: 3.5rem 0; }
+  .sidebar { padding: 3.5rem 0; position: sticky; top: 72px; }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 3.5rem; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section h2 {
+    font-family: var(--mono);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 1rem;
+    letter-spacing: 0.01em;
+  }
+  .section p {
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 1rem;
+    line-height: 1.8;
+  }
+  .section p strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  /* ── LIST ITEMS ── */
+  .item-list {
+    list-style: none;
+    margin: 0.5rem 0 0;
+  }
+  .item-list li {
+    font-size: 0.925rem;
+    color: var(--text);
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    gap: 0.9rem;
+    line-height: 1.6;
+  }
+  .item-list li:last-child { border-bottom: none; }
+  .item-list li::before {
+    content: '—';
+    font-family: var(--mono);
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+  }
+
+  /* ── STACK TAGS ── */
+  .tag-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 0.25rem 0.6rem;
+    background: var(--lift);
+    border: 1px solid var(--rule);
+    color: var(--ghost);
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+  }
+  .tag.core {
+    border-color: var(--accent2);
+    color: var(--accent2);
+    background: rgba(42, 143, 255, 0.06);
+  }
+  .tag.nice {
+    border-color: var(--warn);
+    color: var(--warn);
+    background: rgba(255, 159, 64, 0.05);
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--lift);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 2px 2px 0;
+  }
+  .callout p {
+    font-size: 0.9rem;
+    color: var(--ghost);
+    margin: 0;
+    line-height: 1.75;
+  }
+  .callout p strong { color: var(--white); }
+
+  /* ── CODE BLOCK ── */
+  .code-snippet {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 1.25rem 1.5rem;
+    border-radius: 2px;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+  .code-snippet pre {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ghost);
+    line-height: 1.7;
+    white-space: pre;
+  }
+  .code-snippet pre .kw { color: var(--accent); }
+  .code-snippet pre .val { color: var(--accent2); }
+  .code-snippet pre .cm { color: var(--muted); }
+
+  /* ── SIDEBAR CARD ── */
+  .sidebar-card {
+    background: var(--lift);
+    border: 1px solid var(--rule);
+    padding: 1.5rem;
+    border-radius: 2px;
+    margin-bottom: 1.25rem;
+  }
+  .sidebar-card-title {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .sidebar-stat {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .sidebar-stat:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--dim);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.25rem;
+  }
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    color: var(--white);
+  }
+  .stat-value.accent { color: var(--accent); }
+
+  /* ── CTA BUTTON ── */
+  .cta-btn {
+    display: block;
+    width: 100%;
+    background: var(--accent);
+    color: var(--black);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.9rem 1.5rem;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    margin-bottom: 0.75rem;
+  }
+  .cta-btn:hover { background: #7BFFE8; transform: translateY(-1px); }
+  .cta-sub {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--dim);
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── LINKS ── */
+  a.inline { color: var(--accent2); text-decoration: none; }
+  a.inline:hover { text-decoration: underline; }
+
+  /* ── DIVIDER ── */
+  hr.section-rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 2.5rem 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  footer p {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  footer a { color: var(--dim); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 720px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: static; padding-top: 0; }
+    .hero { padding: 3.5rem 1.5rem 3rem; }
+    nav { padding: 0 1.5rem; }
+    .layout { padding: 0 1.5rem; }
+    footer { padding: 2rem 1.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://eloai.dev" class="nav-logo">Elo<span>AI</span></a>
+  <a href="about.html#careers" class="nav-back">← Careers</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <p class="eyebrow">Open Position · Engineering</p>
+  <h1>Senior Full-Stack Engineer<br><em>Systems &amp; Architecture</em></h1>
+  <p class="hero-sub">
+    EloAI is building a semantic compression system and cognitive architecture — a 14MB dictionary that knows what language means. We need a systems-minded engineer who still writes code, thinks in contracts, and ships things that work.
+  </p>
+  <div class="meta-pills">
+    <span class="pill highlight">Full-time</span>
+    <span class="pill">Remote</span>
+    <span class="pill">Fruitdale, CA (optional)</span>
+    <span class="pill">Equity-included</span>
+    <span class="pill">Early hire</span>
+  </div>
+</header>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+  <!-- MAIN COL -->
+  <main class="main-col">
+
+    <!-- WHAT WE'RE BUILDING -->
+    <section class="section">
+      <p class="section-label">The Work</p>
+      <p>
+        EloAI is a semantic compression system built on a single insight: <strong>compression and meaning are the same operation.</strong> A 14MB LMDB dictionary encodes 83,000+ tokens — words, phrases, contractions — each one an ID that is simultaneously a compression address, a semantic coordinate, and a future LLM token.
+      </p>
+      <p>
+        We're at the inflection point. System 1 (lossless compression) is validated. System 2 (the cognitive architecture — perception, memory, emotion, reasoning, reflection) is in build. What's left is hard: C++ library for embedded hardware, an MCP server for IDE integration, a fine-tuning pipeline replacing BPE with our own dictionary, and a binary file format destined for IANA registration.
+      </p>
+      <div class="callout">
+        <p>This is not an AI wrapper. We're rethinking tokenization from first principles — and we need an engineer who can hold a full architecture in their head, not just their ticket queue.</p>
+      </div>
+    </section>
+
+    <!-- WHAT YOU'LL DO -->
+    <section class="section">
+      <p class="section-label">What You'll Do</p>
+      <ul class="item-list">
+        <li>Architect and deliver core subsystems: the <code>libelo</code> C++ public API (<code>sc_encode</code>, <code>sc_decode</code>, <code>sc_open_library</code>), the Python compressor pipeline, and the MCP server exposing semantic search to LLM agents</li>
+        <li>Build and validate the lossless encode/decode pipeline end-to-end — the acceptance criterion is <code>decode(encode(text)) == text</code> on every input, every time</li>
+        <li>Drive the fine-tuning experiment: replace Qwen3 3B's BPE tokenizer with the EloAI dictionary, initialize embeddings from FAISS domain vectors, and benchmark perplexity against baseline</li>
+        <li>Architect the embedded hardware integration — Arduino interaction loop + Whisper STT + 2GB on-device corpus — so the system can hold a conversation with no internet connection</li>
+        <li>Write the tests and benchmarks that prove coverage, compression ratio, round-trip accuracy, and lookup speed (target: ~5ns per ID in a packed binary in-memory array)</li>
+        <li>Review specs before writing code. Challenge assumptions. Tell me when something's wrong before we build it wrong.</li>
+      </ul>
+    </section>
+
+    <!-- THE STACK -->
+    <section class="section">
+      <p class="section-label">The Stack</p>
+      <p>What we're actively using:</p>
+      <div class="tag-grid">
+        <span class="tag core">Python</span>
+        <span class="tag core">LMDB</span>
+        <span class="tag core">C / C++</span>
+        <span class="tag core">FAISS</span>
+        <span class="tag core">Unsloth</span>
+        <span class="tag core">Qwen3 3B</span>
+        <span class="tag core">RTX 5090</span>
+        <span class="tag core">MCP (Model Context Protocol)</span>
+        <span class="tag core">Arduino</span>
+        <span class="tag core">Whisper STT</span>
+        <span class="tag core">Binary file I/O</span>
+        <span class="tag core">LMDB</span>
+      </div>
+      <p style="margin-top: 1.25rem;">Nice to have:</p>
+      <div class="tag-grid">
+        <span class="tag nice">Rust</span>
+        <span class="tag nice">LLM tokenizer internals</span>
+        <span class="tag nice">Embedded Linux</span>
+        <span class="tag nice">IANA / standards process</span>
+        <span class="tag nice">Sanity CMS</span>
+        <span class="tag nice">WASM</span>
+      </div>
+    </section>
+
+    <!-- THE SYSTEM AT A GLANCE -->
+    <section class="section">
+      <p class="section-label">System at a Glance</p>
+      <p>So you know what you're walking into:</p>
+      <div class="code-snippet">
+        <pre><span class="cm"># System 1 — Semantic Compression (validated)</span>
+<span class="kw">dictionary</span>   <span class="val">83,226 tokens · 14MB LMDB · ~100ns lookup</span>
+<span class="kw">coverage</span>     <span class="val">99.25% of corpus · lossless round-trip confirmed</span>
+<span class="kw">format</span>       <span class="val">.elo binary · magic "ELO1" · IANA reg. in progress</span>
+<span class="kw">id_space</span>     <span class="val">URL-safe Base64 · 1-char / 2-char / 3-char tiers</span>
+
+<span class="cm"># System 2 — Cognitive Architecture (in build)</span>
+<span class="kw">engines</span>      <span class="val">8 total · Perception, Memory, Emotion active</span>
+<span class="kw">epa</span>          <span class="val">Evaluation–Potency–Activity semantic space (Surov 2022)</span>
+<span class="kw">next</span>         <span class="val">Engine 8 (Reflection) · verbalizer · EPA projector</span>
+
+<span class="cm"># Targets</span>
+<span class="kw">hardware</span>     <span class="val">Arduino + Whisper · 2GB on-device · no internet</span>
+<span class="kw">fine-tune</span>    <span class="val">Qwen3 3B · replace BPE · FAISS init · RTX 5090</span>
+<span class="kw">hypothesis</span>   <span class="val">MoL outperforms MoE on domain tasks at 1/10 the data</span></pre>
+      </div>
+    </section>
+
+    <!-- WHO YOU ARE -->
+    <section class="section">
+      <p class="section-label">Who You Are</p>
+      <ul class="item-list">
+        <li><strong>You've shipped things at the systems level</strong> — binary formats, network protocols, storage engines, language runtimes. Not just features on top of frameworks.</li>
+        <li><strong>You read specs before writing code.</strong> You know a wrong design decision costs ten times what a wrong line of code costs.</li>
+        <li><strong>You're comfortable in C or C++</strong> when the platform demands it. You don't need a managed runtime to feel safe.</li>
+        <li><strong>You can hold an architecture in your head.</strong> EloAI has eight engines, two layers of encoding, five dictionary tiers, an embedded target, and an LLM fine-tuning experiment. Context-switching is the job.</li>
+        <li><strong>You push back constructively.</strong> If the spec is wrong, say so before we build it. Silence that leads to rework isn't helpfulness.</li>
+        <li><strong>You test your own assumptions.</strong> The acceptance criterion is a function call, not a demo. Round-trip accuracy is 100% or the work isn't done.</li>
+        <li>You're interested in what it means to compress meaning — not just bytes.</li>
+      </ul>
+    </section>
+
+    <!-- NICE TO HAVE -->
+    <section class="section">
+      <p class="section-label">Background That Fits</p>
+      <p>None of these are requirements. All of them are relevant:</p>
+      <ul class="item-list">
+        <li>Experience with LLM tokenizers, vocabulary construction, or embedding models at the implementation level</li>
+        <li>Work on embedded or constrained systems — memory budgets, no-malloc constraints, C runtime environments</li>
+        <li>Background in linguistics, cognitive science, or affective computing (we're building a system that models emotional valence)</li>
+        <li>Military service or familiarity with controlled-vocabulary doctrine environments</li>
+        <li>Standards work — IANA, W3C, ISO, or similar. We're aiming for browser-native dictionary pre-installation, analogous to how TLS certs ship.</li>
+      </ul>
+    </section>
+
+    <!-- WHAT THIS ISN'T -->
+    <hr class="section-rule">
+    <section class="section">
+      <p class="section-label">What This Isn't</p>
+      <p>EloAI is an early-stage research project with one founder. We're not a funded startup with HR, a roadmap deck, and quarterly OKRs. What we have is a validated system, a clear thesis, and a lot of hard build work ahead.</p>
+      <div class="callout">
+        <p>If you need a large team, established tooling, and a defined scope — this isn't the right fit. If you want to architect something genuinely novel while it's still small enough to understand completely, it might be exactly right.</p>
+      </div>
+      <p>
+        Compensation is competitive for a seed-stage technical co-builder: base salary, meaningful equity, and a stake in the outcome. The right person for this role understands that the early build phase is where leverage lives.
+      </p>
+    </section>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Position Details</p>
+      <div class="sidebar-stat">
+        <p class="stat-label">Role</p>
+        <p class="stat-value">Senior Full-Stack Engineer</p>
+      </div>
+      <div class="sidebar-stat">
+        <p class="stat-label">Type</p>
+        <p class="stat-value">Full-time</p>
+      </div>
+      <div class="sidebar-stat">
+        <p class="stat-label">Location</p>
+        <p class="stat-value">Remote · US-based preferred</p>
+      </div>
+      <div class="sidebar-stat">
+        <p class="stat-label">Stage</p>
+        <p class="stat-value accent">Early hire</p>
+      </div>
+      <div class="sidebar-stat">
+        <p class="stat-label">Reports to</p>
+        <p class="stat-value">Founder directly</p>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Apply</p>
+      <a href="mailto:careers@eloai.dev?subject=Senior%20Systems%20Engineer%20Application" class="cta-btn">Send Application</a>
+      <p class="cta-sub">careers@eloai.dev</p>
+    </div>
+
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">In Your Application</p>
+      <ul class="item-list" style="margin-top: 0;">
+        <li>A system or format you built at the binary / protocol level — what the constraints were and what the acceptance criterion was</li>
+        <li>A time you pushed back on a design before implementation and what happened</li>
+        <li>GitHub link if relevant. No resume required if your code speaks for itself.</li>
+      </ul>
+    </div>
+
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Resources</p>
+      <div class="sidebar-stat">
+        <p class="stat-label">Repository</p>
+        <p class="stat-value"><a href="https://github.com/4waymedia/semantic-compression" class="inline" style="font-size:0.8rem">github.com/4waymedia/<br>semantic-compression</a></p>
+      </div>
+      <div class="sidebar-stat">
+        <p class="stat-label">Research paper</p>
+        <p class="stat-value"><a href="https://eloai.dev/research" class="inline" style="font-size:0.8rem">Mixture of Libraries thesis</a></p>
+      </div>
+      <div class="sidebar-stat">
+        <p class="stat-label">Format spec</p>
+        <p class="stat-value"><a href="https://eloai.dev/format" class="inline" style="font-size:0.8rem">.elo binary format v1.0</a></p>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>EloAI Research Laboratory · <a href="https://eloai.dev">eloai.dev</a> · <a href="mailto:careers@eloai.dev">careers@eloai.dev</a></p>
+  <p style="margin-top: 0.5rem;">© 2026 EloAI. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

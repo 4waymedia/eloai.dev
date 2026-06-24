@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Engineer — EloAI Careers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black:#0C0D0F;--ink:#1A1C20;--muted:#3C3F47;--rule:#2A2D34;--dim:#6B7080;--ghost:#9AA0B0;--surface:#141619;--lift:#1E2128;--accent:#5DFFE0;--accent2:#2A8FFF;--warn:#FF9F40;--white:#EDF0F5;--text:#C8CDD8;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;
+  }
+  html{scroll-behavior:smooth;}
+  body{background:var(--black);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{position:sticky;top:0;z-index:100;background:rgba(12,13,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;}
+  .nav-logo{font-family:var(--mono);font-size:1rem;font-weight:600;color:var(--white);text-decoration:none;letter-spacing:0.04em;}
+  .nav-logo span{color:var(--accent);}
+  .nav-back{font-family:var(--mono);font-size:0.75rem;color:var(--dim);text-decoration:none;letter-spacing:0.05em;transition:color 0.15s;}
+  .nav-back:hover{color:var(--accent);}
+  .hero{border-bottom:1px solid var(--rule);padding:5rem 2rem 4rem;max-width:860px;margin:0 auto;}
+  .eyebrow{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;margin-bottom:1.5rem;}
+  .hero h1{font-family:var(--mono);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:600;color:var(--white);line-height:1.2;margin-bottom:1.5rem;letter-spacing:-0.01em;}
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero-sub{font-size:1.05rem;font-weight:300;color:var(--ghost);max-width:580px;line-height:1.75;margin-bottom:2.5rem;}
+  .meta-pills{display:flex;flex-wrap:wrap;gap:0.6rem;}
+  .pill{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.06em;padding:0.3rem 0.8rem;border:1px solid var(--rule);color:var(--dim);border-radius:2px;}
+  .pill.highlight{border-color:var(--accent);color:var(--accent);}
+  .layout{max-width:860px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 260px;gap:0 4rem;align-items:start;}
+  .main-col{padding:3.5rem 0;}
+  .sidebar{padding:3.5rem 0;position:sticky;top:72px;}
+  .section{margin-bottom:3.5rem;}
+  .section-label{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.14em;color:var(--dim);text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--rule);}
+  .section p{font-size:0.95rem;color:var(--text);margin-bottom:1rem;line-height:1.8;}
+  .section p strong{color:var(--white);font-weight:500;}
+  .item-list{list-style:none;margin:0.5rem 0 0;}
+  .item-list li{font-size:0.925rem;color:var(--text);padding:0.65rem 0;border-bottom:1px solid var(--rule);display:flex;gap:0.9rem;line-height:1.6;}
+  .item-list li:last-child{border-bottom:none;}
+  .item-list li::before{content:'—';font-family:var(--mono);color:var(--accent);flex-shrink:0;margin-top:0.05rem;}
+  .tag-grid{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem;}
+  .tag{font-family:var(--mono);font-size:0.72rem;padding:0.25rem 0.6rem;background:var(--lift);border:1px solid var(--rule);color:var(--ghost);border-radius:2px;letter-spacing:0.04em;}
+  .tag.core{border-color:var(--accent2);color:var(--accent2);background:rgba(42,143,255,0.06);}
+  .tag.nice{border-color:var(--warn);color:var(--warn);background:rgba(255,159,64,0.05);}
+  .callout{background:var(--lift);border:1px solid var(--rule);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 2px 2px 0;}
+  .callout p{font-size:0.9rem;color:var(--ghost);margin:0;line-height:1.75;}
+  .callout p strong{color:var(--white);}
+  .code-snippet{background:var(--surface);border:1px solid var(--rule);padding:1.25rem 1.5rem;border-radius:2px;margin:1rem 0;overflow-x:auto;}
+  .code-snippet pre{font-family:var(--mono);font-size:0.78rem;color:var(--ghost);line-height:1.7;white-space:pre;}
+  .code-snippet pre .kw{color:var(--accent);}
+  .code-snippet pre .val{color:var(--accent2);}
+  .code-snippet pre .cm{color:var(--muted);}
+  .sidebar-card{background:var(--lift);border:1px solid var(--rule);padding:1.5rem;border-radius:2px;margin-bottom:1.25rem;}
+  .sidebar-card-title{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.12em;color:var(--dim);text-transform:uppercase;margin-bottom:1rem;}
+  .sidebar-stat{margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--rule);}
+  .sidebar-stat:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+  .stat-label{font-family:var(--mono);font-size:0.68rem;color:var(--dim);letter-spacing:0.06em;margin-bottom:0.25rem;}
+  .stat-value{font-family:var(--mono);font-size:0.88rem;color:var(--white);}
+  .stat-value.accent{color:var(--accent);}
+  .cta-btn{display:block;width:100%;background:var(--accent);color:var(--black);font-family:var(--mono);font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-align:center;text-decoration:none;padding:0.9rem 1.5rem;border:none;border-radius:2px;cursor:pointer;transition:background 0.15s,transform 0.1s;margin-bottom:0.75rem;}
+  .cta-btn:hover{background:#7BFFE8;transform:translateY(-1px);}
+  .cta-sub{font-family:var(--mono);font-size:0.68rem;color:var(--dim);text-align:center;letter-spacing:0.05em;}
+  a.inline{color:var(--accent2);text-decoration:none;}
+  a.inline:hover{text-decoration:underline;}
+  hr.section-rule{border:none;border-top:1px solid var(--rule);margin:2.5rem 0;}
+  footer{border-top:1px solid var(--rule);padding:2.5rem 2rem;text-align:center;}
+  footer p{font-family:var(--mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.04em;}
+  footer a{color:var(--dim);text-decoration:none;}
+  footer a:hover{color:var(--accent);}
+  @media(max-width:720px){.layout{grid-template-columns:1fr;}.sidebar{position:static;padding-top:0;}.hero{padding:3.5rem 1.5rem 3rem;}nav{padding:0 1.5rem;}.layout{padding:0 1.5rem;}footer{padding:2rem 1.5rem;}}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://eloai.dev" class="nav-logo">Elo<span>AI</span></a>
+  <a href="about.html#careers" class="nav-back">← Careers</a>
+</nav>
+
+<header class="hero">
+  <p class="eyebrow">Open Position · Data</p>
+  <h1>Data Engineer<br><em>Corpus Pipeline &amp; Benchmarks</em></h1>
+  <p class="hero-sub">
+    The dictionary is only as good as the corpus that built it. We need a data engineer who treats the pipeline as a first-class system — not scaffolding to be replaced later.
+  </p>
+  <div class="meta-pills">
+    <span class="pill highlight">Full-time</span>
+    <span class="pill">Remote</span>
+    <span class="pill">Equity-included</span>
+    <span class="pill">Early hire</span>
+  </div>
+</header>
+
+<div class="layout">
+  <main class="main-col">
+
+    <section class="section">
+      <p class="section-label">The Pipeline</p>
+      <p>
+        EloAI's dictionary is built from a corpus of YouTube ASR transcripts — 10 to 100GB of 30-second JSON chunks, deduplicated, cleaned, counted, and ranked. Every word and phrase in the corpus competes for an ID. The most frequent wins the shortest one. The pipeline that produces the corpus directly determines the quality of the dictionary.
+      </p>
+      <p>
+        Several components already exist: <code>corpus_scanner.py</code> handles ingestion and two-pass deduplication; <code>word_frequency_counter.py</code> counts surface forms; <code>ngram_counter.py</code> mines 2–9 word phrases; <code>dictionary_builder.py</code> assigns IDs and writes to LMDB. What's needed is someone to own the full system — extend it, harden it, instrument it, and make the benchmark results it produces <strong>trustworthy</strong>.
+      </p>
+      <div class="callout">
+        <p>The acceptance criterion for the dictionary is quantitative: <strong>99.25% corpus coverage, ~2x compression ratio (target 2.5x), 100% lossless round-trip.</strong> The gap between current and target is a data problem as much as a code problem.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">What You'll Do</p>
+      <ul class="item-list">
+        <li>Own the full corpus pipeline from raw transcript JSON through to dictionary build — including ingestion, deduplication, normalization, frequency counting, n-gram extraction, and LMDB write</li>
+        <li>Close the compression ratio gap: current ~2x, target 2.5x — the primary lever is phrase-level n-gram coverage; diagnose what's being missed and fix it</li>
+        <li>Build out the benchmark suite: round-trip accuracy (must be 100%), compression ratio, token reduction, coverage by tier, OOV rate, lookup speed — reported per format and per corpus slice</li>
+        <li>Expand corpus sources beyond YouTube ASR: domain dictionaries (medical, military, psychology, science), structured text (Wikipedia, Common Crawl slices), and document formats (.log, .csv, .json)</li>
+        <li>Design the pipeline lab instrumentation — the internal review surface for corpus inspection, compression verification, EPA timeline visualization, stage distribution, and memory database auditing</li>
+        <li>Maintain the distinction between confirmed and projected metrics — measured results must never be conflated with targets in any output document, benchmark report, or dashboard</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">The Stack</p>
+      <div class="tag-grid">
+        <span class="tag core">Python</span>
+        <span class="tag core">LMDB</span>
+        <span class="tag core">SQLite</span>
+        <span class="tag core">tqdm / rich</span>
+        <span class="tag core">JSON transcript pipeline</span>
+        <span class="tag core">Frequency analysis</span>
+        <span class="tag core">N-gram extraction</span>
+        <span class="tag core">Benchmark tooling</span>
+      </div>
+      <p style="margin-top:1.25rem;">Nice to have:</p>
+      <div class="tag-grid">
+        <span class="tag nice">Rust (pipeline speed)</span>
+        <span class="tag nice">DuckDB / Parquet</span>
+        <span class="tag nice">xxHash / checksumming</span>
+        <span class="tag nice">Corpus linguistics</span>
+        <span class="tag nice">ASR pipeline familiarity</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Pipeline at a Glance</p>
+      <div class="code-snippet"><pre><span class="cm"># Current confirmed results</span>
+<span class="kw">dictionary</span>     <span class="val">83,226 tokens · 14MB LMDB</span>
+<span class="kw">coverage</span>       <span class="val">99.25% (confirmed)</span>
+<span class="kw">compression</span>    <span class="val">~2x (confirmed) · 2.5x (target)</span>
+<span class="kw">round_trip</span>     <span class="val">100% lossless (confirmed)</span>
+
+<span class="cm"># Pipeline steps</span>
+<span class="kw">step_1</span>  <span class="val">corpus_scanner.py    → ingest + deduplicate</span>
+<span class="kw">step_2</span>  <span class="val">word_frequency_counter.py → surface form counts</span>
+<span class="kw">step_3</span>  <span class="val">ngram_counter.py     → 2-9 word phrase counts</span>
+<span class="kw">step_4</span>  <span class="val">dictionary_builder.py → ID assignment → LMDB</span>
+<span class="kw">step_5</span>  <span class="val">compressor.py        → encode / decode</span>
+<span class="kw">step_6</span>  <span class="val">benchmarks.py        → accuracy + ratio report</span>
+
+<span class="cm"># Open gap</span>
+<span class="kw">gap</span>     <span class="val">phrase n-gram coverage not yet complete → 0.5x ratio gap</span></pre></div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Who You Are</p>
+      <ul class="item-list">
+        <li><strong>You've built data pipelines that had to be correct, not just fast.</strong> You know the difference between a pipeline that produces output and one whose output you can trust.</li>
+        <li><strong>You instrument before you optimize.</strong> You measure where time and coverage are lost before you decide what to fix.</li>
+        <li><strong>You treat benchmark methodology seriously.</strong> You know that a benchmark that can be gamed is worse than no benchmark, and you design tests that resist that.</li>
+        <li><strong>You can read existing code before writing new code.</strong> Five components already exist. Understanding what they do before adding the sixth is how the system stays coherent.</li>
+        <li>You care about the distinction between "the corpus says this word exists" and "this word belongs in a production dictionary." Data quality is a judgment call, not just a filter threshold.</li>
+      </ul>
+    </section>
+
+    <hr class="section-rule">
+    <section class="section">
+      <p class="section-label">What This Isn't</p>
+      <p>This isn't a role managing ETL pipelines for a dashboard nobody reads. The corpus is the foundation that every other system depends on. Dictionary quality is directly downstream of pipeline quality. The benchmark numbers you produce are what the research claims rest on.</p>
+      <div class="callout">
+        <p>Compensation is competitive for an early data hire: base salary, meaningful equity, and direct influence over the data decisions that shape the system's performance claims. The pipeline is load-bearing.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Position Details</p>
+      <div class="sidebar-stat"><p class="stat-label">Role</p><p class="stat-value">Data Engineer</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Type</p><p class="stat-value">Full-time</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Location</p><p class="stat-value">Remote · US-based preferred</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Stage</p><p class="stat-value accent">Early hire</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Reports to</p><p class="stat-value">Founder directly</p></div>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Apply</p>
+      <a href="mailto:careers@eloai.dev?subject=Data%20Engineer%20Application" class="cta-btn">Send Application</a>
+      <p class="cta-sub">careers@eloai.dev</p>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">In Your Application</p>
+      <ul class="item-list" style="margin-top:0;">
+        <li>A pipeline you built where correctness was the primary constraint — what you measured and how you verified it</li>
+        <li>A benchmark you designed — what it tested and how you made sure it couldn't be gamed</li>
+        <li>Any experience with corpus construction, frequency analysis, or text normalization at scale</li>
+      </ul>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Resources</p>
+      <div class="sidebar-stat"><p class="stat-label">System spec</p><p class="stat-value"><a href="https://github.com/4waymedia/semantic-compression" class="inline" style="font-size:0.8rem">SYSTEM1.md on GitHub</a></p></div>
+      <div class="sidebar-stat"><p class="stat-label">Repository</p><p class="stat-value"><a href="https://github.com/4waymedia/semantic-compression" class="inline" style="font-size:0.8rem">github.com/4waymedia/semantic-compression</a></p></div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <p>EloAI Research Laboratory · <a href="https://eloai.dev">eloai.dev</a> · <a href="mailto:careers@eloai.dev">careers@eloai.dev</a></p>
+  <p style="margin-top:0.5rem;">© 2026 EloAI. All rights reserved.</p>
+</footer>
+</body>
+</html>

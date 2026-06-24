@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product / UX Designer — EloAI Careers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black:#0C0D0F;--ink:#1A1C20;--muted:#3C3F47;--rule:#2A2D34;--dim:#6B7080;--ghost:#9AA0B0;--surface:#141619;--lift:#1E2128;--accent:#5DFFE0;--accent2:#2A8FFF;--warn:#FF9F40;--white:#EDF0F5;--text:#C8CDD8;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;
+  }
+  html{scroll-behavior:smooth;}
+  body{background:var(--black);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{position:sticky;top:0;z-index:100;background:rgba(12,13,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;}
+  .nav-logo{font-family:var(--mono);font-size:1rem;font-weight:600;color:var(--white);text-decoration:none;letter-spacing:0.04em;}
+  .nav-logo span{color:var(--accent);}
+  .nav-back{font-family:var(--mono);font-size:0.75rem;color:var(--dim);text-decoration:none;letter-spacing:0.05em;transition:color 0.15s;}
+  .nav-back:hover{color:var(--accent);}
+  .hero{border-bottom:1px solid var(--rule);padding:5rem 2rem 4rem;max-width:860px;margin:0 auto;}
+  .eyebrow{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;margin-bottom:1.5rem;}
+  .hero h1{font-family:var(--mono);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:600;color:var(--white);line-height:1.2;margin-bottom:1.5rem;letter-spacing:-0.01em;}
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero-sub{font-size:1.05rem;font-weight:300;color:var(--ghost);max-width:580px;line-height:1.75;margin-bottom:2.5rem;}
+  .meta-pills{display:flex;flex-wrap:wrap;gap:0.6rem;}
+  .pill{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.06em;padding:0.3rem 0.8rem;border:1px solid var(--rule);color:var(--dim);border-radius:2px;}
+  .pill.highlight{border-color:var(--accent);color:var(--accent);}
+  .layout{max-width:860px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 260px;gap:0 4rem;align-items:start;}
+  .main-col{padding:3.5rem 0;}
+  .sidebar{padding:3.5rem 0;position:sticky;top:72px;}
+  .section{margin-bottom:3.5rem;}
+  .section-label{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.14em;color:var(--dim);text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--rule);}
+  .section p{font-size:0.95rem;color:var(--text);margin-bottom:1rem;line-height:1.8;}
+  .section p strong{color:var(--white);font-weight:500;}
+  .item-list{list-style:none;margin:0.5rem 0 0;}
+  .item-list li{font-size:0.925rem;color:var(--text);padding:0.65rem 0;border-bottom:1px solid var(--rule);display:flex;gap:0.9rem;line-height:1.6;}
+  .item-list li:last-child{border-bottom:none;}
+  .item-list li::before{content:'—';font-family:var(--mono);color:var(--accent);flex-shrink:0;margin-top:0.05rem;}
+  .tag-grid{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem;}
+  .tag{font-family:var(--mono);font-size:0.72rem;padding:0.25rem 0.6rem;background:var(--lift);border:1px solid var(--rule);color:var(--ghost);border-radius:2px;letter-spacing:0.04em;}
+  .tag.core{border-color:var(--accent2);color:var(--accent2);background:rgba(42,143,255,0.06);}
+  .tag.nice{border-color:var(--warn);color:var(--warn);background:rgba(255,159,64,0.05);}
+  .callout{background:var(--lift);border:1px solid var(--rule);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 2px 2px 0;}
+  .callout p{font-size:0.9rem;color:var(--ghost);margin:0;line-height:1.75;}
+  .callout p strong{color:var(--white);}
+  .sidebar-card{background:var(--lift);border:1px solid var(--rule);padding:1.5rem;border-radius:2px;margin-bottom:1.25rem;}
+  .sidebar-card-title{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.12em;color:var(--dim);text-transform:uppercase;margin-bottom:1rem;}
+  .sidebar-stat{margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--rule);}
+  .sidebar-stat:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+  .stat-label{font-family:var(--mono);font-size:0.68rem;color:var(--dim);letter-spacing:0.06em;margin-bottom:0.25rem;}
+  .stat-value{font-family:var(--mono);font-size:0.88rem;color:var(--white);}
+  .stat-value.accent{color:var(--accent);}
+  .cta-btn{display:block;width:100%;background:var(--accent);color:var(--black);font-family:var(--mono);font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-align:center;text-decoration:none;padding:0.9rem 1.5rem;border:none;border-radius:2px;cursor:pointer;transition:background 0.15s,transform 0.1s;margin-bottom:0.75rem;}
+  .cta-btn:hover{background:#7BFFE8;transform:translateY(-1px);}
+  .cta-sub{font-family:var(--mono);font-size:0.68rem;color:var(--dim);text-align:center;letter-spacing:0.05em;}
+  a.inline{color:var(--accent2);text-decoration:none;}
+  a.inline:hover{text-decoration:underline;}
+  hr.section-rule{border:none;border-top:1px solid var(--rule);margin:2.5rem 0;}
+  footer{border-top:1px solid var(--rule);padding:2.5rem 2rem;text-align:center;}
+  footer p{font-family:var(--mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.04em;}
+  footer a{color:var(--dim);text-decoration:none;}
+  footer a:hover{color:var(--accent);}
+  @media(max-width:720px){.layout{grid-template-columns:1fr;}.sidebar{position:static;padding-top:0;}.hero{padding:3.5rem 1.5rem 3rem;}nav{padding:0 1.5rem;}.layout{padding:0 1.5rem;}footer{padding:2rem 1.5rem;}}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://eloai.dev" class="nav-logo">Elo<span>AI</span></a>
+  <a href="about.html#careers" class="nav-back">← Careers</a>
+</nav>
+
+<header class="hero">
+  <p class="eyebrow">Open Position · Design</p>
+  <h1>Product / UX Designer<br><em>Tools, Pipeline Lab &amp; Public Surface</em></h1>
+  <p class="hero-sub">
+    EloAI needs a designer who can make invisible systems visible — a cognitive architecture that runs in compressed binary deserves an interface that makes it legible without flattening it.
+  </p>
+  <div class="meta-pills">
+    <span class="pill highlight">Full-time</span>
+    <span class="pill">Remote</span>
+    <span class="pill">Equity-included</span>
+    <span class="pill">Early hire</span>
+  </div>
+</header>
+
+<div class="layout">
+  <main class="main-col">
+
+    <section class="section">
+      <p class="section-label">The Design Problem</p>
+      <p>
+        EloAI is a system that compresses meaning into 1-to-3 character IDs, stores them in a 14MB binary dictionary, and routes them through eight cognitive engines. None of that is visible by default. The pipeline lab — the internal tool for corpus inspection, compression verification, and memory database review — is where you first encounter what the system actually does.
+      </p>
+      <p>
+        The design challenge isn't making EloAI look impressive. It's making it <strong>legible</strong>: to researchers auditing the dictionary, to developers integrating the MCP server, to a non-technical audience reading the public site. Three very different surfaces. Three very different definitions of clarity.
+      </p>
+      <div class="callout">
+        <p>The pipeline lab is the most important surface no one outside the project will see. The public site is the most important surface everyone will see first. <strong>Both need to be right, and neither exists yet in final form.</strong></p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">What You'll Design</p>
+      <ul class="item-list">
+        <li><strong>Pipeline Lab:</strong> The internal review interface — corpus inspection, compression benchmarks, EPA timeline visualization, stage distribution, OOV word auditing, and memory database review. Power-user tooling that needs to communicate dense technical output without hiding it behind abstractions</li>
+        <li><strong>eloai.dev:</strong> The public-facing website — research documentation, the MoL thesis, the .elo format spec, the careers page, and the project's identity. Audience ranges from LLM researchers to standards bodies to developers evaluating the MCP server</li>
+        <li><strong>Elo Browser extension UI:</strong> The browser-native interface for the planned Elo Browser extension — compression status, dictionary coverage indicators, semantic layer toggles</li>
+        <li><strong>MCP server developer experience:</strong> Documentation, onboarding flows, and API reference design for developers integrating EloAI tools into their IDE or agent environment</li>
+        <li><strong>EloAI visual identity system:</strong> Formalize the design tokens already implicit in the project — the teal accent, monospace scaffolding, dark surface palette — into a composable system the team can use consistently</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">The Stack</p>
+      <div class="tag-grid">
+        <span class="tag core">Figma</span>
+        <span class="tag core">HTML / CSS</span>
+        <span class="tag core">Data visualization</span>
+        <span class="tag core">Design systems</span>
+        <span class="tag core">Developer tooling UX</span>
+      </div>
+      <p style="margin-top:1.25rem;">Nice to have:</p>
+      <div class="tag-grid">
+        <span class="tag nice">React / JSX</span>
+        <span class="tag nice">Technical documentation design</span>
+        <span class="tag nice">Browser extension UI</span>
+        <span class="tag nice">Motion / microinteraction</span>
+        <span class="tag nice">Sanity CMS (content modeling)</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Surfaces at a Glance</p>
+      <ul class="item-list">
+        <li><strong>Pipeline Lab</strong> — internal tool · corpus and dictionary auditing · dense data, power users · needs precision over aesthetics</li>
+        <li><strong>eloai.dev</strong> — public site · research, format spec, MoL thesis, careers · audience: ML researchers, developers, standards bodies</li>
+        <li><strong>Elo Browser</strong> — browser extension · compression status, semantic layer indicators · integrated, unobtrusive</li>
+        <li><strong>MCP server DX</strong> — developer onboarding, API reference, integration documentation · clarity is the product</li>
+        <li><strong>Identity system</strong> — tokens, components, usage guidelines for consistent cross-surface expression</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Who You Are</p>
+      <ul class="item-list">
+        <li><strong>You design for systems, not screens.</strong> You understand that a data-heavy internal tool and a public research site share almost no UX assumptions, and you approach them differently.</li>
+        <li><strong>You read technical specs before designing interfaces for them.</strong> You won't design an EPA timeline visualization without understanding what EPA is. You ask questions before you make assumptions.</li>
+        <li><strong>You can produce and ship HTML and CSS</strong> when the situation calls for it — not as a secondary skill but as part of your normal workflow.</li>
+        <li><strong>You have opinions about information density.</strong> You know that hiding complexity behind progressive disclosure is sometimes the right call and sometimes a failure of nerve. You can tell the difference.</li>
+        <li>You're drawn to tooling and developer-facing work — the kind of design that makes something hard to use become something you can't imagine not having.</li>
+      </ul>
+    </section>
+
+    <hr class="section-rule">
+    <section class="section">
+      <p class="section-label">What This Isn't</p>
+      <p>This isn't a role producing marketing graphics or polishing a product that already works. The design surface is largely undefined — which means you'll be establishing visual language, information architecture, and interaction patterns from scratch, in close collaboration with the engineer building the systems you're designing for.</p>
+      <div class="callout">
+        <p>Compensation is competitive for an early design hire: base salary, meaningful equity, and creative ownership of EloAI's entire visual and product surface — from the pipeline lab nobody will see to the public site everyone will judge the project by.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Position Details</p>
+      <div class="sidebar-stat"><p class="stat-label">Role</p><p class="stat-value">Product / UX Designer</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Type</p><p class="stat-value">Full-time</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Location</p><p class="stat-value">Remote · US-based preferred</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Stage</p><p class="stat-value accent">Early hire</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Reports to</p><p class="stat-value">Founder directly</p></div>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Apply</p>
+      <a href="mailto:careers@eloai.dev?subject=Product%20Designer%20Application" class="cta-btn">Send Application</a>
+      <p class="cta-sub">careers@eloai.dev</p>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">In Your Application</p>
+      <ul class="item-list" style="margin-top:0;">
+        <li>A technical or data-heavy interface you designed — what the information problem was and how you solved it</li>
+        <li>A design system or token set you built from scratch — what decisions you made and why</li>
+        <li>Portfolio link. We care most about tooling, developer surfaces, and data visualization work.</li>
+      </ul>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Resources</p>
+      <div class="sidebar-stat"><p class="stat-label">Public site</p><p class="stat-value"><a href="https://eloai.dev" class="inline" style="font-size:0.8rem">eloai.dev</a></p></div>
+      <div class="sidebar-stat"><p class="stat-label">Research</p><p class="stat-value"><a href="https://eloai.dev/research" class="inline" style="font-size:0.8rem">Mixture of Libraries thesis</a></p></div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <p>EloAI Research Laboratory · <a href="https://eloai.dev">eloai.dev</a> · <a href="mailto:careers@eloai.dev">careers@eloai.dev</a></p>
+  <p style="margin-top:0.5rem;">© 2026 EloAI. All rights reserved.</p>
+</footer>
+</body>
+</html>

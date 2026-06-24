@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Embedded Systems Engineer — EloAI Careers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --black:#0C0D0F;--ink:#1A1C20;--muted:#3C3F47;--rule:#2A2D34;--dim:#6B7080;--ghost:#9AA0B0;--surface:#141619;--lift:#1E2128;--accent:#5DFFE0;--accent2:#2A8FFF;--warn:#FF9F40;--white:#EDF0F5;--text:#C8CDD8;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',system-ui,sans-serif;
+  }
+  html{scroll-behavior:smooth;}
+  body{background:var(--black);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  nav{position:sticky;top:0;z-index:100;background:rgba(12,13,15,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:56px;}
+  .nav-logo{font-family:var(--mono);font-size:1rem;font-weight:600;color:var(--white);text-decoration:none;letter-spacing:0.04em;}
+  .nav-logo span{color:var(--accent);}
+  .nav-back{font-family:var(--mono);font-size:0.75rem;color:var(--dim);text-decoration:none;letter-spacing:0.05em;transition:color 0.15s;}
+  .nav-back:hover{color:var(--accent);}
+  .hero{border-bottom:1px solid var(--rule);padding:5rem 2rem 4rem;max-width:860px;margin:0 auto;}
+  .eyebrow{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;margin-bottom:1.5rem;}
+  .hero h1{font-family:var(--mono);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:600;color:var(--white);line-height:1.2;margin-bottom:1.5rem;letter-spacing:-0.01em;}
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero-sub{font-size:1.05rem;font-weight:300;color:var(--ghost);max-width:580px;line-height:1.75;margin-bottom:2.5rem;}
+  .meta-pills{display:flex;flex-wrap:wrap;gap:0.6rem;}
+  .pill{font-family:var(--mono);font-size:0.72rem;letter-spacing:0.06em;padding:0.3rem 0.8rem;border:1px solid var(--rule);color:var(--dim);border-radius:2px;}
+  .pill.highlight{border-color:var(--accent);color:var(--accent);}
+  .layout{max-width:860px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 260px;gap:0 4rem;align-items:start;}
+  .main-col{padding:3.5rem 0;}
+  .sidebar{padding:3.5rem 0;position:sticky;top:72px;}
+  .section{margin-bottom:3.5rem;}
+  .section-label{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.14em;color:var(--dim);text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--rule);}
+  .section p{font-size:0.95rem;color:var(--text);margin-bottom:1rem;line-height:1.8;}
+  .section p strong{color:var(--white);font-weight:500;}
+  .item-list{list-style:none;margin:0.5rem 0 0;}
+  .item-list li{font-size:0.925rem;color:var(--text);padding:0.65rem 0;border-bottom:1px solid var(--rule);display:flex;gap:0.9rem;line-height:1.6;}
+  .item-list li:last-child{border-bottom:none;}
+  .item-list li::before{content:'—';font-family:var(--mono);color:var(--accent);flex-shrink:0;margin-top:0.05rem;}
+  .tag-grid{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.75rem;}
+  .tag{font-family:var(--mono);font-size:0.72rem;padding:0.25rem 0.6rem;background:var(--lift);border:1px solid var(--rule);color:var(--ghost);border-radius:2px;letter-spacing:0.04em;}
+  .tag.core{border-color:var(--accent2);color:var(--accent2);background:rgba(42,143,255,0.06);}
+  .tag.nice{border-color:var(--warn);color:var(--warn);background:rgba(255,159,64,0.05);}
+  .callout{background:var(--lift);border:1px solid var(--rule);border-left:3px solid var(--accent);padding:1.25rem 1.5rem;margin:1.5rem 0;border-radius:0 2px 2px 0;}
+  .callout p{font-size:0.9rem;color:var(--ghost);margin:0;line-height:1.75;}
+  .callout p strong{color:var(--white);}
+  .code-snippet{background:var(--surface);border:1px solid var(--rule);padding:1.25rem 1.5rem;border-radius:2px;margin:1rem 0;overflow-x:auto;}
+  .code-snippet pre{font-family:var(--mono);font-size:0.78rem;color:var(--ghost);line-height:1.7;white-space:pre;}
+  .code-snippet pre .kw{color:var(--accent);}
+  .code-snippet pre .val{color:var(--accent2);}
+  .code-snippet pre .cm{color:var(--muted);}
+  .sidebar-card{background:var(--lift);border:1px solid var(--rule);padding:1.5rem;border-radius:2px;margin-bottom:1.25rem;}
+  .sidebar-card-title{font-family:var(--mono);font-size:0.68rem;letter-spacing:0.12em;color:var(--dim);text-transform:uppercase;margin-bottom:1rem;}
+  .sidebar-stat{margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--rule);}
+  .sidebar-stat:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+  .stat-label{font-family:var(--mono);font-size:0.68rem;color:var(--dim);letter-spacing:0.06em;margin-bottom:0.25rem;}
+  .stat-value{font-family:var(--mono);font-size:0.88rem;color:var(--white);}
+  .stat-value.accent{color:var(--accent);}
+  .cta-btn{display:block;width:100%;background:var(--accent);color:var(--black);font-family:var(--mono);font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-align:center;text-decoration:none;padding:0.9rem 1.5rem;border:none;border-radius:2px;cursor:pointer;transition:background 0.15s,transform 0.1s;margin-bottom:0.75rem;}
+  .cta-btn:hover{background:#7BFFE8;transform:translateY(-1px);}
+  .cta-sub{font-family:var(--mono);font-size:0.68rem;color:var(--dim);text-align:center;letter-spacing:0.05em;}
+  a.inline{color:var(--accent2);text-decoration:none;}
+  a.inline:hover{text-decoration:underline;}
+  hr.section-rule{border:none;border-top:1px solid var(--rule);margin:2.5rem 0;}
+  footer{border-top:1px solid var(--rule);padding:2.5rem 2rem;text-align:center;}
+  footer p{font-family:var(--mono);font-size:0.72rem;color:var(--muted);letter-spacing:0.04em;}
+  footer a{color:var(--dim);text-decoration:none;}
+  footer a:hover{color:var(--accent);}
+  @media(max-width:720px){.layout{grid-template-columns:1fr;}.sidebar{position:static;padding-top:0;}.hero{padding:3.5rem 1.5rem 3rem;}nav{padding:0 1.5rem;}.layout{padding:0 1.5rem;}footer{padding:2rem 1.5rem;}}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://eloai.dev" class="nav-logo">Elo<span>AI</span></a>
+  <a href="about.html#careers" class="nav-back">← Careers</a>
+</nav>
+
+<header class="hero">
+  <p class="eyebrow">Open Position · Hardware</p>
+  <h1>Embedded Systems Engineer<br><em>C/C++ · On-Device Intelligence</em></h1>
+  <p class="hero-sub">
+    EloAI's first hardware deployment is a robot that holds a conversation with no internet connection. We need an engineer who can make a 14MB dictionary run on constrained silicon — and knows why the constraints are the point.
+  </p>
+  <div class="meta-pills">
+    <span class="pill highlight">Full-time</span>
+    <span class="pill">Remote</span>
+    <span class="pill">Equity-included</span>
+    <span class="pill">Early hire</span>
+  </div>
+</header>
+
+<div class="layout">
+  <main class="main-col">
+
+    <section class="section">
+      <p class="section-label">Why Embedded</p>
+      <p>
+        Constrained hardware is not a limitation we're working around. It's the proof. If EloAI's cognitive architecture can hold a real conversation — perception, memory, emotion, reflection — on an Arduino with a 2GB storage drive and no network, then it has genuine boundaries. And a system with boundaries has identity.
+      </p>
+      <p>
+        The embedded deployment is the first full end-to-end test of the architecture: Whisper handles speech-to-text, the Arduino manages the interaction loop, the <strong>14MB LMDB dictionary</strong> runs entirely in RAM, and every conversation is stored as <code>.elo</code> binary and reviewed afterward in the pipeline lab. No cloud. No inference API. Just the system, running.
+      </p>
+      <div class="callout">
+        <p>The C++ requirement is architectural, not incidental. <strong><code>libelo</code> — the public C API for EloAI — must run on anything.</strong> Arduino today. WASM tomorrow. Inference serving infrastructure eventually. You're designing the lowest layer of that stack.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">What You'll Do</p>
+      <ul class="item-list">
+        <li>Design and implement <code>libelo</code> — the C/C++ public API exposing <code>sc_encode</code>, <code>sc_decode</code>, <code>sc_open_library</code>, <code>sc_close_library</code> — with stateless functions, explicit binary layout, and no dependencies that won't compile on bare metal</li>
+        <li>Port the LMDB dictionary lookup to a packed binary in-memory array (~7MB, ~5ns per lookup) that works within Arduino memory constraints</li>
+        <li>Integrate Whisper STT with the Arduino interaction loop — manage the pipeline from audio input through STT through EloAI encode/decode through response generation</li>
+        <li>Design the on-device memory database: every conversation stored as <code>.elo</code> on a 2GB drive, indexed for retrieval, reviewed via pipeline lab</li>
+        <li>Own the boundary between the Python pipeline tools and the C++ runtime — define the interface contract so both sides can develop independently</li>
+        <li>Write the embedded test harness: verify <code>decode(encode(text)) == text</code> on-device, measure encode/decode latency in microseconds, validate memory footprint against hard targets</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">The Stack</p>
+      <div class="tag-grid">
+        <span class="tag core">C / C++</span>
+        <span class="tag core">Arduino</span>
+        <span class="tag core">Whisper STT</span>
+        <span class="tag core">LMDB</span>
+        <span class="tag core">Binary I/O</span>
+        <span class="tag core">Memory-mapped files</span>
+        <span class="tag core">Python (pipeline interface)</span>
+      </div>
+      <p style="margin-top:1.25rem;">Nice to have:</p>
+      <div class="tag-grid">
+        <span class="tag nice">Rust (libelo v2 candidate)</span>
+        <span class="tag nice">WASM / Emscripten</span>
+        <span class="tag nice">Embedded Linux</span>
+        <span class="tag nice">FFI design</span>
+        <span class="tag nice">Real-time audio pipelines</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Target Architecture</p>
+      <div class="code-snippet"><pre><span class="cm"># Hardware target — v1</span>
+<span class="kw">board</span>      <span class="val">Arduino (interaction loop, memory, reflection)</span>
+<span class="kw">stt</span>        <span class="val">Whisper (speech → text)</span>
+<span class="kw">storage</span>    <span class="val">2GB drive · .elo corpus + memory database</span>
+<span class="kw">network</span>    <span class="val">none — fully isolated</span>
+
+<span class="cm"># libelo public API</span>
+<span class="kw">sc_open_library</span>   <span class="val">(path) → handle</span>
+<span class="kw">sc_encode</span>         <span class="val">(handle, text, len) → stream</span>
+<span class="kw">sc_decode</span>         <span class="val">(handle, stream, len) → text</span>
+<span class="kw">sc_close_library</span>  <span class="val">(handle)</span>
+
+<span class="cm"># Performance targets</span>
+<span class="kw">lookup</span>     <span class="val">~5ns (packed binary array, in RAM)</span>
+<span class="kw">dict_size</span>  <span class="val">~7MB in-memory (vs 14MB LMDB)</span>
+<span class="kw">accuracy</span>   <span class="val">decode(encode(x)) == x on all inputs</span></pre></div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Who You Are</p>
+      <ul class="item-list">
+        <li><strong>You've written C or C++ that shipped on hardware</strong> with real memory constraints — not a dev board with 512MB of RAM.</li>
+        <li><strong>You think in terms of memory layout</strong> before you think in terms of data structures. You know the difference between what a struct looks like in code and what it looks like in memory.</li>
+        <li><strong>You design public APIs carefully.</strong> <code>libelo</code> will be called from Python, potentially from Rust, eventually from browsers. Naming, ownership, and error handling decisions made now are hard to change later.</li>
+        <li><strong>You've integrated audio pipelines</strong> or real-time sensor inputs at the hardware layer — not just called a cloud API.</li>
+        <li>You find the idea of a cognitive architecture running on a $40 microcontroller more interesting than the same architecture running on a GPU cluster.</li>
+      </ul>
+    </section>
+
+    <hr class="section-rule">
+    <section class="section">
+      <p class="section-label">What This Isn't</p>
+      <p>This isn't firmware for a consumer product. There's no hardware vendor, no production run, no compliance checklist. The first robot is a proof of concept — the goal is a working conversation, logged in <code>.elo</code>, reviewed in the pipeline lab, demonstrating that the architecture has a self to refer back to.</p>
+      <div class="callout">
+        <p>Compensation is competitive for an early systems hire: base salary, meaningful equity, and co-ownership of the architecture decisions that will define every future deployment target. The embedded build is where the thesis gets physically tested.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Position Details</p>
+      <div class="sidebar-stat"><p class="stat-label">Role</p><p class="stat-value">Embedded Systems Engineer</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Type</p><p class="stat-value">Full-time</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Location</p><p class="stat-value">Remote · US-based preferred</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Stage</p><p class="stat-value accent">Early hire</p></div>
+      <div class="sidebar-stat"><p class="stat-label">Reports to</p><p class="stat-value">Founder directly</p></div>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Apply</p>
+      <a href="mailto:careers@eloai.dev?subject=Embedded%20Systems%20Engineer%20Application" class="cta-btn">Send Application</a>
+      <p class="cta-sub">careers@eloai.dev</p>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">In Your Application</p>
+      <ul class="item-list" style="margin-top:0;">
+        <li>A system you shipped on constrained hardware — what the memory budget was and how you hit it</li>
+        <li>A C/C++ public API you designed — what you got right and what you'd change</li>
+        <li>Any experience with audio pipelines, STT integration, or on-device inference</li>
+      </ul>
+    </div>
+    <div class="sidebar-card">
+      <p class="sidebar-card-title">Resources</p>
+      <div class="sidebar-stat"><p class="stat-label">System spec</p><p class="stat-value"><a href="https://github.com/4waymedia/semantic-compression" class="inline" style="font-size:0.8rem">SYSTEM1.md</a></p></div>
+      <div class="sidebar-stat"><p class="stat-label">Format spec</p><p class="stat-value"><a href="https://eloai.dev/format" class="inline" style="font-size:0.8rem">.elo binary format v1.0</a></p></div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <p>EloAI Research Laboratory · <a href="https://eloai.dev">eloai.dev</a> · <a href="mailto:careers@eloai.dev">careers@eloai.dev</a></p>
+  <p style="margin-top:0.5rem;">© 2026 EloAI. All rights reserved.</p>
+</footer>
+</body>
+</html>
