@@ -1,3 +1,15 @@
+# 2026.06.26 — vfacet Agency Classification: 47.6% to 14.5% Unknown via Two-Phase Corpus Context
+
+The temporal LLM pass reported writing 108,422 entries. The actual improvement was 5,711. The rest were UNKNOWN written back as UNKNOWN — no-op writes the counter did not distinguish. That mismatch pointed at a deeper bug: the temporal scan was iterating `b'vfacets'` keys, which are Base64 IDs like `g4ZH`, not surface words. The LLM received ID strings and said so: *"I'm missing the actual words/phrases."* It classified them anyway via fallback index-matching, and **~179,000 entries received corrupt temporal values** before we caught it. STATE inflated to 42.8%. Recovery required a `--force-temporal` flag that re-ran the pass over `b'forward'` (the surface → id map) and overwrote the garbage.
+
+The ID bug was the loudest failure. There were quieter ones. Pass 1 (deterministic) recomputed direction from EPA data and wrote the result unconditionally — including UNKNOWN when no EPA entry existed — overwriting LLM-set direction values from a prior pass. Direction UNKNOWN jumped **1,766 → 51,455** after a single Pass 1 re-run. LLM Pass 2 had the same issue: the write block did not check whether the existing value was already good. Fix: per-field preservation in both passes — never overwrite a non-UNKNOWN classification with UNKNOWN, regardless of what the current pass computed.
+
+Agency required a different tool. After deterministic classification and two LLM passes, **agency UNKNOWN sat at 47.6%**. Most words are ambiguous without context: "advised" can be self-directed or other-directed; "build" can be personal or systemic. We built a two-phase corpus context classifier. Phase A indexes the 14,807-file transcript corpus once, mapping anchor words to chunk texts in a single O(corpus) pass. Phase B looks up each unknown surface in that index and extracts ±25-word windows with the target highlighted. The LLM classifies each window; a majority vote written only if the winning label meets a minimum confidence fraction.
+
+Two runs — `--min-matches 2` then `--min-matches 1 --min-confidence 0.7` — moved agency UNKNOWN from **47.6% to 14.5%** (54,131 of 373,918 entries). The residual is largely the 39,776 surfaces with no corpus presence at all; a different signal source is required to go further. Direction closed at **0.5% UNKNOWN**. Temporal reached a structural floor at 29.6% — function words, prepositions, and proper nouns have no inherent temporal type and the LLM correctly returns UNKNOWN for them.
+
+---
+
 2026.06.24 — Two Dictionaries Are Better Than One
 
 One codebook can't do everything. We encoded Frankenstein with the *web/structure dictionary* and got **1.00×** — no compression at all, because a novel isn't structure. Encoded with the *text dictionary*, the same book came in at **1.17× lossless**. Flip to data and the boundary flips too: on JSON, the web dictionary's byte hit-rate is **1%**; the text dictionary's is **46%**.
