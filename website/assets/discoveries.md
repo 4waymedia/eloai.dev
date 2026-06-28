@@ -1,3 +1,55 @@
+# 2026.06.27 — Lexical Recall for the Seed Store: Exact Match, Expansion, and One Shared Dictionary
+
+Memory had two recall paths — temporal (pull an entity's seeds in time order) and vector (rank by 4D cosine similarity). Neither answered the question recall exists for: *which stored memories are about this concept?* We verified the gap at the schema level: `memory.lmdb` opens six sub-databases (`seeds`, `sid`, `cls`, `src`, `contra`, `meta`). **Not one is lexical.**
+
+The fix is a surface-keyed inverted index over the seed store, fed by verbalizer query-expansion and ranked by the vfacet layer. Four phases: an LMDB sidecar (`recal_invindex.lmdb`) with postings and seed-term maps; an indexer that runs each seed's text through the surface segmenter; ingest wiring that indexes on flush; and a query path that expands queries into surfaces, looks them up, unions the postings, and ranks by vfacet. The query path runs **two passes** — L0 exact-match on literal query terms (so known surfaces always return their seeds, including out-of-vocabulary words) and L1 semantic expansion unioned on top.
+
+It went in cleanly. Then the full test suite found three collisions a unit test never would.
+
+**py-lmdb refuses to open the same environment twice in one process** — `lock=False` does not change this. Three components each opened the same `dictionary.lmdb`: the verbalizer substrate, the seed-surface segmenter, and the fingerprint reader. Alone, fine. Together — which is exactly what recall with indexing does — they collided. Fix: a process-wide shared env cache routing every read-only open through `get_env(path)`. That fix had its own trap: the cache module gets imported under two names from different import paths, producing **different module objects with separate module-level state**. We pinned the registry to a single attribute on `sys`, making it a true process singleton.
+
+Then two smaller cascades the collision had been masking: an all-OOV query (`parser`) has no EPA rating, so the verbalizer can't build a centroid — which aborted the whole call. Fix: wrap expansion so no centroid means serve exact-match only. An OOV surface has no vfacet, so its node carried an empty facet `{}` — consumers asserting a `direction` key failed. Fix: exact-match nodes now carry a full `UNKNOWN` facet.
+
+The principle that fell out: **read-only shared resources load once and are shared; writable per-instance stores stay isolated; queries degrade gracefully.**
+
+---
+
+# 2026.06.27 — A Regression Corpus for Seed Extraction, and the Concept Gap It Surfaced
+
+We had built the recall half of memory — the surface index, exact and semantic recall, facet ranking — but never tested the half it all depends on: whether extraction turns a sentence into a *good* seed. The field that matters most is `concept_id`. The inverted index, resonance, contradiction detection, and the seed-field graph all key on it. If the concept is wrong, everything downstream is keyed on the wrong thing, silently. So we built a test corpus to find out — and it found exactly that.
+
+First, real seeds: `build_memory.py` ran a transcript corpus (14,807 YouTube transcripts on hand) through extraction and ingest. Then a controlled corpus: 190 sentences in ten groups, each holding an event fixed and varying one dimension (emotion, agency, certainty, framing, time, relational stance, abstraction, contradiction, emergent joining). Each group has a known invariant — what should stay stable, what should vary. A fixture encodes those invariants as assertions.
+
+**The feeding bug (fixed).** First build produced only 90 seeds from 14 transcripts. The pipeline makes one seed per *item*, and we were feeding whole 30-second chunks (several sentences each). Splitting chunks into sentences was **~6× richer**: 5 chunks → 5 seeds; same 5 chunks sentence-split → 29 seeds; 6 transcripts sentence-split → 419 seeds.
+
+**Lexical recall works.** With 50 real seeds indexed, exact queries returned the right topical group every time: `deadline`→all A3, `server`→all A4, `system`→all A7, `recall`→all A9.
+
+**The fixture's verdict on extraction.** 7 invariants passed — entity stays stable where it should, charge grades with emotion, entity varies correctly across the agency group. But **every concept assertion failed**:
+
+`concept_id` = `concept.object`, and `concept.object` = the **last** high-tier content word in the sentence. The content filter admits any word above a frequency tier that isn't a function word — it filters by **frequency, never by part of speech**. So verbs (`arrived`, `trusts`), adverbs and temporals (`today`, `late`, `new`), and actual object nouns (`message`, `pattern`, `system`) all compete equally, and whichever lands last wins. In these sentences that's usually a sentence-final verb or trailing temporal — not the noun the sentence is about.
+
+The selection-level fix failed — and that's the finding. A three-layer object anchor scored **0/5**; a corrected version reached only **2/5**. The cause runs deeper: the object noun is frequently *absent* from the pipeline's candidate lists. The entity detector tags `felt`/`joyful`/`message`/`arrived` all as category `object` (no noun signal). **REFUTED** as scoped: concept extraction's real gap is upstream **noun identification**, not the selection rule.
+
+---
+
+# 2026.06.26 — Query Expansion as Memory's Recall Front-End
+
+ELO's memory can recall a stored seed two ways: temporal wave (every seed for an entity in timestamp order) or vector similarity (rank by 4D cosine). Neither answers the question recall exists to answer: *which stored memories are about this concept?* There is no lexical path — no route from a word, or a cluster of related words, to the seeds whose content mentions them.
+
+Separately, ELO has a component built to enumerate the conceptual neighborhood around an idea: the **verbalizer**. It was not wired into memory. This work maps how it should connect, builds the one dependency that was fully determined, and is deliberately honest about what is specified versus what is built.
+
+The design is **expansion, then recall**: query text → segment to surfaces + optional EPA centroid → verbalizer expands into related surfaces → look up surfaces in an inverted index → rank with memory's existing logic. That requires a component memory does not have: a surface-keyed inverted index over the seed store. We specified it; we did not build it yet.
+
+**The "is it in the dictionary?" filter is a trap.** Space, period, comma, bang and apostrophe each have a real dictionary entry with a short Tier-0 ID, so a membership check passes them straight through. `' '` would land in nearly every seed — worst-case selectivity, storage, and query cost at once. The only filter that works keys on token *class* (`classify() == CLASS_WORD`), not dictionary membership.
+
+**Vector search looked like the obvious bridge. It is blocked.** The verbalizer lives in 3D EPA space; seeds carry a 4D `[Em, Cg, In, Cx]` psychological signature on different natural axes. No projection between the two exists. `RecalEngine.similar()` cannot consume a verbalizer coordinate. The bridge has to ride the discrete surface join.
+
+**OOV words turned out to be the best keys.** The segmenter keeps unmatched, out-of-dictionary words as surfaces (`parser`, `LIKELY_IMPACTS`). These have no facet/EPA backing, so the verbalizer can't expand to them — but they are precisely the discriminating terms a user would recall a seed by. Resolution: index content-word surfaces including OOV; they are recallable by exact surface match even when expansion can't reach them.
+
+The spine of the whole integration is one decision the data keeps reinforcing from different angles: **bind to the surface, not the ID.** Vector search can't bridge the spaces; the two dictionaries don't share IDs; the provisional IDs are still moving. The surface survives all three.
+
+---
+
 # 2026.06.26 — vfacet Agency Classification: 47.6% to 14.5% Unknown via Two-Phase Corpus Context
 
 The temporal LLM pass reported writing 108,422 entries. The actual improvement was 5,711. The rest were UNKNOWN written back as UNKNOWN — no-op writes the counter did not distinguish. That mismatch pointed at a deeper bug: the temporal scan was iterating `b'vfacets'` keys, which are Base64 IDs like `g4ZH`, not surface words. The LLM received ID strings and said so: *"I'm missing the actual words/phrases."* It classified them anyway via fallback index-matching, and **~179,000 entries received corrupt temporal values** before we caught it. STATE inflated to 42.8%. Recovery required a `--force-temporal` flag that re-ran the pass over `b'forward'` (the surface → id map) and overwrote the garbage.
