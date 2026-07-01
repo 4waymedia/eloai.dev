@@ -1,3 +1,39 @@
+# 2026.06.29 — Segmenting Any Text by Coherence, Without Training on the Answer
+
+We had 366 hand-built outlines for our transcripts — human tables of contents, chapter by chapter. The obvious move was to train a model to reproduce them. We didn't. There is no *correct* segmentation: competent annotators disagree on where chapters begin and how many there are, so fitting one outline teaches a model nothing about what a boundary actually *is*. We built a general, deterministic **formula** instead, judged only by whether its boundaries fall at real drops in semantic cohesion — never by agreement with a human outline.
+
+`segmentation_formula` reads the signal, not a template: encode each unit → score the cohesion valley at every gap → cut at an unsupervised threshold → recurse for subsections → label each span by its distinctive terms. The baseline is **pure standard library — no model, no dictionary — so it runs anywhere.**
+
+Then the result that made the case. On *"All Wars Are Bankers' Wars"* (43 minutes, 100 chunks), we swept the one boundary knob and let the intrinsic coherence score speak. It **peaks at 7 chapters. The independently authored human outline has 6.** We optimized for internal coherence and landed within one chapter of someone who'd watched the video — with no access to their answer. The boundaries also track the real narrative: Revolution → Jackson's bank war → Lincoln's greenbacks → Smedley Butler → JFK → Bretton Woods → Libya → the closing argument.
+
+The point isn't a leaderboard number; it's the method. A trained segmenter is a black box that mimics one editor. This is **six named steps you can read, one knob you can reason about, and a judge that needs no labels** — offline, deterministic, and composing straight into the substrate (swap the lexical signal for 4D/EPA and the same formula gets sharper). We kept the outlines as a sanity glance, not a target. Coherence, it turns out, agrees with the humans more often than fitting them would.
+
+---
+
+# 2026.06.29 — Learn Procedures, Not Weights
+
+Today's AI learns a skill by nudging billions of opaque parameters from thousands of examples. We think there's another way when you have a substrate that doesn't drift: store the skill as a **formula** — a named, readable, version-controlled *procedure*, not a pattern baked into weights. Learning then becomes *editing and growing procedures*, not retraining.
+
+A formula is declarative: an `intention`, a few example inputs for routing, named `slots`, and ordered `steps` drawn from a **closed vocabulary** of operations — `parse`, `recall`, `detect_boundary`, `cluster`, `label`, `infer`, `decompose`, `validate`. Every op carries a **compute tier** (0 = deterministic local, 1 = substrate, 2 = a language model), and the rule is *push every step to the lowest tier it can run at* — so the vocabulary is both the procedure contract and the cost-control. The system runs a loop: a prototype router **selects** the formula, the engine **executes** its steps into an auditable trace, measurable criteria **score** it, and a reflection loop **refines** it (and eventually induces new ones).
+
+This isn't abstract — `segmentation_formula` is a real, working instance: six named steps, runs offline in pure stdlib, improvable by one knob, judged with no fitted reference, and it recovered roughly human chapter structure on a real document. You can open it and read exactly what it does.
+
+The trade is honest. You give up the raw, scale-bought capability of a giant model; you get **data efficiency** (a few steps, not 10,000 examples), **auditability** (the procedure explains itself), **legible failure** (open it and fix a step), and **privacy/cost** (most steps never touch a model). And it's not fringe — it's the shape already working in production agentic systems that steer capable models with explicit instruction files instead of retraining them. A formula is *direction*; its ceiling is the substrate beneath it.
+
+---
+
+# 2026.06.29 — The Browser Thinks Before a Token Is Spent
+
+The expensive thing in modern AI is the model call — tokens, GPU time, a network round-trip, and handing your request to a remote service. But most of the work between a request and a plan is *structural*: figure out what was asked, recall context, decompose the task, propose a checklist, ask the few questions that matter. On a substrate that's deterministic and portable, none of that needs a model — so it should run **in the browser, before a single token is sent.**
+
+We make this a rule with three tiers. **Tier 0** is deterministic and local: parse, classify, detect boundaries, route, recall local memory, propose the plan, surface the choices — no model, no network. **Tier 1** is substrate/edge work (deeper recall, the seed graph, verbalizing) — still no language model. **Tier 2** is the model, the last resort, for the irreducible generation only — and even then the payload is *compressed ELO IDs*, not raw text. Every step is authored at the lowest tier it can run at; a step that keeps escalating to tier-2 is a signal to add a deterministic op, not to pay the bill.
+
+This isn't aspirational — it's already running. Our text-segmentation procedure does the entire "understand the structure of this 43-minute transcript" job at **tier-0, pure standard library, offline, zero tokens.** It joins prior results that ship the dictionary to the browser and identify nouns by lookup-plus-rules with no AI at all.
+
+What you buy: **bandwidth** (turns that never hit the network), **cost** (no GPU to parse or plan), **latency** (instant local steps), **privacy** (the request and memory stay on-device), and **fewer round-trips** (clarify and plan *before* the one call you make). The model stops being the first thing you reach for and becomes a co-processor of last resort, behind a single seam, on a compressed payload.
+
+---
+
 # 2026.06.27 — Lexical Recall for the Seed Store: Exact Match, Expansion, and One Shared Dictionary
 
 Memory had two recall paths — temporal (pull an entity's seeds in time order) and vector (rank by 4D cosine similarity). Neither answered the question recall exists for: *which stored memories are about this concept?* We verified the gap at the schema level: `memory.lmdb` opens six sub-databases (`seeds`, `sid`, `cls`, `src`, `contra`, `meta`). **Not one is lexical.**
