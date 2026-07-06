@@ -1,3 +1,29 @@
+# 2026.07.05 — Concept Extraction 4/5 to 5/5, Grounded and Converged Without a Lemmatizer
+
+The concept extractor sat at 4/5. The holdout was "The server failed because memory was exhausted," which returned `memory` — the last noun, a real noun, but the *cause* in a subordinate clause, not the subject. The rule that fixed it is a dozen words: the concept is the last noun *before the first subordinator*. The trap was in which words count. Our first set included `that`, so "The logs confirm that the server failed" cut the clause at `that` and returned `logs` — the reporting subject — discarding the real concept sitting one clause over. A complementizer introduces the concept; it does not subordinate it. Drop `that` and the relativizers, keep `because` and `when`, and A4 resolves to `server` across all ten phrasings. **4/5 → 5/5.**
+
+Then two things the concept still lacked. It was a bare string — `server` and `servers` were different concepts — and nothing tied it to the dictionary. Grounding fixed the second: a read-only lookup returns whether the concept is in-dictionary, its `(E, P, A)` coordinate from the affect substrate, and its semantic bucket. Concepts became comparable by distance, not just equality — no schema change, a capability a consumer opts into.
+
+Convergence fixed the first, and this is the part we are happy with. To merge `servers` into `server` you would reach for a lemmatizer. We didn't. We reduce the surface — plural to singular, then best-effort derivational — and accept a reduction only if it is itself an in-dictionary noun. **The dictionary is the lemmatizer.** That gate is also the safety: `news` reduces to `new`, and `new` is in the dictionary, but it is not a noun, so the merge is refused. `process` survives an `-ss` guard. And the example that motivated the whole phase, `parser`/`parsing` collapsing to one concept, *did not merge* — `parse` is not an in-dict noun on this build, so the gate declined to invent a canonical the dictionary will not vouch for. **That is the gate working, not failing.**
+
+Twenty-one tests green, including an end-to-end check where the real extractor emits a plural and convergence collapses it to `system`. The spine the memory layer keys on is now reliable, grounded, and convergent. The next thing to read it is Reasoning.
+
+---
+
+# 2026.07.04 — Concept Extraction: 0/5 to 4/5, and the Noun Tagger Already in the Pipeline
+
+Last week's post ended on a cliffhanger: `concept_id` — the field the whole memory layer keys on — was extracting the wrong word (`arrived` for "message arrived," `late` for "the response was late"), and our first fix scored **0/5**. This is the resolution, and the fix was smaller and more embarrassing than the failure suggested.
+
+The 0/5 fix was in the **wrong layer**. We made the *selection* rule smarter — exclude adverbs, prefer nouns — when the real loss was upstream: the object noun was never in the candidate list. The entity detector tags `felt`, `joyful`, `message`, and `arrived` all as "object," and the tier filter drops the noun from the content chunks before selection ever sees it. You can't select a word that was already thrown away.
+
+The second instinct — ground it in the dictionary — was right in spirit, wrong in fact. The dictionary has **no part-of-speech signal**: the old `pos_tag` table is empty, the `temporal` facet doesn't discriminate (`message` and `arrived` are both EVENT), and the semantic bucket is uniform across nouns and verbs. That's by design — the dictionary is organized by *semantic role*, not grammar, and POS is meant to be derived in extraction.
+
+Which is where it already lived. `noun_lexicon.py` — a rule-based, no-model noun tagger (WordNet list + determiner context + suffix rules) — had been in the pipeline the whole time. The only thing wrong was that concept selection was reading tier-filtered chunks instead of the **raw sentence**. Run the tagger on the raw tokens, take the last noun: **0/5 → 4/5.** `message`, `response`, `pattern`, `system` all correct; the fifth (`server` vs `memory`) is a genuine subject-vs-cause ambiguity, not a bug.
+
+The lesson is the plainest kind: the deterministic signal already existed, and the whole failure was feeding the selector the wrong tokens. The full write-up has the dead ends in detail, the dictionary-POS refutation, and why the verb side stays a known gap until System-2 meta-facets land.
+
+---
+
 # 2026.06.29 — Segmenting Any Text by Coherence, Without Training on the Answer
 
 We had 366 hand-built outlines for our transcripts — human tables of contents, chapter by chapter. The obvious move was to train a model to reproduce them. We didn't. There is no *correct* segmentation: competent annotators disagree on where chapters begin and how many there are, so fitting one outline teaches a model nothing about what a boundary actually *is*. We built a general, deterministic **formula** instead, judged only by whether its boundaries fall at real drops in semantic cohesion — never by agreement with a human outline.
@@ -31,6 +57,18 @@ We make this a rule with three tiers. **Tier 0** is deterministic and local: par
 This isn't aspirational — it's already running. Our text-segmentation procedure does the entire "understand the structure of this 43-minute transcript" job at **tier-0, pure standard library, offline, zero tokens.** It joins prior results that ship the dictionary to the browser and identify nouns by lookup-plus-rules with no AI at all.
 
 What you buy: **bandwidth** (turns that never hit the network), **cost** (no GPU to parse or plan), **latency** (instant local steps), **privacy** (the request and memory stay on-device), and **fewer round-trips** (clarify and plan *before* the one call you make). The model stops being the first thing you reach for and becomes a co-processor of last resort, behind a single seam, on a compressed payload.
+
+---
+
+# 2026.06.28 — Finding the Noun Without an AI
+
+The regression corpus had cracked the spine of seed extraction: every concept assertion failed, `concept_id` came back `arrived` instead of `message`, `today` instead of `pattern`, `trusts` instead of `system`. The pipeline had no reliable way to tell a noun from a verb, and no part-of-speech tags to lean on. We gave it one, with **zero AI** — a word list and a rule about the word *the*.
+
+The diagnosis was better than a clean failure. The code meant to surface a sentence's nouns selected "high-tier content," and *high tier* means high affect: a token is Tier-H when its evaluation magnitude `|E| ≥ 0.6`, or it is an emotion or modal verb. Affect is not noun-hood, so the filter failed in both directions at once. It kept the emotional words — in "she felt joyful and the message arrived," `felt` and `joyful` sailed through as content "objects," a verb and an adjective masquerading as the subject. And it dropped the real nouns — `server`, `pattern`, `system` are emotionally flat, `|E| ≈ 0`, so they fell to the low tiers and were filtered out before selection ever ran. That is why our first fix, a smarter selection rule, scored **0 of 5**: you cannot select a noun that was thrown away upstream.
+
+You do not need a neural tagger to find a noun. You need a precomputed lookup and a few rules — essentially a Brill tagger with the learning removed. A **noun lexicon** from WordNet/Wiktextract, ~1 MB and a B-tree lookup, plus the rule that does the heavy lifting: a determiner or possessive immediately before a word makes it a noun. "the server," "its memory" — decisive, and it settles homographs for free (`felt` is a fabric in the lexicon, but "she felt" is not a determiner frame, so it stays a verb). Suffix rules and verb and adjective exclusions cover the rest.
+
+Run on the sentences that broke the day before: "she felt joyful and the message arrived" → `['message']`; "the server failed and memory exhausted" → `['server', 'memory']`. The neutral concrete nouns surface; the high-charge verbs are correctly rejected. The thing the sentence is about is finally in the candidate list — the precondition for ever selecting it. That is the recurring move: affect lives in the EPA norms, token identity in the dictionary, and now part-of-speech in a lexicon plus rules. None of it wakes the model.
 
 ---
 
@@ -95,6 +133,22 @@ The ID bug was the loudest failure. There were quieter ones. Pass 1 (determinist
 Agency required a different tool. After deterministic classification and two LLM passes, **agency UNKNOWN sat at 47.6%**. Most words are ambiguous without context: "advised" can be self-directed or other-directed; "build" can be personal or systemic. We built a two-phase corpus context classifier. Phase A indexes the 14,807-file transcript corpus once, mapping anchor words to chunk texts in a single O(corpus) pass. Phase B looks up each unknown surface in that index and extracts ±25-word windows with the target highlighted. The LLM classifies each window; a majority vote written only if the winning label meets a minimum confidence fraction.
 
 Two runs — `--min-matches 2` then `--min-matches 1 --min-confidence 0.7` — moved agency UNKNOWN from **47.6% to 14.5%** (54,131 of 373,918 entries). The residual is largely the 39,776 surfaces with no corpus presence at all; a different signal source is required to go further. Direction closed at **0.5% UNKNOWN**. Temporal reached a structural floor at 29.6% — function words, prepositions, and proper nouns have no inherent temporal type and the LLM correctly returns UNKNOWN for them.
+
+---
+
+# 2026.06.25 — One Dictionary, Both Ends
+
+The plan for the ELO Browser was never just compression. It was to make the browser the place you talk to ELO AI — and to do that over a channel where the *model's tokenizer is the dictionary*. Same surfaces, same IDs, same facets on both ends. If that holds, a captured page and a chat message are already in the model's native language; nothing has to be re-tokenized.
+
+Getting there meant admitting a wrong turn. We'd been raising token density by baking space-prefixed word variants into the dictionary. Then we actually read the canonical codec and found the density was supposed to come from the **codec**, not the dictionary: drop the single space between two words on encode, put it back on decode (plus lowercase + a case marker). Measured on a real transcript dictionary, that one transform took us from 3.6 to 5.4 characters per token. The variants were compensating for a transform the browser's codec simply didn't have yet.
+
+So we built the dictionary the canonical way instead of by hand. `elo-browser-v01` is the v0.4 general corpus — transcripts and books — with the website/HTML vocabulary folded in (the general dictionary covered ~0.5% of it), built to the full 262,144-token cut, with the semantic facet layer and a per-surface meta DB. Then we ported the canonical encoder, decoder, and the LLM tokenizer into the browser's Rust core — tokenizer, implicit-whitespace, caps, phrase matching, the tier-tagged binary, and the integer ID stream the model consumes.
+
+The honest part is how we knew it was right. We generated conformance vectors straight from the Python pipeline — text in, exact `.elo` text, exact binary, exact model IDs out — and made the Rust match them byte-for-byte. It caught a real bug: our first ID stream produced numbers above 262,144 because we'd inverted the wrong ID scheme. The test failed, we fixed it, and now all three conformance suites pass. The browser emits exactly what the trained model will consume — by construction, not by hope.
+
+Live in the app, typing a sentence into the console now shows the real thing: around **2× more context** than a standard tokenizer and **~2× smaller on the wire**, fully lossless. (A phrase-rich sentence hits 7.9 chars/token; the corpus average is nearer 5, ~1.26×. We quote the average.) Both wins are independent — even at token parity, the transferred stream is smaller *and* still semantically queryable.
+
+One dictionary, one tokenizer, both ends — verified. The next post is the one we've been building toward: training the model against it.
 
 ---
 
