@@ -1,3 +1,15 @@
+# 2026.07.08 — Memory-Grounded Replies Without an LLM, and Why Rendering Was Not the Hard Part
+
+We wanted the system to reply — answer a question, react to a statement — deterministically, from what it has stored, no language model. The assumption was that we were nearly there, because the verbalizer already turns internal state into words. That assumption was wrong, and the reason is the whole point: rendering a thought is not composing a response, and the gap between them is exactly what a language model usually papers over.
+
+The verbalizer renders one seed beautifully — `entity [relation] concept: gloss, emotion, grounding`. What it had no notion of is *relation between turns*: taking a new statement and saying how it stands against what is already in memory. **That relating step is the reply, and it did not exist.** `verbalize_seed` gives a diagnostic reading of a single item; a response has to reach across items. Once we saw that, the "missing 20%" turned out to be most of the actual work.
+
+So we wrote a pure composer and formalized it into the verbalizer. It is a *lookup, not a generation*: a turn ending in `?` is answered from stored seeds, anything else is reacted to, across six templated shapes — contradiction, agreement, novelty for statements; conflict, recall, unknown for questions. Store "The system is stable" then "The system is broken" and it replies **"That conflicts with an earlier statement: 'The system is stable'."** Ask about something never mentioned and it doesn't bluff: "I have nothing stored about database yet." No model produced any of it — each sentence is a template filled from the actual seeds, and every response records the seed ids it stood on plus a confidence.
+
+The composer is **substrate-free** — it duck-types seeds and takes contradictions as data, so it composes without opening the dictionary and its ten tests run in a millisecond. The point is the shape of the thesis: responding becomes a lookup over structure, not a generation from weights, which buys two things weights don't — the reply cites its own evidence, and it costs nothing to run. Templated and narrow today, but it is a foundation an AI can actually answer from: it says only what it has stored, quotes where it got it, and admits when it knows nothing. The full write-up has the six shapes, the two honest limits, and why replies are only as good as the concept underneath.
+
+---
+
 # 2026.07.08 — An Auditable Reasoner, and the Whack-a-Mole It Exposed in Our Concepts
 
 We finished Reasoning R1 — a deterministic symbolic reasoner that emits contradiction verdicts and single-hop inferences, every step carrying full provenance — and ran it on real memory for the first time: 9,868 seeds from seven transcripts. It worked flawlessly and told us something we did not want to hear. **9,868 seeds produced 3,525 reasoning steps with 100% replay to real seed ids** — and the derived claims were `like contributes_to remember`, `um enables little`, `go temporal_before get`. The reasoning was perfect; the concepts feeding it were mostly discourse fillers and bare verbs.
