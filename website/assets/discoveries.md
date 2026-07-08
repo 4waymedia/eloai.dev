@@ -1,3 +1,15 @@
+# 2026.07.08 — An Auditable Reasoner, and the Whack-a-Mole It Exposed in Our Concepts
+
+We finished Reasoning R1 — a deterministic symbolic reasoner that emits contradiction verdicts and single-hop inferences, every step carrying full provenance — and ran it on real memory for the first time: 9,868 seeds from seven transcripts. It worked flawlessly and told us something we did not want to hear. **9,868 seeds produced 3,525 reasoning steps with 100% replay to real seed ids** — and the derived claims were `like contributes_to remember`, `um enables little`, `go temporal_before get`. The reasoning was perfect; the concepts feeding it were mostly discourse fillers and bare verbs.
+
+Then the whack-a-mole. Concept extraction had scored 5/5 on a clean 190-sentence corpus, but real ASR — no punctuation, wall-to-wall "like" — is a different world. We added a filler stoplist: resolved contradictions dropped from 3,473 to 3,105, a modest 11%. We added a verb stoplist for the residual (`go`, `know`, `make`) and the count went the *wrong way*, up to 3,318. Removing the verb-concepts didn't delete those seeds; it redistributed them onto commoner words, collapsing many small clusters into fewer large ones — and since contradiction fires on same-concept pairs, a bigger cluster means quadratically more of them.
+
+The finding: **per-class stoplists are whack-a-mole.** The contradiction volume isn't driven by any word class — it's driven by two structural things a blacklist can't touch. Every seed sits under one `unknown` speaker (the transcripts carry no speaker labels), so same-entity contradiction is combinatorial; and on messy ASR the concept is wrong across *every* part of speech at once. So we stopped blacklisting. The replacement is a **positive gate** — accept a concept only if it grounds to an in-dictionary content noun — and we moved tuning out of source edits into an instrumented lab where a live "percent content nouns" metric scores each change.
+
+The reasoner's first contribution wasn't a conclusion; it was a diagnosis. Because every bad claim replays to the seeds that made it, **an auditable reasoner is also a probe** — it made a foundational weakness impossible to hide. The full write-up has the measurement table, why the verb fix backfired, and the entity-collapse problem we deferred.
+
+---
+
 # 2026.07.05 — Concept Extraction 4/5 to 5/5, Grounded and Converged Without a Lemmatizer
 
 The concept extractor sat at 4/5. The holdout was "The server failed because memory was exhausted," which returned `memory` — the last noun, a real noun, but the *cause* in a subordinate clause, not the subject. The rule that fixed it is a dozen words: the concept is the last noun *before the first subordinator*. The trap was in which words count. Our first set included `that`, so "The logs confirm that the server failed" cut the clause at `that` and returned `logs` — the reporting subject — discarding the real concept sitting one clause over. A complementizer introduces the concept; it does not subordinate it. Drop `that` and the relativizers, keep `because` and `when`, and A4 resolves to `server` across all ten phrasings. **4/5 → 5/5.**
