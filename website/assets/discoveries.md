@@ -12,6 +12,16 @@ The full write-up has the rest: the policy table, the four duck-typed identity s
 
 ---
 
+# 2026.07.10 — Three Channels, One Fingerprint: The Dictionary Ships as a Coupled Family
+
+A dictionary that carries understanding without a language model can't be a lookup table — it has to be a coupled *family*, several layers of meaning bound so tightly a word can't mean one thing in storage and another in a reply. We built and shipped that family for the browser dictionary (261,872 words): three parallel arrays over one vocab index — **affect** (`epa.bin`), **affordance** (`facets.bin`), **denotation** (`neighbours.bin`) — each stamped with the dictionary's content fingerprint and refused at load if it doesn't match. The three answer different questions: facets what you may *do* with a word, epa how it *feels*, neighbours what it *means*. The denotation channel exists because affect isn't meaning: EPA put `car` next to `credentials`, so a 768-d embedding index carries the `car → truck` that EPA never could.
+
+Building it exposed real drift. A whole channel had no emitter — the vocab file the browser and neighbours both key off was produced by a tool that had drifted out of the repo, so a from-scratch build couldn't run; we rebuilt it as a deterministic projection and proved it reproduced the old file **byte-for-byte**. Our "atomic" write had never actually run on Windows, where `os.fsync` on a read-only handle throws `EBADF`. The neighbours export took 40 minutes doing 85k searches one at a time; batched into a single matrix multiply it took seconds. On a 5090 the full family then built in one clean pass — **258,254 words embedded in 22 s**, epa 79.6% populated, neighbours covering 84,864 words at ~15 each.
+
+The best result was a build we *didn't* do. Before giving phrases their own denotation we measured whether they need it — `cos(compose(words), embed(phrase))` — and found the conversational corpus has almost no lexical phrases: 160k candidates, only **11,818 fully composable**, and the low-scoring "idioms" were pragmatic formulas (`thank god`, `good luck`) or ASR stutters (`china china`). So instead of phrase assets we added hygiene gates that cut the miner pool **232,983 → 50,347**, and filed composition for the domain builds that actually have lexical terms. Measuring first turned a month of building into an afternoon of not building. The full write-up has the channel formats, the four failures, the compositionality table, and why the verbalizer — now that it finally has denotation as well as affect — has a real shot at forming sentences.
+
+---
+
 # 2026.07.08 — Memory-Grounded Replies Without an LLM, and Why Rendering Was Not the Hard Part
 
 We wanted the system to reply — answer a question, react to a statement — deterministically, from what it has stored, no language model. The assumption was that we were nearly there, because the verbalizer already turns internal state into words. That assumption was wrong, and the reason is the whole point: rendering a thought is not composing a response, and the gap between them is exactly what a language model usually papers over.
