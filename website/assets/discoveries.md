@@ -22,6 +22,16 @@ The best result was a build we *didn't* do. Before giving phrases their own deno
 
 ---
 
+# 2026.07.09 — A Car Next to "Credentials": EPA Measures Feeling, Not Meaning
+
+We wanted cheap semantic similarity for the dictionary and reached for EPA — Osgood's Evaluation/Potency/Activity, three interpretable numbers per word — partly on an inherited claim in our own notes that those factors "explain 70–90% of semantic variance." If true, three floats would be a startling bargain. So we measured it, the simplest way: build the EPA substrate (67,936 words from Warriner ∪ NRC-VAD) and do exact nearest-neighbour search. If EPA is meaning, a word's neighbours are its synonyms.
+
+They aren't. `car`'s nearest neighbours are `credentials` (0.066), `attention` (0.079), `decoration` (0.081). The retrieval is perfect — a car, credentials, and a decoration genuinely sit together because they *feel* about the same: similarly evaluated, potent, active. EPA can't tell them apart because denotation was never in the representation. The space is affect-shaped, too: `happy` has **zero** neighbours within a tight radius while `big` has **1,939** — it only "works" for the sparse extremes, and even there it's measuring feeling, not reference. And the axes aren't equal: cross-source agreement runs **E = 0.814, A = 0.613, P = 0.328**, so Potency is barely a third of a correlation — anything imputing agency from it is building on sand.
+
+So the "70–90% of variance" line was an overclaim, and it's **REFUTED** — the kind of confident inherited generalization our validation loop exists to catch. The fix wasn't to repair EPA but to stop asking it to be meaning: we added a 768-d `all-mpnet-base-v2` index for denotation (`car → truck, vehicle, automobile`) and kept EPA for its real job — affective dynamics under Affect Control Theory, never synonymy. Two axes, two channels, and the discipline to never impute from Potency. The full write-up has the numbers, the Osgood/Heise grounding, and why this measurement bought the two-channel architecture the coupled family shipped the next day.
+
+---
+
 # 2026.07.08 — Memory-Grounded Replies Without an LLM, and Why Rendering Was Not the Hard Part
 
 We wanted the system to reply — answer a question, react to a statement — deterministically, from what it has stored, no language model. The assumption was that we were nearly there, because the verbalizer already turns internal state into words. That assumption was wrong, and the reason is the whole point: rendering a thought is not composing a response, and the gap between them is exactly what a language model usually papers over.
