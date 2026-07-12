@@ -1,3 +1,17 @@
+# 2026.07.11 — A Tri-State Load Rule: Context Assembly Refuses Mixed-Dictionary Memory
+
+Two dictionary builds can assign the same ID to different words: one build's 184 is "doctor," another's is "system." A field read against the wrong build does not fail — it parses cleanly and means something else. Our context assembler was exposed to exactly this. Stage 07 blends memory fields from multiple providers into one working context for reasoning, and through v0.2.1 it kept no record of which dictionary build encoded each field. With the current dictionary still staged and IDs free to move on every rebuild, that was a misread waiting to happen.
+
+The fix is provenance plus a load rule, not a new dependency. Every provider may now report the build its field is bound to, read off the engine by pure duck-typing — a rich identity surface if one exists, a bare fingerprint string if not, nothing if neither. The assembler compares identities tri-state: same family, definite mismatch, or unknowable. **Unknown never conflicts** — semantics copied from Stage 06's existing index guard rather than invented stricter — so every pre-identity upstream, including all of v0.2, stays valid unchanged. Policy is ignore, warn, or reject; default warn records conflicts in diagnostics and proceeds. Under reject with an expected identity from the caller's manifest, a foreign memory field raises **before a single seed is scored**.
+
+The accounting: **77 unit tests (24 new)** and the integration check pass on the real tree, with **zero new dependencies** — the core stays pure stdlib. The default path is behavior-preserving; an explicit test holds that even under reject, an upstream with no identity assembles exactly as before.
+
+Mid-session, our own tooling staged a demonstration of the failure mode. The development environment's file mirror silently truncated a module at a clean statement boundary — the compile check passed on a file missing its last three methods. Bytes parse, check passes, meaning gone: the precise shape the load rule exists to refuse. A compile check is not an integrity check; only content identity is.
+
+The full write-up has the rest: the policy table, the four duck-typed identity surfaces, what we deferred — per-seed identity, facet fingerprints riding the extra field, the ELO-ID budgeter — and the public fingerprint accessor Stage 06 still owes.
+
+---
+
 # 2026.07.08 — Memory-Grounded Replies Without an LLM, and Why Rendering Was Not the Hard Part
 
 We wanted the system to reply — answer a question, react to a statement — deterministically, from what it has stored, no language model. The assumption was that we were nearly there, because the verbalizer already turns internal state into words. That assumption was wrong, and the reason is the whole point: rendering a thought is not composing a response, and the gap between them is exactly what a language model usually papers over.
