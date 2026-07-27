@@ -1,3 +1,17 @@
+# 2026.07.27 — Numbers Were Not Mangled, They Were Deleted: A Second Tokenizer With No Digit Class
+
+A probe failed on `18th century`. The compositionality table said the phrase was trusted; the encoder said it had never seen it. The obvious read was a keying mismatch — the table is built from dictionary surfaces, the encoder from its own normalization, and those drift. That read was wrong, and the truth was worse. The encoder wasn't rendering `18th century` badly; it was rendering it as `th century`. And then: `"I have 3 cars"` → `[i, have, cars]`. `"it cost $40"` → `[it, cost]`. `"call me at 555 1234"` → `[call, me, at]`. **Every number in every sentence was gone** — not truncated, absent. A system built to remember what you told it could not represent *how far*, *how many*, or *how much*.
+
+Two layers caused it. `_TOK_RE` has no `\d` anywhere in it, so `re.findall` silently discarded bare digits and matched `18th` at offset 2 as `th`. And `is_punct = not raw[0].isalpha()` flagged any digit-initial token as **punctuation** — which `EncodedSpan.chunks` excludes by design. Even correctly tokenized, numbers would still have been dropped one step later. The scope keeps this from being a much larger claim: the **compression path was never affected**. The dictionary carries the digit tokens directly (`100`→`mn`, `18th`→`rLb`, `3`→`gdf`), so the byte-exact round-trip stands. The loss lived entirely in the *meaning* path — a second tokenizer, different module, different vocabulary.
+
+The first fix made it strictly worse: adding the digit class alone moved `18th century` from `th century` to nothing at all, because the token now matched the numeric branch and was then flagged punctuation by the untouched second layer. And an hour before finding the cause, we had written the symptom into a docstring as a permanent limitation — carefully hedged, internally consistent, describing a symptom as a cause. A limitation written into a docstring is a claim, and deserves the same validation as a result.
+
+The near-miss is the part that stings. The failing probe was on a numeric phrase, so the first instinct was that it had sampled badly, and the fix was to filter sampling to alphabetic phrases only. That change was written. It made the suite green. Had it shipped, the one signal pointing at a total loss of numeric meaning would have been suppressed by a test that looked *more* rigorous for having a filter in it.
+
+The full write-up has the before/after table, the dictionary IDs proving compression was untouched, the six suites that stayed green, and why this is the second defect in one day caused by two implementations of one concept drifting apart.
+
+---
+
 # 2026.07.27 — Non-Compositionality Finds Idioms, Not Compounds: A Signal That Cannot Tell "Good Luck" From "Hard Drive"
 
 Teaching Elo a compound works — say *"car wash is one thing"* and every later mention files under it. But most compounds never get taught; they just get used. So the next capability is discovery, and there is a measure that looks purpose-built for it. **Compositionality** is the cosine between a phrase's composed word vectors and its direct embedding: high when a phrase is its parts (`red car`), low when the whole diverges (`hot dog`). The build already ships 132,384 of these scores. Low compositionality means the meaning isn't the sum of the words — which is what a compound is.
