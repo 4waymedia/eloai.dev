@@ -1,3 +1,53 @@
+# 2026.07.27 — Non-Compositionality Finds Idioms, Not Compounds: A Signal That Cannot Tell "Good Luck" From "Hard Drive"
+
+Teaching Elo a compound works — say *"car wash is one thing"* and every later mention files under it. But most compounds never get taught; they just get used. So the next capability is discovery, and there is a measure that looks purpose-built for it. **Compositionality** is the cosine between a phrase's composed word vectors and its direct embedding: high when a phrase is its parts (`red car`), low when the whole diverges (`hot dog`). The build already ships 132,384 of these scores. Low compositionality means the meaning isn't the sum of the words — which is what a compound is.
+
+The reasoning is wrong and the data says so plainly. Low compositionality means **idiomatic**, and the most idiomatic things in a conversational corpus are not compounds but pragmatic formulas. We enumerated the complete population — every phrase that could ever pass all four detection signals — and hand-labelled it: **198 phrases, 28 genuine compounds, 14.1% precision.** The rest are `sounds good`, `good luck`, `go ahead`, `too late`, `good job`. (Labelling was incomplete — `monetary policy` and `patriot act` sat in the reject pile — so read 14.1% as a floor, nearer 20%.) Running a full phrase-inventory hygiene pass, which genuinely fixed the miner, moved it 14.1% → 14.7%. Tightening helps precision and destroys reach: the strictest rule we measured hits ~59% but can ever ask about **17 phrases in the entire corpus**.
+
+And the canonical target is unreachable. Run live, `car wash` has no compositionality row at all — it was never mined — so the signal cannot fire on the example the work is named after. Only teaching reaches it.
+
+The instructive part is that a spec in this repo had already measured this exact CSV and written the conclusion — *"Not now for conversational/browser builds — the data says the payoff isn't there"* — before we started. It sat in a folder that wasn't connected. That is an explanation, not an excuse: the standing rule is to read the spec for every term, and "I couldn't find one" should have been a question, not a green light.
+
+The full write-up has the population tables, the four false-positive families, the two defects a mocked suite hid, and why a POS tagger would help but could never separate `good call` from `hard drive`.
+
+---
+
+# 2026.07.27 — A Correct Gate With an Incomplete List: 36.8% of a "Lexical" Phrase Set Wasn't
+
+The phrase miner turns raw n-grams into dictionary phrase atoms, and its default output is noisy by design — PMI is a score weight rather than a filter, so the most frequent fragments win whether or not they are phrases. The spec prescribes five hygiene gates to isolate genuinely lexical phrases. All five were implemented. A hygiened candidate file already existed. The problem was visible on its first line: `and you know`, then `and then`, then `and i think`. The edge-function gate exists precisely to reject a phrase starting with `and`. It was enabled. It did not fire.
+
+The gate was correct; its lookup was blind. `config.FUNCTION_WORDS` contains no conjunctions — no `and`, `but`, `or`, `so`, `because`, `if`, no `not`, no wh-words: **40 words missing** against the substrate's list. And the omission is *deliberate and right*. Its own docstring says so: those words are already FUNCTION via a LOGIC_SEED cue, and we measured that 32 of the 40 do resolve that way. The set is correct for facets, which consults both paths, and wrong only for a caller doing raw set-membership, which sees one path and not the other. Two consumers, one constant, two different definitions of "function word" — invisible until something downstream counted. **18,536 of 50,347 entries (36.8%)** carried one of those words on an edge. Re-mining with the gates asking `assign_facet()` for the authoritative answer: **50,347 → 23,918 survivors, and zero function-word edges.** `config.FUNCTION_WORDS` was left untouched, so every dictionary build stays byte-identical.
+
+The best failure was that the fix appeared to change nothing. The first corrected run produced 50,347 again — because `facets.py` uses bare imports and the natural package-qualified import raises, so the guard fell back to exactly the raw test it was meant to replace. A warning written defensively before it was needed printed and said so. Without it we would have shipped a bit-for-bit identical miner under a commit message claiming a 36.8% improvement. A fallback that degrades a result must say so at the moment it degrades it; a `try/except` that quietly substitutes a worse answer is a bug with a polite face.
+
+The full write-up has the stage-by-stage counts, the before/after list heads, the near-miss where we almost edited the wrong constant, and the measured negative that hygiene does not improve compound detection.
+
+---
+
+# 2026.07.27 — What the Mocks Could Not See: A Green Suite, a Duplicated Parser, and a Test That Asserted the Bug
+
+Two days ago we reported a 36/36 probe set that passed while the module it tested was hardcoded, and drew the rule: a test suite that cannot fail for the reason the design would fail is decoration. This is what happened when the same family of failure was walked into from three new directions. The compound-learning work was built in a sandbox with no lmdb, no 2.1GB dictionary, no index — every test used mocked `TokenChunk` objects. **26 checks, all green.** The mocks were faithful to the dataclass. The suite was still worthless in a specific way.
+
+Pointed at the real encoder and dictionary — a `lmdb` wheel fetched and installed offline — it went to **47 checks, zero skips**, and three defects surfaced within minutes. Signal C checked `assign_facet()`'s *bucket* and passed anything bucketed TOPIC; against the real classifier `assign_facet("to")` returns `bucket=TOPIC, utility=FUNCTION`, the identical bucket to `car`, so function words sailed through a check written to exclude them. A docstring claimed the encoder computes word tier via `classify()`; it does not — it reads a prebuilt LMDB template, whose build-time tier returns **H** for `to`, `that`, `this`, `it` where a live `classify()` returns **F**. And compound confirmation shipped its own yes/no parser while the gateway had owned `_verdict()` for months; they had already diverged, so "spot on" was understood for one kind of question and silently not for another. Separately, **126 existing tests** covering the modified modules had never been run. They pass: 116 + 10.
+
+The worst one was ours and it was subtle: the suite pinned `too late` as the *expected positive detection*. `too late` is a discourse formula — exactly the false-positive class the design was fighting. Written while looking at output and judging "it fired, the mechanism works", never asking whether it fired on the right thing. Anyone later tightening the detector would have seen that case go red and concluded they had broken something. The fix is a real compound as the positive case plus a **known-false-positive ledger**, where a failure is documented as *good news* — delete the entry, don't loosen the detector.
+
+The full write-up has the before/after signal dumps, the tier table, the four broken things, and why mocking your collaborators rather than your inputs turns a test into a mirror.
+
+---
+
+# 2026.07.26 — Compounds Are Taught, Not Mined: Why "Car Wash" Was Never in the Dictionary
+
+Ask Elo about a car wash across three sentences and it files the memories in three places. "I drove to the car wash" lands under `drive`; "the car wash was closed" under `closed`; "I hate that car wash" under `hate`. The thing the person is actually talking about is never the key, because the seed former ranks candidate concepts by emotional loading and `car` and `wash` are two ordinary adjacent words. The obvious fix is to make the dictionary know `car wash` is one unit — it was built by mining a 186-million-token corpus, so a common compound should be in there and the work should be a lookup.
+
+It is not in there. We checked seven common compounds — `car wash`, `ice cream`, `high school`, `hot dog`, `front door`, `credit card`, `cell phone` — against both the 167,876-entry mined candidate list and the dictionary's templates sub-db. **Zero hits, all seven.** Scaling the corpus does not help, because what a conversational corpus is full of is discourse formulas and ASR fragments, not compounds. So the mechanism became teaching: an anchored grammar for *"'car wash' is one thing"*, a store the phrase scanner consults **before** the dictionary, and trust tiers that record how a piece of knowledge arrived (TAUGHT 0.9, CONFIRMED 0.8). Taught phrases persist as plain JSON, not into `dictionary.lmdb` — that is a build artifact the next build silently regenerates, and JSON means a person can open the file and correct what Elo believes it was taught. After teaching, `car wash` chunks as one atom and later mentions file under it, not under the sentence's loudest verb. 47/47 against the real encoder and dictionary.
+
+Two things broke worth keeping. The concept fix was aimed at the wrong field first: the seed former treated `is_phrase` as "this is a relational connector", when it means "this matched any multi-word dictionary entry" — a much larger set. And we started coding before reading the subsystem's own spec, and were told so: *"the teaching/learning should become a formula. You need to refer to the documentation on formulas."* The repo's standing rule is to read the spec for every term before building on it, and it earns its place by being the rule most often skipped under momentum.
+
+The full write-up has the mining measurements, the teaching grammar, the restart-persistence gate, and why a tracking document written for an already-refuted approach had to be superseded within hours.
+
+---
+
 # 2026.07.25 — Learning What "+" Means: Induction by Experiment, Not Symbol Lookup
 
 We wanted Elo to learn arithmetic from a teacher in conversation — not to have arithmetic. Type "2 + 2 = 4" into the browser, and see whether the system ends up able to answer "what is 4 + 12?" with no language model in the loop. The first version looked like it worked: taught 2+2=4, it replied *"If 2+2=4, does 3+3=6?"* and could then compute new sums. It was a fake. The operation was **hardcoded** — a table mapped `'+'` to Python's `add`, so the system recognized a known symbol and applied a built-in evaluator. It never learned anything. As induction it is **REFUTED**, and the hollow center is the one it shares with a language model: an LLM has the rule baked into weights, ours had it baked into a lookup table, and neither induced it from the example in front of it.
