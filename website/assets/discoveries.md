@@ -1,3 +1,59 @@
+# 2026.07.30 — Two Kinds of Redundancy: Dictionary-Then-gzip Wins on Prose and Loses on Markup
+
+The `.elo` transport is two-stage — encode to dictionary ids, then gzip — and that only pays if the stages compose. There is a specific reason to doubt they do. gzip earns its ratio on long repeated literals, and a web page is full of them: `<div class="`, repeated attribute names. Dictionary encoding replaces exactly those with short unrelated ids, attacking the redundancy gzip depends on. Nobody had measured it.
+
+Ten public-domain books through the production `.eloB` encoder: **10 of 10 beat gzip alone, mean 0.85x**, range 0.81x to 0.98x. The outlier explains itself. `modern_english_biography` lands at 0.98x and logs **42,020 OOV tokens**, against **97** in Frankenstein — it is a biographical reference work, wall-to-wall proper names, precisely the content no fixed vocabulary can hold. The win tracks OOV density.
+
+Markup runs the other way, 1.07x to 1.14x worse. The principle underneath: **the dictionary captures global redundancy, gzip captures local redundancy.** A nine-character word recurring across a 327-million-token corpus becomes a two-byte id because the dictionary was trained on that distribution; gzip only ever sees 32KB at a time. Markup's redundancy is long literal repeats inside that window, and replacing them with short ids destroys matches gzip would have found for free.
+
+Three things broke. The production encoder **cannot encode any captured web page** — the OOV capitalisation mask has a one-byte length prefix, and real pages carry tokens up to **18,775 characters** of base64, so the markup half is model-derived and weaker for it. The model itself masked the finding: it put the biography at 0.85x, indistinguishable from the novels, and had the paper shipped on those numbers it would have claimed a tight band that does not exist. And the first measurement pointed the opposite way entirely — 1.11x–1.21x worse everywhere — because it measured the pipe-delimited *text* stream, which is not what `.elo` ships.
+
+The full write-up has the ten-book table, the OOV counts behind the outlier, the CAP-field defect, and why the consequence is a per-document branch rather than a fix.
+
+---
+
+# 2026.07.30 — Coverage Answers the Wrong Question: A Page at 98% Coverage That Expands
+
+A dictionary build closed a vocabulary hole: structural characters that captured web pages use constantly and a conversational corpus never contained. Article pages improved as intended — on live cnn.com the browser's transfer ratio moved **1.17x → 1.28x**, with OOV roughly halved across every captured sample. Then a Google results page came back at a poor ratio with **98% coverage**, and the two numbers looked contradictory. If nearly every token resolves, what is costing the bytes?
+
+They are not contradictory. They answer different questions, and only one was being asked. Coverage asks *did we find an id*. It does not ask *did the id save a byte*. A text stream pays `len(id) + 1` per token — the id plus one delimiter — so a one-character token costs two characters to encode one. It expands no matter how common it is or how completely the dictionary covers it.
+
+That page is **64.2% single-character tokens**, mean token length 2.83. The largest line items are punctuation the build had *already fixed*: `-` costs 70,322 characters, `{` and `}` 42,744 each. They have ids now. They still expand, because no id can be shorter than the one character it replaces. The delimiter alone accounts for **696,079 characters — 22.3% of the stream**. The remaining OOV is the minifier, not language: `gm3`, `jsaction`, `TgQPHd`. For scale, the page's readable content is **13,213 characters out of 1,967,703 — 0.67%** — and it says what it has to say in **581 unique words**.
+
+Two of our own measurements were wrong first. The frame test queried the LMDB, which holds all 437,995 entries, and concluded both builds behaved identically — but the browser loads a 261,872-entry cut, and `{` sat at rank 276,119: in the database, unreachable by the encoder. A test that queries a superset of what the system uses will report that everything is fine. And the first cost model omitted the delimiter, putting unprofitable entries at a comfortable 7.5%; adding the per-token constant moved it to **27.9% of corpus occurrences**.
+
+The full write-up has the per-sample before/after table, the cost attribution, the deferred format changes, and why extracting the readable text — 149x less input, and the obvious-looking win — is not available to a lossless format at any ratio.
+
+---
+
+# 2026.07.30 — The Delimiter Had No Id: Markdown Tables Were Not Losslessly Representable
+
+The text stream separates token ids with a pipe, and a token the dictionary does not know is emitted as `OOV:A:` followed by the raw character. Those two facts are incompatible. A pipe in the source becomes `OOV:A:|` — an encoded part that *contains the delimiter* — so splitting the stream back apart hands the decoder a fragment and an empty string where one token used to be.
+
+A markdown table is pipes. Three lines of table, encoded under `elo-browser-v01a`: **12 encoded parts carried the delimiter, and 42 parts became 54 on re-split** — twelve phantom tokens injected into the frame by the document's own content. One captured CNN page carried **24,874** such parts. Every markdown table the system had read was corrupt at the frame level, and nothing raised.
+
+The cause was absence, not rarity. `|`, `` ` ``, `~` and `\xa0` were not in the dictionary at all. `{` and `}` were — at rank 276,119, beyond the 261,872-entry cut the browser loads, so present in the LMDB and unreachable by the encoder. **Presence is what the database records; reachability is what the encoder gets.** Eleven surfaces are now declared as a structural floor, landing at ranks 51–63 inside every profile cut down to `tiny`. The delimiter itself never moved: with the pipe carrying a real id, no encoded part can contain a pipe.
+
+The fix failed silently the first time. The build recorded `force_include_count: 10` and changed nothing — `|` came out holding a Tier-1 id at rank 437,989, outside every cut, because a second sort two hundred lines below the rank floor re-ordered by raw frequency. Its comment read *"should already be by frequency desc"*: true when written, false afterward. And `"\r"` was declared, injected, and unmatchable — `tokenize` returns `'\r\n'` as a single token, so every Windows-authored file paid the OOV price while the forced surface sat unused and the count still reported 10 of 10. It measured declaration, not coverage.
+
+The full write-up has the per-build surface table, the frame-integrity assert, the three findings that turned out to be our own reader bugs, and the deferred `0x1F` divergence.
+
+---
+
+# 2026.07.29 — A Load Rule With Nothing to Compare Against: The Codec Vocabulary Carried No Fingerprint
+
+The browser dictionary is not a file, it is a family: a codec vocabulary of 261,872 words plus three binary channels — affect, affordance, denotation — that are parallel arrays over the same index. The rule governing it is one sentence: verify all three channel headers carry the same fingerprint, **and that it matches the vocabulary you decode with**. The hazard is specific. A foreign asset parses cleanly and returns the wrong word for every id. Nothing crashes; the system is quietly wrong about what things mean.
+
+Half that rule was enforced. The three channels were checked against each other. The clause guarding the worse mismatch — assets from build A indexed by a vocabulary from build B — had no implementation, and could not have had one. `CanonDict` had no fingerprint field because the JSON it deserializes had no fingerprint key, because the exporter never emitted one. Its header carried eight fields; not one of them was an identity. The check was not weakly enforced. It was unaskable.
+
+The fix reads the fingerprint from the same LMDB the `.bin` emitters already read, carries it into the browser as an `Option<String>`, and compares tri-state — known-vs-known asserts, known-vs-unknown warns, because a vocabulary exported before July is not evidence of drift. Those semantics were copied from Stage 06's index guard and Stage 07's load rule rather than invented. **Six artefacts now agree on `b1790799…`**, so the new assertion passes rather than merely compiling.
+
+The change that enforces the rule nearly violated it. Adding one header key means re-deriving all 261,872 entries, and the browser compiles that file in as the join key for all three channels — a projection that drifted by a single row would shift every id and point the assets at the wrong words. It was caught only because we diffed the regenerated entries against both existing copies *before* writing either one: identical, and the committed diff came back one line. The tempting shortcut was worse still — hashing the CSV already in hand needs no dependency and produces a number that is not the number in the headers. `BINDINGS.md` names that failure by name.
+
+The full write-up has the artefact table, the test counts, the fragility nothing enforces, and the two clauses still unverified.
+
+---
+
 # 2026.07.27 — Numbers Were Not Mangled, They Were Deleted: A Second Tokenizer With No Digit Class
 
 A probe failed on `18th century`. The compositionality table said the phrase was trusted; the encoder said it had never seen it. The obvious read was a keying mismatch — the table is built from dictionary surfaces, the encoder from its own normalization, and those drift. That read was wrong, and the truth was worse. The encoder wasn't rendering `18th century` badly; it was rendering it as `th century`. And then: `"I have 3 cars"` → `[i, have, cars]`. `"it cost $40"` → `[it, cost]`. `"call me at 555 1234"` → `[call, me, at]`. **Every number in every sentence was gone** — not truncated, absent. A system built to remember what you told it could not represent *how far*, *how many*, or *how much*.
