@@ -1,3 +1,19 @@
+# 2026.07.31 — A Trained zstd Dictionary Beats Us at Compression: The Ratio Was Never the Claim
+
+Yesterday we published that dictionary-then-gzip beats gzip alone on prose — 10 of 10 books, mean 0.85x. True, and the wrong benchmark, for a reason that takes one command to find: `zstd --train`. If a format's argument is "ship a dictionary and compress against it," the honest comparison is against other formats that ship dictionaries. We had picked a competitor for being beatable.
+
+A 2.1MB trained zstd dictionary compresses four held-out books to **118,050 bytes**. `elo + xz` needs **158,212** — and 13MB resident on the receiver instead of 2.1MB. **25% worse at six times the size.** Nor does low duplication rescue it: on 20,000 unique, fully in-vocabulary words Elo still loses (2.04x vs 2.25x), because general compressors entropy-code and Elo substitutes and stops. On random identifiers the file *expands*, to 0.81x.
+
+Training zstd's dictionary on `.eloB` streams instead of raw text looked like the answer — 4.78x, a 21% win. Re-run on three different books it **reversed to a loss**. The cause was not method: that sample is 97% a 4.7MB biographical reference work with 42,020 OOV proper names, plus Shakespeare. Same code, opposite verdict, different books. It survived only because the rule was to re-run good-looking results on a fresh sample before believing them.
+
+What does hold is domain match. The build was made from 327M tokens of transcripts, and transcripts are where it wins: **6.03x against 5.72x**, +5.4%. Technical prose +1.3%. Proper-noun-heavy books −1.9%. Markup −13%.
+
+And one property nobody designed. Encoding *Alice*, the emitted id stream — what a receiver without the dictionary sees — has its most frequent symbol at **11.2%**, not the 38.7% of the raw token stream, because implicit spaces are dropped and 46% of tokens are absorbed into multi-word phrase ids. **Only 92 of 7,453 distinct ids (1%) are uniquely determined by frequency rank**; 4,796 appear exactly once. Letter-frequency analysis has nothing to grip. Known plaintext is still fatal, and the dictionary is a static global key — so this is obfuscation with measured limits, never confidentiality.
+
+The full write-up has the four-codec tables, the dictionary-scaling saturation, the entropy "floor" that wasn't one, and why these are complements rather than competitors.
+
+---
+
 # 2026.07.31 — The Teaching Loop Closes: Elo Asks What It Doesn't Know, and Then Knows It
 
 Asked **"do you know what a car wash is?"** — twice, directly — Elo answered by quoting the nearest seed containing the words: *"From what you have told me: 'I want to wash the car'"*. No curiosity fired. The wonder system pinged every turn about surface novelty while the clearest epistemic gap in the conversation — a definition question it could not answer — triggered nothing. The machinery to file open questions existed; filing is not asking. A system that writes its ignorance down and never says it out loud does not get taught.

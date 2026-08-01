@@ -2,6 +2,16 @@
 
 *Full write-up. The Field Notes teaser of the same title is cut from this. semantic_compression S1, measured through the production `.eloB` encoder (`ELO_BIN_VERSION = 2`) against dictionary build `elo-browser-v01b`.*
 
+> **SUPERSEDED IN FRAMING, 2026-07-31.** The measurements below stand; the benchmark
+> does not. Comparing against gzip alone was choosing a competitor for being
+> beatable — a 2.1MB **trained zstd dictionary** beats `elo + xz` by 25% at a sixth
+> the resident size. See *"A Trained zstd Dictionary Beats Us at Compression"*
+> (2026.07.31), which refutes the ratio claim and keeps the composition result.
+>
+> Also corrected there: the `.eloB` OOV defect recorded below as a live finding was
+> **fixed the same day** — the caps pass is gone from the OOV path, and all three
+> captured pages now encode and round-trip byte-exact.
+
 ## Problem / context
 
 The `.elo` transport strategy is two-stage: encode to dictionary ids, then gzip. That only pays if the two stages compose. There is a specific reason to think they might not.
