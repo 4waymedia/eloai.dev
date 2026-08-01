@@ -1,3 +1,15 @@
+# 2026.07.31 — The Teaching Loop Closes: Elo Asks What It Doesn't Know, and Then Knows It
+
+Asked **"do you know what a car wash is?"** — twice, directly — Elo answered by quoting the nearest seed containing the words: *"From what you have told me: 'I want to wash the car'"*. No curiosity fired. The wonder system pinged every turn about surface novelty while the clearest epistemic gap in the conversation — a definition question it could not answer — triggered nothing. The machinery to file open questions existed; filing is not asking. A system that writes its ignorance down and never says it out loud does not get taught.
+
+The fix was wiring, not invention. The dictionary has shipped a 16-bit logic-cue mask over 304 curated surfaces since the build family landed, and nothing consumed it — the reply path chose between two templates on whether the query ended in `?`. Now the cue mask names the shape of the question, a definition-shaped question whose recall holds only *mentions* says that split plainly and **asks** — *"I have not been told what 'car wash' means. What is it?"* — and the trailing question opens a capture slot. The next turn is heard as an answer, acknowledged, and kept. Live, on a fresh store: gap detected, asked, taught, captured, served back grounded on the taught seed. Reply-shape probes went **3/10 → 11/11**; the gateway suite grew to **145/145**.
+
+Every defect on the way was found in a live transcript; the suites caught none of them first. The best one: taught *"a car wash is a place **where** you take your car…"*, Elo said *"That answers my question — noted"* and then re-asked the question in the same breath — the relative clause's `where` carries a QUESTION cue, and the shape reader called the teach a question. The rule kept: an assertion verb before the first question-cued surface makes the turn a statement. Runner-up: **"yes" was a stopword**, so accepting Elo's own circle-back offer tokenized to nothing and went nowhere.
+
+The full write-up has the probe tables, the four live-transcript failures, the intent guard that forbids claiming ignorance while holding the answer, and why the inference to "drive" is deferred to the reasoner rather than faked by a template.
+
+---
+
 # 2026.07.30 — Two Kinds of Redundancy: Dictionary-Then-gzip Wins on Prose and Loses on Markup
 
 The `.elo` transport is two-stage — encode to dictionary ids, then gzip — and that only pays if the stages compose. There is a specific reason to doubt they do. gzip earns its ratio on long repeated literals, and a web page is full of them: `<div class="`, repeated attribute names. Dictionary encoding replaces exactly those with short unrelated ids, attacking the redundancy gzip depends on. Nobody had measured it.
@@ -118,6 +130,18 @@ The full write-up has the mining measurements, the teaching grammar, the restart
 
 ---
 
+# 2026.07.26 — The Answer Was Already Computed: Five Fixes That Consumed What the System Already Knew
+
+Asked **"If the car wash is 100 feet away, should I drive my car there or walk?"**, the system answered: *"From what you have told me: 'free from dirt - means there is no dirt'."* Grounded, cited, and confidently irrelevant — and it happened **after** connecting the memory gateway to a browser whose local replies had been serviceable. More machinery, worse answers. The diagnosis made it interesting: at five separate layers, the information for the right answer was already computed — shipped in the dictionary, returned by a function, carried on a struct — and the consumer at each layer used something cruder. The dictionary's 16-bit cue mask went unread while replies branched on a trailing `?`. The per-surface CONTENT/FUNCTION verdict went unread while recall filtered with a 41-word stoplist. The ranker computed how many query surfaces each seed matched, carried the count onto the result, and sorted without it.
+
+The user's own retest supplied a controlled experiment: the same question phrased twice, differing only by *"my car there"*. One phrasing recalled the dirt definition — it had won on `there` and `means`, two function words the stoplist missed and the dictionary correctly marks FUNCTION. The other phrasing recalled the right fact. Dropping one contentless word changed the answer entirely. After the fixes, both phrasings converge to identical surfaces, the distance fact (4 matches) rises past the definition seed (2 matches) from a tie, and the reply composes instead of quoting: *"You told me: 'You are 100 feet from the car wash.' Between drive and walk — nothing I have stored says how you weigh that. What matters to you here?"* Reply-shape probes: **3/10 → 10/10**.
+
+Two of the breakages were our own. A one-line sort fix applied with a global replace edited the identical line in a second ranking function whose type lacks the field — six tests red inside a minute, caught by the suite, not by care. And the diagnostic built to read recall's rankings printed `score=?` for every candidate: it read `score`; the field is `verbal_score`. The instrument had to be debugged before the system could be — with the wrong conclusion already written up.
+
+The full write-up has the ranking tables, the two-phrasing experiment, the five consumers in order, and why the inference to "drive" is deferred to the reasoner rather than faked.
+
+---
+
 # 2026.07.25 — Learning What "+" Means: Induction by Experiment, Not Symbol Lookup
 
 We wanted Elo to learn arithmetic from a teacher in conversation — not to have arithmetic. Type "2 + 2 = 4" into the browser, and see whether the system ends up able to answer "what is 4 + 12?" with no language model in the loop. The first version looked like it worked: taught 2+2=4, it replied *"If 2+2=4, does 3+3=6?"* and could then compute new sums. It was a fake. The operation was **hardcoded** — a table mapped `'+'` to Python's `add`, so the system recognized a known symbol and applied a built-in evaluator. It never learned anything. As induction it is **REFUTED**, and the hollow center is the one it shares with a language model: an LLM has the rule baked into weights, ours had it baked into a lookup table, and neither induced it from the example in front of it.
@@ -209,6 +233,18 @@ We wanted cheap semantic similarity for the dictionary and reached for EPA — O
 They aren't. `car`'s nearest neighbours are `credentials` (0.066), `attention` (0.079), `decoration` (0.081). The retrieval is perfect — a car, credentials, and a decoration genuinely sit together because they *feel* about the same: similarly evaluated, potent, active. EPA can't tell them apart because denotation was never in the representation. The space is affect-shaped, too: `happy` has **zero** neighbours within a tight radius while `big` has **1,939** — it only "works" for the sparse extremes, and even there it's measuring feeling, not reference. And the axes aren't equal: cross-source agreement runs **E = 0.814, A = 0.613, P = 0.328**, so Potency is barely a third of a correlation — anything imputing agency from it is building on sand.
 
 So the "70–90% of variance" line was an overclaim, and it's **REFUTED** — the kind of confident inherited generalization our validation loop exists to catch. The fix wasn't to repair EPA but to stop asking it to be meaning: we added a 768-d `all-mpnet-base-v2` index for denotation (`car → truck, vehicle, automobile`) and kept EPA for its real job — affective dynamics under Affect Control Theory, never synonymy. Two axes, two channels, and the discipline to never impute from Potency. The full write-up has the numbers, the Osgood/Heise grounding, and why this measurement bought the two-channel architecture the coupled family shipped the next day.
+
+---
+
+# 2026.08.01 — A Deterministic Voice, and the Bandage It Surfaced
+
+Our system could perceive, remember, recall, and track a conversation — and still could not say what it knows. Its local reply floor was an affect note, "On dungeon — reads neutral," emitted while holding a taught paragraph about Dungeon Masters in its store. This week we packaged the missing leg: three deterministic, no-LLM ops — label, summarize, verbalize — that let it compose language from what it holds, cited, offline. Packaging them surfaced a bug that had been silently live.
+
+The ops are a lookup over structure, not a generation from weights. verbalize reads the *shape* of a question from the dictionary's cue mask (never from a "?"), composes a reply in that shape, cites the seeds, and marks stance — a thing you were told is said in told voice; an inference is said in inferred voice, cited to the reasoning step. **No template manufactures a reasoning step from a told fact** — that is the reasoner's job, licensed and cited, or it is not said. Thirty-four tests, including the two that matter: label beats the old topic labeller by dropping the function words it kept; verbalize beats the quoting fallback, naming both options of a choice instead of quoting a fact at a question it does not answer. Thirty-one conformance cases pin every output so the browser port proves rather than reinvents.
+
+Then the bandage. A parallel session had wired a dialog layer ahead of fact-recall, and its final act — "Got it, noted." — fired for *every* "X is Y" statement. Because it ran first, it **shadowed contradiction detection entirely**: "the system is broken" after "the system is stable" returned "Got it, noted" instead of "that conflicts with an earlier statement." Six reaction tests failed the moment the full path was exercised; the behaviour had been silently dead. The acknowledge was added for a real reason, and over-reached.
+
+The fix is one line — let it fall through to the reaction path. The lesson is sharper: **a bandage that returns something plausible is worse than a gap**, because it hides the wound, and only a test that ran the whole path found it. The full write-up has the op contract, the two "beat" probes, and why composing a reply is a lookup, not a generation.
 
 ---
 
