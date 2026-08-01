@@ -1,3 +1,17 @@
+# 2026.07.31 — The Dictionary Is a Rank-Ordered List: 20x Smaller Shipped, and Fitting Closes the Gap
+
+Earlier today we conceded compression to a trained zstd dictionary — beaten by 25% while needing 13MB resident against its 1MB. Two objections survived that result, and both turn out to be right.
+
+**The dictionary was fitted to the wrong corpus.** The shipped build holds 261,872 entries for browser use; a 200-transcript corpus fires **only 31,274 of them**. It was not short of vocabulary, it was carrying the wrong vocabulary — a third of its capacity is HTML structure and CSS utility classes. So we built one from 22 public-domain books, held four out, and trained one zstd dictionary on exactly the same 22. On the held-out books, `elo + zstd` now comes in at **151,866 bytes against 153,141** for the best zstd configuration. That is a 0.8% lead on four books, which is a tie — but it is a large move from 25% behind.
+
+**And the resident cost was measured on the wrong artifact.** We had been quoting `dictionary.lmdb` at 6.6MB. But ids are assigned by **frequency rank**, so position *is* the id and the ids need not be stored at all. A dictionary is an ordered list of surfaces, which is highly compressible text: **6,595,072 bytes → 340,093 compressed, a 19.4x reduction** — a third the size of the 1MB zstd dictionary it was losing to. The browser's 437,995-entry vocabulary compresses to 1.6MB against the 12.9MB of JSON it ships today, and loads in 9.1ms rather than 107ms of parsing.
+
+Two things broke on the way. `build_from_spec` **hardcoded the phrase file**, so no build was ever corpus-fitted: the first books dictionary came out 81,434 *transcript* phrases against 1,819 book words, topped by `'you know'` at 539,244 — Victorian novels do not say that half a million times. And our own compact format silently lost 33 entries, because newline-delimiting a list whose members contain newlines drops 57 of them. That is the third time this week a newline in a delimiter position has quietly corrupted a format that looked fine.
+
+The full write-up has the shipped/unpacked/runtime table, the browser's 24.4MB of assets compressing to 8.3MB, and why `facets.bin` compresses 40x.
+
+---
+
 # 2026.07.31 — A Trained zstd Dictionary Beats Us at Compression: The Ratio Was Never the Claim
 
 Yesterday we published that dictionary-then-gzip beats gzip alone on prose — 10 of 10 books, mean 0.85x. True, and the wrong benchmark, for a reason that takes one command to find: `zstd --train`. If a format's argument is "ship a dictionary and compress against it," the honest comparison is against other formats that ship dictionaries. We had picked a competitor for being beatable.
