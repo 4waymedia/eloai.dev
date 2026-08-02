@@ -1,6 +1,18 @@
-# 2026.07.31 — The Dictionary Is a Rank-Ordered List: 20x Smaller Shipped, and Fitting Closes the Gap
+# 2026.07.31 — The Runtime Form Is Not the Shipping Form: 20x Smaller, and Fitting Closes the Gap
 
 *Full write-up. The Field Notes teaser of the same title is cut from this. semantic_compression S1. Follows "A Trained zstd Dictionary Beats Us at Compression" (2026.07.31) and answers the two objections it left standing: that our dictionary was the wrong size, and that its resident cost was too high.*
+
+> **CORRECTED 2026-07-31, after publication.** The first version of this paper was
+> titled *"The Dictionary Is a Rank-Ordered List"* and asserted that "position is the
+> id." **That is false.** Ids interleave across tiers — ranks 1330–1337 run
+> `u3`(T1), `gBH`(T2), `u4`(T1), `gBI`(T2) — and only 317 of 399 consecutive pairs
+> are even monotonic. Reconstructing an id from a rank requires the tier scheme, the
+> reserved first-character ranges, the Tier-0 primitive map and the interleave rule.
+> That is an algorithm, not an offset.
+>
+> The measured sizes are unaffected: they were taken from the real surface list. What
+> changes is the explanation. The 20x reduction comes from **not shipping a B-tree**,
+> not from ids being implied by position.
 
 ## Problem / context
 
@@ -49,9 +61,9 @@ The governing constraint: **every held-out file excluded from both dictionaries.
 
 This morning `elo + xz` lost to a trained zstd dictionary by **25%**. With the dictionary fitted to the corpus it now leads — by **0.8%**, which on four books is a tie, not a win. The honest statement is *parity*, and parity is a large move from 25% behind.
 
-### The dictionary is a rank-ordered list
+### The runtime form is not the shipping form
 
-Ids are assigned by frequency rank, so **position is the id** and the ids need not be stored at all. A dictionary is an ordered list of surfaces — highly compressible text:
+`dictionary.lmdb` is a **runtime** structure: a B-tree with page overhead, a forward map, and a reverse map that is derivable from the forward one. None of that needs to travel. Serialised as a list of surfaces — plain, highly compressible text — the same content is:
 
 | representation | bytes | vs LMDB |
 |---|---:|---:|
@@ -94,6 +106,8 @@ A browser shipping the compact vocab plus compressed channels is roughly **7MB i
 
 **The 0.8% is one sample.** The previous paper's headline reversed when re-run on different books. Four held-out books is thin, and this result should be treated as provisional until it is repeated on transcripts and on a larger literary sample.
 
+**And this paper shipped with a false mechanism in its title.** It claimed ids are assigned by rank so "position is the id" — a tidy sentence that explained the 20x, and was wrong. Ids interleave across tiers and only 317 of 399 consecutive pairs are monotonic. The size measurements were real; the explanation attached to them was invented to make them make sense, and it survived because it sounded like the kind of thing that would be true. Reaching for a mechanism *after* seeing a number is how you end up publishing one you never checked. The compression was always just "a B-tree is not a wire format."
+
 ## What we deferred and why
 
 - **Shipping the compact vocab in the browser.** The 8x saving is measured; the loader change is not written. `canon()` parses `.browser.json` today.
@@ -105,7 +119,8 @@ A browser shipping the compact vocab plus compressed channels is roughly **7MB i
 ## Result and consequence
 
 - **`VALIDATED` — corpus fitting closes the gap.** Same corpus, same held-out set, same code: `elo + zstd` moved from 25% behind a trained zstd dictionary to 0.8% ahead. Call it parity.
-- **`VALIDATED` — the dictionary compresses 19–20x** because ids are implied by rank. 6,595,072 → 340,093 bytes; the browser's 437,995-entry vocab → 1,609,756.
+- **`VALIDATED` — the dictionary compresses 19–20x** once serialised rather than shipped as its runtime B-tree. 6,595,072 → 340,093 bytes; the browser's 437,995-entry vocab → 1,609,756.
+- **`REFUTED` — that ids are positional.** Asserted in the first version of this paper and false: ids interleave across tiers (ranks 1330–1337: `u3` T1, `gBH` T2, `u4` T1, `gBI` T2), and only 317 of 399 consecutive pairs are monotonic. Rank plus the assignment algorithm gives an id; rank alone does not.
 - **`VALIDATED` — a fitted char-3 build contains no 4-char ids.** 19,628 words + 63,625 phrases in 83,253 slots.
 - **`VALIDATED` — load cost is 9.1 ms** for 83,253 entries from the compact form, against 107 ms to parse the shipped JSON for 261,872.
 - **`VALIDATED` — `facets.bin` compresses 40x**, and the browser's 24.4MB of assets compress to ~8.3MB.
@@ -114,4 +129,4 @@ A browser shipping the compact vocab plus compressed channels is roughly **7MB i
 
 What this opens is larger than the ratio. The dictionary turns out to have three distinct sizes — **shipped, unpacked, and resident** — that differ by a factor of twenty, and until today we quoted whichever one was in front of us. Separating them makes several things newly practical: per-corpus dictionaries at 330KB, rotation cheap enough to do hourly, a browser that ships a third of its current payload, and an encryption story that operates on an artifact small enough to treat as a key rather than a database.
 
-None of that was visible while the dictionary was a 6.6MB B-tree. It was always a rank-ordered word list.
+None of that was visible while "the dictionary" meant one number. A B-tree is a structure for looking things up quickly, not a format for moving them; conflating the two cost us a comparison we did not need to lose.
