@@ -1,3 +1,15 @@
+# 2026.08.03 — Derived From the Real Docs: Component Didn't Drift, Behavior Did
+
+Yesterday we shipped versioned dictionaries with hand-authored CakePHP layers and one honest tag: the vocabulary was *unverified against the real corpus*. Today we ran the test — pointed the derivation tool at the actual CakePHP book, both version branches, and let the unchanged diff engine grade layers nobody wrote by hand. **The corpus overruled the seed.** The real 2.x and 5.x books define Component word-identically; our ARCHITECTURAL migration advisory described a story the documentation does not tell.
+
+The first two runs derived garbage, each failure diagnosable. A restructured upstream repo produced a silent zero-file scan and a vacuous "no semantic changes" — a pipeline that can say *no changes* must not reach that verdict from no data. Line-based sentence splitting turned the book's 80-column wraps into fragment meanings like "exactly the same as building it within a regular." And the copular pattern swallowed migration notes — "Component *is now* the required base class" is not a definition. Paragraph assembly, lead-word rejection, and filename affinity (components.rst outranks the appendix) fixed all three deterministically.
+
+Then the loop delivered. From 145 files and 14,391 sentences per branch, Behavior's derived meanings came back as real definitions with line-level provenance, and their delta is the ORM rewrite extracted blind: "functionality defined in CakePHP models" against "horizontal re-use of Model layer logic" — **SIGNIFICANT, EPA shift 0.8636, agency SYSTEM to OTHER**, from two sentences no human selected.
+
+One weakness stands, stated plainly: Shell derived near-miss debris on both sides, because the extractor cannot yet answer "this concept has no definition here" — and absence is the *correct* answer for 5.x. **The arbiters grade whatever meanings they are handed; they cannot rescue bad extraction.** That is the lesson that shapes the next round: absence detection, a measured precision/recall for the definitional filter, and a second framework corpus. The full write-up has the rest — the three-round failure log, the derived-meanings table, and what a refuted example of our own making bought us.
+
+---
+
 # 2026.08.02 — Versioned Dictionaries: Scoring CakePHP 2.0 -> 5.4 Meaning Drift Without a Model
 
 A framework keeps its vocabulary while changing its architecture. CakePHP 2.0 and 5.4 both have a *Component* — but in 2.0 it is a reusable logic block attached to a controller, and in 5.x it is a service class resolved through a dependency-injection container. Same word, different machine. Migration guides describe this drift in prose; nothing measures it.
