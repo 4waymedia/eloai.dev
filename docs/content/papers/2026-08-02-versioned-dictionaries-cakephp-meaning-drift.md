@@ -81,7 +81,18 @@ The full comparison:
 
 Shell/Command is the rename story told honestly by two buckets: the removed id and the added id have byte-identical meanings ("command line task class run via cake console"), and the added side carries the 2-step rename migration. A future enhancement can join removed/added pairs on meaning similarity and emit them as a single RENAME advisory; today they are two lines.
 
-The EPA hook, exercised with a toy scorer in tests (`controller` scored negative-potent, `dependency` positive): Component's `epa_shift` comes back positive and nonzero with the scorer, and `None` without it. **The shift value under a toy table proves the plumbing, not the semantics** — see §7.
+The EPA hook, exercised with a toy scorer in tests (`controller` scored negative-potent, `dependency` positive): Component's `epa_shift` comes back positive and nonzero with the scorer, and `None` without it.
+
+**Same-day update — the real arbiters are now wired and verified.** Later this session both hooks were bound to their canonical sources: EPA through the built dictionary's affect asset via the verbalizer substrate (`semantic_add`; verified `'good' -> (2.89, 1.41, -1.34)`), facets through the substrate's `lookup_id -> lookup_vfacet_named` path. The measured CakePHP advisory, canonical scorers active:
+
+| id | epa_shift | facet_shift | severity |
+|---|---|---|---|
+| `elo:cakephp_component` | **1.1856** | agency OTHER→SELF; direction STABLE→TOWARD; polarity NEUTRAL→POSITIVE | ARCHITECTURAL |
+| `elo:cakephp_behavior` | **0.3073** | agency SELF→OTHER | SIGNIFICANT |
+
+Two things in these numbers. The EPA shifts **independently agree with the lexical severity ladder** — the architectural break registers ~4x the affect displacement of the significant one, from a channel that shares no code with the word-overlap rules. And Component's facet row is dependency-injection described in facet space: agency moves to SELF (the class no longer belongs to a controller), direction to TOWARD (resolved *toward* the container), polarity to POSITIVE.
+
+One detour to record plainly: the first wiring bound EPA to the **raw Warriner CSV** via mneme — the ingredient, not the artifact. The canonical EPA is the dictionary build's `epa.bin` (Warriner remapped and build-expanded 13,905 -> 208,556 surfaces, fingerprint-stamped; DICTIONARY-FAMILY-INTEGRATION.md §4b). The raw source scored Behavior's shift at 0.7208 vs the canonical 0.3073 — **2.3x apart on the same comparison**. An affect arbiter bound to the wrong EPA produces confidently different numbers; the binding was corrected the same day and the raw path removed rather than kept as a fallback.
 
 Verification: 8 tests in `test_version_diff.py` (buckets, severities, advisory shape, EPA injection, MCP dispatch), full `eloai_lsdf` lane at **97 tests green** after this step.
 
@@ -95,8 +106,8 @@ Verification: 8 tests in `test_version_diff.py` (buckets, severities, advisory s
 
 ## 6. What we deferred and why
 
-- **Wiring the real EPA scorer.** The verbalizer substrate's Warriner lookup exists on the host but is faiss-backed and heavy; the injectable hook keeps the engine importable everywhere. Deferred until an advisory consumer actually wants affect-weighted severity.
-- **Deriving version dictionaries from source.** The two CakePHP layers are authored seeds — accurate to well-documented history, but hand-written. The scanner pipeline (Steps 4–5) can scan two versions of a framework's codebase and draft the layers from extracted doc statements; that closes the loop from "authored" to "measured". Deferred: needs a real two-version corpus checked out.
+- **Wiring the real EPA scorer.** ~~Deferred~~ — landed same-day (see §4): both EPA and facet arbiters are bound to the built dictionary via the verbalizer substrate, guarded so the engine stays importable everywhere.
+- **Deriving version dictionaries from source.** Partially landed same-day: `corpus_ingest.py` derives a draft layer from a documentation corpus (definitional-sentence extraction, copular-first ranking, file+line provenance, `status: draft-derived`), and two layers derived purely from fixture docs reproduce the controller→DI break under the unchanged engine. Still open: running it against the real CakePHP book (one checkout per version branch) rather than fixture snippets.
 - **Joining dictionary-level drift to scanned entities.** `EntityDB.version_diff` already answers "which *entities* vanished between tags"; combining it with `semantic_diff` would say "and here is *why*, per classifier" against a user's actual project. Deferred as the natural Step 6/10 follow-on.
 - **RENAME advisory synthesis** (removed+added with matching meanings → one advisory), and a **PHP parser** — CakePHP projects themselves are config-only in the init wizard today.
 
@@ -106,7 +117,9 @@ Verification: 8 tests in `test_version_diff.py` (buckets, severities, advisory s
 
 **VALIDATED:** the additive-composition collision guard doubles as the versioning architecture — versioned layers cannot be merged, only compared, by construction.
 
-**UNVERIFIED:** severity calibration against real migration outcomes. ARCHITECTURAL/SIGNIFICANT/MINOR agree with CakePHP's documented history on this pair, but a 3-rule word-overlap ladder has not been tested against frameworks with sparser meaning strings, and the EPA shift has only run under a toy scorer.
+**VALIDATED:** the canonical arbiters, end to end — EPA (built dictionary via `semantic_add`) and facets (`lookup_vfacet_named`) both fire on the CakePHP pair with the measured values in §4, and the EPA ordering independently corroborates the lexical severity ladder (1.1856 vs 0.3073).
+
+**UNVERIFIED:** severity calibration against real migration outcomes. ARCHITECTURAL/SIGNIFICANT/MINOR agree with CakePHP's documented history on this pair, but a 3-rule word-overlap ladder has not been tested against frameworks with sparser meaning strings, and the EPA-severity agreement is one data point on one framework pair.
 
 **UNVERIFIED:** the authored layers against CakePHP source. The meanings match the documented architecture; nobody has scanned 2.0 and 5.4 codebases to confirm the drafted vocabulary is complete.
 
