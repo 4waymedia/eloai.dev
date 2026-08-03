@@ -101,6 +101,29 @@ Nobody wrote either side of that comparison. The 2.x model-centric phrasing givi
 
 **REFUTED:** the authored Component example. The real 2.x and 5.x books define Component identically; the ARCHITECTURAL advisory in yesterday's paper describes a migration story the documentation does not tell. The prior paper's UNVERIFIED tag on the authored layers is hereby resolved — against us, which is what the tag was for.
 
+**VALIDATED, and a correction: the arbiter numbers are coverage-dependent, and we had been quoting them blind.** Asked whether the L-SDF work needed new dictionary vocabulary, we built a coverage instrument (`arbiter_coverage`) that reports what fraction of a meaning's content words the built dictionary can actually rate, and names the misses. First measurement on the derived CakePHP layers: **71.4% EPA coverage** — nearly a third of every meaning was invisible to the affect arbiter. Categorising the 49 misses:
+
+| category | n | examples |
+|---|---|---|
+| morphological variants of known words | 30 | controllers, entities, methods, models, views, generating, provides, reused |
+| genuinely absent software vocabulary | 11 | middleware, http, cli, php, psr-7, foreach |
+| hyphenated artifacts of our own extractor | 4 | component-like, mini-view, re-use, well-defined |
+| function words our stoplist leaked | 3 | any, even, has |
+
+**61% of the gap was morphology, not missing vocabulary** — we were asking for `controllers` while the dictionary holds `controller`. The affect asset is keyed by surface and our lookup did no lemmatisation, the same gap the memory-recall path had already fixed. Adding lemma fallback (plural, -ing, -ed, hyphenated-compound head) plus closing the stoplist leak took coverage to **92.6% EPA / 96.3% facets, with no dictionary build touched**.
+
+The correction: the shift values change when coverage does.
+
+| classifier | EPA @ 71.4% | EPA @ 92.6% | change |
+|---|---|---|---|
+| Behavior | 0.8636 | 0.9841 | +14% |
+| Controller | 1.9301 | 2.0311 | +5% |
+| Validation | 0.7609 | 0.5224 | **-31%** |
+
+Every EPA figure in this paper and its predecessor was computed without knowing its coverage; Validation's moved by a third. The severity ordering survived, but it survived by luck rather than method. **Any affect number quoted without its coverage is an unqualified number** — coverage now travels with the measurement.
+
+What remains genuinely absent is a 12-word tail: `middleware`, `http`, `cli`, `php`, `psr-7`, `foreach`, `urls`, plus API identifiers (`consoleio`, `setcookie`, `withheader`, `assetmiddleware`) and the framework's own name. Several of those arguably should not carry affect ratings at all. The real words are a measured thinness in the affect asset's software vocabulary — **evidence to hand the dictionary session, not a change this lane makes**. Classifier ids remain out of the general dictionary entirely, per the settled band spec.
+
 **VALIDATED:** term discovery contributes real vocabulary. Harvesting the corpus's own headings surfaced Middleware ("part of the new HTTP stack in CakePHP that leverages the PSR-7 request and response interfaces"), Entity, Association, Mailer, Plugin, Element, Datasource and CookieComponent — none of which the template named. The removed/added buckets now read as an accurate architectural history: CakeRequest, CakeResponse, CakeEmail, AppController, Datasource, CookieComponent, Model out; Application, Middleware, Command, Mailer, Association, Asset, Event, Plugin in.
 
 **UNVERIFIED, and this is now the blocking item: we do not know the extractor's precision or recall.** Five rounds of tuning went: look at bad output, invent a rule, judge the new output by eye, move on. That is tuning by anecdote, and it has a measured cost we can point at — subject anchoring removed the Shell debris from 5.x but simultaneously **lost the true Shell definition in 2.x**, where the concept genuinely is defined, and lost Entity from 5.x. Precision was traded for recall with no instrument on either side. Current state per version is roughly 20 terms resolved against 20 unresolved, and of those 20 resolutions perhaps 12–14 look like genuine definitions of genuine constructs — "look like" being exactly the problem.
