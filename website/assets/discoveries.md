@@ -1,3 +1,17 @@
+# 2026.08.02 — Versioned Dictionaries: Scoring CakePHP 2.0 -> 5.4 Meaning Drift Without a Model
+
+A framework keeps its vocabulary while changing its architecture. CakePHP 2.0 and 5.4 both have a *Component* — but in 2.0 it is a reusable logic block attached to a controller, and in 5.x it is a service class resolved through a dependency-injection container. Same word, different machine. Migration guides describe this drift in prose; nothing measures it.
+
+We built versioned dictionary layers: each framework version gets its own classifier file, and every entry carries a one-line `meaning` string. The trick is that the layers can never be merged — our overlay loader rejects any id collision, and two versions of the same framework collide on every shared id by definition. We did not design around that guard. **The collision guard is the versioning architecture:** versions are alternative worlds you compare, not compose.
+
+The diff engine reduces both meanings to content words and sorts every classifier into changed, unchanged, removed, or added. Severity is a three-rule ladder on the word delta. Component scores **ARCHITECTURAL — zero shared content words out of five per side** — and the advisory attaches the 5.4 entry's four migration steps. Shell/Command falls out as a removed id plus an added id with byte-identical meanings: the rename story told by two buckets. No model call anywhere in the path; the English-ELO affect arbiter is an injectable hook that reports nothing rather than guessing when absent.
+
+The engine also out-voted us once. We wrote the Behavior test expecting MINOR — "model logic mixed into models" versus "table logic attached to tables" reads like rewording. It returned SIGNIFICANT: 4 changed words against 2 shared. CakePHP's actual history says the engine is right — that was the ORM rewrite. We changed the test, not the rule. **A severity model you can out-vote with intuition is not measuring anything.**
+
+The two CakePHP layers are authored seeds, accurate to documented history but hand-written — severity calibration against frameworks with sparser meaning strings is UNVERIFIED. The full write-up has the rest: the four-bucket walk, the EPA centroid hook, and the derivation loop this forces next — scanning two real framework versions and letting the engine grade a dictionary we did not write.
+
+---
+
 # 2026.07.31 — The Runtime Form Is Not the Shipping Form: 20x Smaller, and Fitting Closes the Gap
 
 Earlier today we conceded compression to a trained zstd dictionary — beaten by 25% while needing far more resident data. Two objections survived that result, and both turn out to be right.
