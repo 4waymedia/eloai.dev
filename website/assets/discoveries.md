@@ -1,3 +1,17 @@
+# 2026.08.07 — A Package Always Imports Itself: Seven Green Suites and a Broken Tree
+
+We renamed every Python package in the repository. The substrate had been named for one consumer, and there are now several — a browser, a word processor, a messenger — so it moved to a neutral namespace and the product prefix was reserved for a layer that composes on top. Straightforward, and mostly it was.
+
+Two lanes also renamed the *import* names of their modules. Both packages went green. One recorded it in the checklist as **"110 tests green, 29 external consumers updating in parallel."** The consumers were not updating in parallel; they were broken. The old module directory no longer existed, and **15 executable import statements across seven other systems** named it — including the `_bootstrap.py` path builders that are what makes development imports resolve at all. Nothing in the repository connected a module rename to its consumers, and the suites that ran were the renamed package's own. **A package always imports itself fine.**
+
+So we wrote the check that asks a question nobody's bookkeeping can answer: parse every `.py` with `ast`, and for each import, does the name resolve to something that exists? Run against the broken tree it put the missing module at the top of the list at 15 sites. We had already built a different guard first — assert each package ships the module its registry declares — and then measured it against the actual failure and found it insufficient: both lanes updated the registry in the same commit, so it passes for both. **A check that can be satisfied by editing a registry is not a check.** That limit is written into the spec rather than quietly relied on.
+
+Our new checker's first run reported a directory as an orphan at 88 sites. It wasn't one — the checker's model of "shipped" missed top-level directories, which every `_bootstrap.py` puts on the path. We caught it because 88 was implausible, which is a bad reason to catch anything and would not have worked at 3. And one gate is now green while testing nothing: an import-safety assertion lists a module name that no longer exists, so it is vacuously true — invisible to both new checkers.
+
+The full write-up has the conformance tables, the four things that broke including two of our own, and why we deferred the import rename entirely.
+
+---
+
 # 2026.08.03 — Derived From the Real Docs: Component Didn't Drift, Behavior Did
 
 Yesterday we shipped versioned dictionaries with hand-authored CakePHP layers and one honest tag: the vocabulary was *unverified against the real corpus*. Today we ran the test — pointed the derivation tool at the actual CakePHP book, both version branches, and let the unchanged diff engine grade layers nobody wrote by hand. **The corpus overruled the seed.** The real 2.x and 5.x books define Component word-identically; our ARCHITECTURAL migration advisory described a story the documentation does not tell.
